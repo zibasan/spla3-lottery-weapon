@@ -12,7 +12,14 @@ export const ALL_WEAPONS: LotteryWeapon[] = Object.entries(SPLATOON3_WEAPONS).fl
     }))
 );
 
-export function getRandomWeapon(): LotteryWeapon {
-  const randomIndex = Math.floor(Math.random() * ALL_WEAPONS.length);
-  return ALL_WEAPONS[randomIndex];
+export function getRandomWeapon(selectedCategories: WeaponCategory[]): LotteryWeapon | null {
+  const filteredWeapons = ALL_WEAPONS.filter((w) =>
+    selectedCategories.includes(w.category)
+  );
+
+  if (filteredWeapons.length === 0) {
+    return null;
+  }
+  const randomIndex = Math.floor(Math.random() * filteredWeapons.length);
+  return filteredWeapons[randomIndex];
 }

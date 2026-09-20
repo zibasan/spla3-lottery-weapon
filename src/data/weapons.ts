@@ -19,19 +19,23 @@ export const SUBSPECIES_TYPES = ['colab&custom', 'bankara', 'hero', 'octo', 'ord
 export type SubspeciesType = (typeof SUBSPECIES_TYPES)[number];
 
 export const SUBSPECIES_TYPE_LABELS: Record<SubspeciesType, string> = {
-  "colab&custom": 'カスタム・コラボ系',
-  "bankara": 'バンカラコレクション(Ver10～)',
-  hero: 'ヒーローシューターレプリカ',
-  octo: 'オクタシューターレプリカ',
-  order: 'オーダー系',
-  pet: 'PETシューターレプリカ',
+  "colab&custom": 'カスタム・コラボ',
+  "bankara": 'バンカラコレクション',
+  hero: 'ヒーロー',
+  octo: 'オクタ',
+  order: 'オーダー',
+  pet: 'スプラトゥーン レイダース',
 }
 
 export type WeaponCategory = (typeof WEAPON_CATEGORIES)[number];
 
 export interface WeaponInfo {
   name: string;
-  subspeciesType?: SubspeciesType
+  subspeciesType?: SubspeciesType;
+  ruby?: {
+    target: string;
+    text: string;
+  }
 };
 
 /**
@@ -48,10 +52,10 @@ export const SPLATOON3_WEAPONS: Record<WeaponCategory, readonly WeaponInfo[]> = 
     { name: 'シャープマーカーGECK', subspeciesType: 'bankara' },
     { name: 'プロモデラーMG' },
     { name: 'プロモデラーRG', subspeciesType: 'colab&custom' },
-    { name: 'プロモデラー彩', subspeciesType: 'bankara' },
+    { name: 'プロモデラー彩', subspeciesType: 'bankara', ruby: { target: '彩', text: 'サイ' } },
     { name: 'スプラシューター' },
     { name: 'スプラシューターコラボ', subspeciesType: 'colab&custom' },
-    { name: 'スプラシューター煌', subspeciesType: 'bankara' },
+    { name: 'スプラシューター煌', subspeciesType: 'bankara', ruby: { target: '煌', text: 'コウ' } },
     { name: 'オクタシューターレプリカ', subspeciesType: 'octo' },
     { name: 'オーダーシューターレプリカ', subspeciesType: 'order' },
     { name: 'ヒーローシューターレプリカ', subspeciesType: 'hero' },
@@ -60,7 +64,7 @@ export const SPLATOON3_WEAPONS: Record<WeaponCategory, readonly WeaponInfo[]> = 
     { name: '.52ガロンデコ', subspeciesType: 'colab&custom' },
     { name: '.96ガロン' },
     { name: '.96ガロンデコ', subspeciesType: 'colab&custom' },
-    { name: '.96ガロン爪', subspeciesType: 'bankara' },
+    { name: '.96ガロン爪', subspeciesType: 'bankara', ruby: { target: '爪', text: 'ソウ' } },
     { name: 'N-ZAP85' },
     { name: 'N-ZAP89', subspeciesType: 'colab&custom' },
     { name: 'プライムシューター' },
@@ -73,7 +77,7 @@ export const SPLATOON3_WEAPONS: Record<WeaponCategory, readonly WeaponInfo[]> = 
     { name: 'スペースシューターコラボ', subspeciesType: 'colab&custom' },
     { name: 'L3リールガン' },
     { name: 'L3リールガンD', subspeciesType: 'colab&custom' },
-    { name: 'L3リールガン箔', subspeciesType: 'bankara' },
+    { name: 'L3リールガン箔', subspeciesType: 'bankara', ruby: { target: '箔', text: 'ハク' } },
     { name: 'H3リールガン' },
     { name: 'H3リールガンD', subspeciesType: 'colab&custom' },
     { name: 'H3リールガンSNAK', subspeciesType: 'bankara' },
@@ -91,10 +95,10 @@ export const SPLATOON3_WEAPONS: Record<WeaponCategory, readonly WeaponInfo[]> = 
     { name: 'ヴァリアブルローラーフォイル', subspeciesType: 'colab&custom' },
     { name: 'ダイナモローラー' },
     { name: 'ダイナモローラーテスラ', subspeciesType: 'colab&custom' },
-    { name: 'ダイナモローラー冥', subspeciesType: 'bankara' },
+    { name: 'ダイナモローラー冥', subspeciesType: 'bankara', ruby: { target: '冥', text: 'メイ' } },
     { name: 'ワイドローラー' },
     { name: 'ワイドローラーコラボ', subspeciesType: 'colab&custom' },
-    { name: 'ワイドローラー惑', subspeciesType: 'bankara' },
+    { name: 'ワイドローラー惑', subspeciesType: 'bankara', ruby: { target: '惑', text: 'ワク' } },
   ],
   チャージャー: [
     { name: 'スクイックリンα' },
@@ -110,8 +114,8 @@ export const SPLATOON3_WEAPONS: Record<WeaponCategory, readonly WeaponInfo[]> = 
     { name: 'リッター4Kカスタム', subspeciesType: 'colab&custom' },
     { name: '4Kスコープ' },
     { name: '4Kスコープカスタム', subspeciesType: 'colab&custom' },
-    { name: '14式竹筒銃・甲' },
-    { name: '14式竹筒銃・乙', subspeciesType: 'colab&custom' },
+    { name: '14式竹筒銃・甲', ruby: { target: '14', text: 'ヒトヨン' } },
+    { name: '14式竹筒銃・乙', ruby: { target: '14', text: 'ヒトヨン' }, subspeciesType: 'colab&custom' },
     { name: 'ソイチューバー' },
     { name: 'ソイチューバーカスタム', subspeciesType: 'colab&custom' },
     { name: 'R-PEN/5H' },
@@ -132,7 +136,7 @@ export const SPLATOON3_WEAPONS: Record<WeaponCategory, readonly WeaponInfo[]> = 
     { name: 'エクスプロッシャーカスタム', subspeciesType: 'colab&custom' },
     { name: 'モップリン' },
     { name: 'モップリンD', subspeciesType: 'colab&custom' },
-    { name: 'モップリン角', subspeciesType: 'bankara' },
+    { name: 'モップリン角', subspeciesType: 'bankara', ruby: { target: '角', text: 'カク' } },
   ],
   スピナー: [
     { name: 'スプラスピナー' },
@@ -143,7 +147,7 @@ export const SPLATOON3_WEAPONS: Record<WeaponCategory, readonly WeaponInfo[]> = 
     { name: 'バレルスピナーデコ', subspeciesType: 'colab&custom' },
     { name: 'ハイドラント' },
     { name: 'ハイドラントカスタム', subspeciesType: 'colab&custom' },
-    { name: 'ハイドラント圧', subspeciesType: 'bankara' },
+    { name: 'ハイドラント圧', subspeciesType: 'bankara', ruby: { target: '圧', text: 'アツ' } },
     { name: 'クーゲルシュライバー' },
     { name: 'クーゲルシュライバーヒュー', subspeciesType: 'colab&custom' },
     { name: 'ノーチラス47' },
@@ -158,12 +162,12 @@ export const SPLATOON3_WEAPONS: Record<WeaponCategory, readonly WeaponInfo[]> = 
     { name: 'スプラマニューバー' },
     { name: 'オーダーマニューバーレプリカ', subspeciesType: 'order' },
     { name: 'スプラマニューバーコラボ', subspeciesType: 'colab&custom' },
-    { name: 'スプラマニューバー耀', subspeciesType: 'bankara' },
+    { name: 'スプラマニューバー耀', subspeciesType: 'bankara', ruby: { target: '耀', text: 'ヨウ' } },
     { name: 'ケルビン525' },
     { name: 'ケルビン525デコ', subspeciesType: 'colab&custom' },
     { name: 'デュアルスイーパー' },
     { name: 'デュアルスイーパーカスタム', subspeciesType: 'colab&custom' },
-    { name: 'デュアルスイーパー蹄', subspeciesType: 'bankara' },
+    { name: 'デュアルスイーパー蹄', subspeciesType: 'bankara', ruby: { target: '蹄', text: 'テイ' } },
     { name: 'クアッドホッパーブラック' },
     { name: 'クアッドホッパーホワイト', subspeciesType: 'colab&custom' },
     { name: 'ガエンFF' },
@@ -178,16 +182,16 @@ export const SPLATOON3_WEAPONS: Record<WeaponCategory, readonly WeaponInfo[]> = 
     { name: 'キャンピングシェルターCREM', subspeciesType: 'bankara' },
     { name: 'スパイガジェット' },
     { name: 'スパイガジェットソレーラ', subspeciesType: 'colab&custom' },
-    { name: 'スパイガジェット繚', subspeciesType: 'bankara' },
-    { name: '24式張替傘・甲' },
-    { name: '24式張替傘・乙', subspeciesType: 'colab&custom' },
+    { name: 'スパイガジェット繚', subspeciesType: 'bankara', ruby: { target: '繚', text: 'リョウ' } },
+    { name: '24式張替傘・甲', ruby: { target: '24', text: 'フタヨン' } },
+    { name: '24式張替傘・乙', subspeciesType: 'colab&custom', ruby: { target: '24', text: 'フタヨン' } },
   ],
   ブラスター: [
     { name: 'ノヴァブラスター' },
     { name: 'ノヴァブラスターネオ', subspeciesType: 'colab&custom' },
     { name: 'ホットブラスター' },
     { name: 'ホットブラスターカスタム', subspeciesType: 'colab&custom' },
-    { name: 'ホットブラスター艶', subspeciesType: 'bankara' },
+    { name: 'ホットブラスター艶', subspeciesType: 'bankara', ruby: { target: '艶', text: 'エン' } },
     { name: 'オーダーブラスターレプリカ', subspeciesType: 'order' },
     { name: 'ロングブラスター' },
     { name: 'ロングブラスターカスタム', subspeciesType: 'colab&custom' },
@@ -206,7 +210,7 @@ export const SPLATOON3_WEAPONS: Record<WeaponCategory, readonly WeaponInfo[]> = 
     { name: 'パブロヒュー', subspeciesType: 'colab&custom' },
     { name: 'ホクサイ' },
     { name: 'ホクサイヒュー', subspeciesType: 'colab&custom' },
-    { name: 'ホクサイ彗', subspeciesType: 'bankara' },
+    { name: 'ホクサイ彗', subspeciesType: 'bankara', ruby: { target: '彗', text: 'スイ' } },
     { name: 'オーダーブラシレプリカ', subspeciesType: 'order' },
     { name: 'フィンセント' },
     { name: 'フィンセントヒュー', subspeciesType: 'colab&custom' },
@@ -215,7 +219,7 @@ export const SPLATOON3_WEAPONS: Record<WeaponCategory, readonly WeaponInfo[]> = 
   ストリンガー: [
     { name: 'トライストリンガー' },
     { name: 'トライストリンガーコラボ', subspeciesType: 'colab&custom' },
-    { name: 'トライストリンガー燈', subspeciesType: 'bankara' },
+    { name: 'トライストリンガー燈', subspeciesType: 'bankara', ruby: { target: '燈', text: 'トウ' } },
     { name: 'オーダーストリンガーレプリカ', subspeciesType: 'order' },
     { name: 'LACT-450' },
     { name: 'LACT-450デコ', subspeciesType: 'colab&custom' },
@@ -229,7 +233,7 @@ export const SPLATOON3_WEAPONS: Record<WeaponCategory, readonly WeaponInfo[]> = 
     { name: 'ドライブワイパーRUST', subspeciesType: 'bankara' },
     { name: 'ジムワイパー' },
     { name: 'ジムワイパーヒュー', subspeciesType: 'colab&custom' },
-    { name: 'ジムワイパー封', subspeciesType: 'bankara' },
+    { name: 'ジムワイパー封', subspeciesType: 'bankara', ruby: { target: '封', text: 'フウ' } },
     { name: 'オーダーワイパーレプリカ', subspeciesType: 'order' },
     { name: 'デンタルワイパーミント' },
     { name: 'デンタルワイパースミ', subspeciesType: 'colab&custom' },
