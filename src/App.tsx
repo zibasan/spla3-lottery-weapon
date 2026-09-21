@@ -1,6 +1,8 @@
 import { useState } from "react";
 import {
   SUBSPECIES_TYPE_LABELS,
+  SUBSPECIES_TYPES,
+  type SubspeciesType,
   WEAPON_CATEGORIES,
   type WeaponCategory,
 } from "./data/weapons";
@@ -11,6 +13,9 @@ function App() {
     WeaponCategory[]
   >([...WEAPON_CATEGORIES]);
   const [weapon, setWeapon] = useState<LotteryWeapon | null>(null);
+  const [selectedSubspecies, setSelectedSubspecies] = useState<
+    SubspeciesType[]
+  >([...SUBSPECIES_TYPES]);
 
   const toggleCategory = (category: WeaponCategory) => {
     setSelectedCategories((prev) =>
@@ -20,11 +25,19 @@ function App() {
     );
   };
 
+  const toggleSubspecies = (subspecies: SubspeciesType) => {
+    setSelectedSubspecies((prev) =>
+      prev.includes(subspecies)
+        ? prev.filter((c) => c !== subspecies)
+        : [...prev, subspecies],
+    );
+  };
+
   const selectAll = () => setSelectedCategories([...WEAPON_CATEGORIES]);
   const clearAll = () => setSelectedCategories([]);
 
   const handleDraw = () => {
-    setWeapon(getRandomWeapon(selectedCategories));
+    setWeapon(getRandomWeapon(selectedCategories, selectedSubspecies));
   };
 
   function WeaponName({ weapon }: { weapon: LotteryWeapon }) {
@@ -96,6 +109,50 @@ function App() {
               </button>
             );
           })}
+        </div>
+
+        {/* 亜種フィルター */}
+        <div className="mt-5 pt-4 border-t border-slate-700/60">
+          <div className="flex items-center justify-between mb-2.5">
+            <span className="text-xs font-bold text-slate-300">
+              ブキ亜種フィルター
+            </span>
+            <div className="space-x-3 text-xs font-button">
+              <button
+                type="button"
+                onClick={() => setSelectedSubspecies([...SUBSPECIES_TYPES])}
+                className="text-slate-400 hover:text-yellow-400 underline cursor-pointer"
+              >
+                全選択
+              </button>
+              <button
+                type="button"
+                onClick={() => setSelectedSubspecies([])}
+                className="text-slate-400 hover:text-yellow-400 underline cursor-pointer"
+              >
+                全解除
+              </button>
+            </div>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {SUBSPECIES_TYPES.map((subspecies) => {
+              const isSelected = selectedSubspecies.includes(subspecies);
+              return (
+                <button
+                  key={subspecies}
+                  type="button"
+                  onClick={() => toggleSubspecies(subspecies)}
+                  className={`px-3 py-1 rounded-full text-xs font-bold transition cursor-pointer font-button ${
+                    isSelected
+                      ? "bg-yellow-400 text-slate-900 shadow-sm"
+                      : "bg-slate-700/60 text-slate-400 hover:bg-slate-700 hover:text-slate-200"
+                  }`}
+                >
+                  {SUBSPECIES_TYPE_LABELS[subspecies]}
+                </button>
+              );
+            })}
+          </div>
         </div>
       </section>
 
