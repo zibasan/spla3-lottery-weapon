@@ -35,6 +35,10 @@ function App() {
   const [results, setResults] = useState<PlayerResult[]>([]);
   const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
   const [isSheetOpen, setIsSheetOpen] = useState<boolean>(false);
+  const [isCopied, setIsCopied] = useState<boolean>(false);
+  const [shareFormat, setShareFormat] = useState<"markdown" | "plain">(
+    "markdown",
+  );
   const leftPanelRef = usePanelRef();
 
   const togglePanel = () => {
@@ -160,6 +164,112 @@ function App() {
       ),
     );
   };
+
+  // シェア用テキストの生成
+  const generateShareText = () => {
+    if (results.length === 0) {
+      return "";
+    }
+    const lines = results.map(({ player, weapon }, index) => {
+      const pName = player.name || `プレイヤー${index + 1}`;
+      if (!weapon) {
+        return shareFormat === "markdown"
+          ? `- **${pName}**：なし`
+          : `${pName}: なし`;
+      }
+      const sub = weapon.subspeciesType
+        ? `・${SUBSPECIES_TYPE_LABELS[weapon.subspeciesType]}`
+        : "";
+      return shareFormat === "markdown"
+        ? `- **${pName}**：${weapon.name}（${weapon.category}${sub}）`
+        : `${pName}: ${weapon.name} (${weapon.category}${sub})`;
+    });
+
+    if (shareFormat === "markdown") {
+      return `## スプラ3 ブキ抽選結果 \n\n${lines.join("\n")}`;
+    }
+    return `スプラ3 ブキ抽選結果\n${lines.join("\n")}`;
+  };
+
+  // クリップボードへコピー
+  const handleCopy = async () => {
+    const text = generateShareText();
+    if (!text) {
+      return;
+    }
+    try {
+      await navigator.clipboard.writeText(text);
+      setIsCopied(true);
+      setTimeout(() => setIsCopied(false), 2000);
+    } catch {
+      // コピー失敗時のフォールバック（何もしない）
+    }
+  };
+
+  // X（Twitter）でシェア
+  const handleShareTwitter = () => {
+    const text = generateShareText();
+    if (!text) {
+      return;
+    }
+    const tweetUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
+    window.open(tweetUrl, "_blank", "noopener,noreferrer");
+  };
+
+  // シェアボタングループ
+  const renderShareButtons = () => (
+    <div className="flex items-center gap-2 rounded-xl border border-slate-700 bg-slate-900/70 p-1.5">
+      <button
+        type="button"
+        onClick={handleCopy}
+        title="結果をクリップボードにコピー"
+        className="flex min-w-28 flex-1 items-center justify-center gap-1.5 rounded-lg bg-slate-800 px-4 py-2 text-xs font-black text-slate-300 shadow-sm transition hover:bg-slate-700 active:scale-95 font-button cursor-pointer"
+      >
+        {isCopied ? (
+          <>
+            <lucideReact.Check className="w-3.5 h-3.5 text-emerald-400" />
+            <span className="text-emerald-700">コピー完了！</span>
+          </>
+        ) : (
+          <>
+            <lucideReact.Copy className="w-3.5 h-3.5 text-slate-400" />
+            <span>結果をコピー</span>
+          </>
+        )}
+      </button>
+      <button
+        type="button"
+        onClick={handleShareTwitter}
+        title="X (Twitter) でシェア"
+        className="flex items-center gap-1.5 rounded-lg bg-slate-800 px-3 py-2 text-xs font-bold text-slate-300 transition hover:bg-slate-700 hover:text-white active:scale-95 font-button cursor-pointer"
+      >
+        <svg
+          aria-hidden="true"
+          className="w-3 h-3 fill-current"
+          viewBox="0 0 24 24"
+        >
+          <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+        </svg>
+        <span>ポスト</span>
+      </button>
+      <div className="flex shrink-0 items-center rounded-lg bg-slate-800 p-0.5 text-[11px] font-bold font-button">
+        {(["markdown", "plain"] as const).map((format) => (
+          <button
+            key={format}
+            type="button"
+            onClick={() => setShareFormat(format)}
+            className={`rounded-md px-2.5 py-1.5 transition cursor-pointer ${
+              shareFormat === format
+                ? "bg-yellow-400 text-slate-900 shadow-sm"
+                : "text-slate-400 hover:text-slate-200"
+            }`}
+          >
+            {format === "markdown" ? "Markdown" : "プレーン"}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
 
   function WeaponName({ weapon }: { weapon: LotteryWeapon }) {
     if (!weapon.ruby) {
@@ -490,6 +600,7 @@ function App() {
                 <span className="text-sm font-bold text-slate-400 font-result">
                   抽選結果 {results.length > 0 && `(${results.length}人分)`}
                 </span>
+                {results.length > 0 && renderShareButtons()}
               </div>
 
               {results.length > 0 ? (
@@ -519,6 +630,7 @@ function App() {
               <span className="text-xs font-bold text-slate-400 font-result">
                 抽選結果 ({results.length}人分)
               </span>
+              {renderShareButtons()}
             </div>
             {renderResultsList()}
           </div>
