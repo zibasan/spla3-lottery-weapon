@@ -1,5 +1,6 @@
 import * as lucideReact from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { SiGithub } from "react-icons/si";
 import { Group, Panel, Separator, usePanelRef } from "react-resizable-panels";
 import {
   SUBSPECIES_TYPE_LABELS,
@@ -52,6 +53,7 @@ function App() {
   const [isImageSaving, setIsImageSaving] = useState<boolean>(false);
   const [history, setHistory] = useState<LotteryHistory[]>([]);
   const [isHistoryOpen, setIsHistoryOpen] = useState<boolean>(false);
+  const [isGithubMenuOpen, setIsGithubMenuOpen] = useState<boolean>(false);
   const [shareFormat, setShareFormat] = useState<"markdown" | "plain">(
     "markdown",
   );
@@ -59,6 +61,8 @@ function App() {
   const historyButtonRef = useRef<HTMLButtonElement>(null);
   const historyMenuRef = useRef<HTMLDivElement>(null);
   const historySheetRef = useRef<HTMLDivElement>(null);
+  const githubButtonRef = useRef<HTMLDivElement>(null);
+  const githubMenuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     try {
@@ -90,6 +94,25 @@ function App() {
     return () =>
       document.removeEventListener("pointerdown", handleOutsidePointerDown);
   }, [isHistoryOpen]);
+
+  useEffect(() => {
+    if (!isGithubMenuOpen) return;
+
+    const handleOutsidePointerDown = (event: PointerEvent) => {
+      const target = event.target as Node;
+      if (
+        githubButtonRef.current?.contains(target) ||
+        githubMenuRef.current?.contains(target)
+      ) {
+        return;
+      }
+      setIsGithubMenuOpen(false);
+    };
+
+    document.addEventListener("pointerdown", handleOutsidePointerDown);
+    return () =>
+      document.removeEventListener("pointerdown", handleOutsidePointerDown);
+  }, [isGithubMenuOpen]);
 
   const saveHistory = useCallback(
     (newResults: PlayerResult[]) => {
@@ -545,7 +568,7 @@ function App() {
       {/* カテゴリ絞り込み */}
       <section className="bg-slate-800/80 border border-slate-700 rounded-2xl p-5 lg:p-6 shadow-xl">
         <div className="flex items-center justify-between mb-3">
-          <span className="text-sm font-bold text-slate-300 flex items-center gap-1.5">
+          <span className="text-sm font-bold text-slate-300 flex items-center gap-1.5 select-none">
             <span>ブキ種フィルター</span>
             <span className="text-xs font-normal text-[#FEFD4A] bg-[#FEFD4A]/10 px-2 py-0.5 rounded-full">
               {availableWeaponCount}種
@@ -593,7 +616,7 @@ function App() {
         {/* 亜種フィルター */}
         <div className="mt-5 pt-4 border-t border-slate-700/60">
           <div className="flex items-center justify-between mb-2.5">
-            <span className="text-xs font-bold text-slate-300">
+            <span className="text-xs font-bold text-slate-300 select-none">
               ブキ亜種フィルター
             </span>
             <div className="space-x-3 text-xs font-button">
@@ -638,7 +661,9 @@ function App() {
       {/* プレイヤー設定エリア */}
       <section className="bg-slate-800/80 border border-slate-700 rounded-2xl p-5 lg:p-6 shadow-xl space-y-4">
         <div>
-          <span className="text-sm font-bold text-slate-300">抽選ルール</span>
+          <span className="text-sm font-bold text-slate-300 select-none">
+            抽選ルール
+          </span>
           <div className="mt-2 grid grid-cols-1 gap-2 sm:grid-cols-3">
             {(
               [
@@ -661,7 +686,7 @@ function App() {
               </button>
             ))}
           </div>
-          <p className="mt-2 text-[11px] text-slate-500">
+          <p className="mt-2 text-[11px] text-slate-400">
             {lotteryRule === "categoryRandom"
               ? "ブキ種を1つ抽選し、そのブキ種から全員分を抽選"
               : lotteryRule === "variety"
@@ -670,7 +695,7 @@ function App() {
           </p>
         </div>
         <div className="flex items-center justify-between">
-          <span className="text-sm font-bold text-slate-300">
+          <span className="text-sm font-bold text-slate-300 select-none">
             抽選するプレイヤー ({players.length}人)
           </span>
           <label
@@ -834,11 +859,66 @@ function App() {
               <lucideReact.PanelLeftClose className="w-5 h-5" />
             )}
           </button>
-          <h1 className="text-xl lg:text-2xl font-title tracking-wider text-[#FEFD4A]">
+          <h1 className="text-xl lg:text-2xl font-title tracking-wider text-[#FEFD4A] select-none">
             ブキみくじ
           </h1>
         </div>
         <div className="flex items-center gap-2">
+          <div
+            ref={githubButtonRef}
+            className="relative rounded-xl border border-slate-700 bg-slate-800"
+          >
+            <div className="flex items-stretch overflow-hidden rounded-xl">
+              <button
+                type="button"
+                title="GitHubリポジトリを開く"
+                onClick={() =>
+                  window.open(
+                    "https://github.com/zibasan/spla3-lottery-weapon",
+                    "_blank",
+                    "noopener,noreferrer",
+                  )
+                }
+                className="flex items-center rounded-l-xl p-2 text-slate-300 transition hover:bg-slate-700 hover:text-white cursor-pointer"
+              >
+                <SiGithub className="h-5 w-5" />
+                <span className="sr-only">GitHubリポジトリを開く</span>
+              </button>
+              <button
+                type="button"
+                title="GitHubメニューを開く"
+                aria-expanded={isGithubMenuOpen}
+                onClick={() => setIsGithubMenuOpen((open) => !open)}
+                className="flex items-center rounded-r-xl border-l border-slate-700 p-2 text-slate-300 transition hover:bg-slate-700 hover:text-white cursor-pointer"
+              >
+                <lucideReact.ChevronDown className="h-4 w-4" />
+                <span className="sr-only">GitHubメニューを開く</span>
+              </button>
+            </div>
+            {isGithubMenuOpen && (
+              <div
+                ref={githubMenuRef}
+                className="absolute right-0 top-11 z-50 w-48 rounded-xl border border-slate-700 bg-slate-900 p-1.5 shadow-2xl"
+              >
+                <a
+                  href="https://github.com/zibasan/spla3-lottery-weapon"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="block rounded-lg px-3 py-2 text-xs font-bold text-slate-300 transition hover:bg-[#6A46FE] hover:text-white"
+                >
+                  リポジトリ
+                </a>
+                <a
+                  href="https://github.com/zibasan/spla3-lottery-weapon/issues/new"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="block rounded-lg px-3 py-2 text-xs font-bold text-slate-300 transition hover:bg-[#6A46FE] hover:text-white"
+                >
+                  バグ報告（Issue）
+                </a>
+              </div>
+            )}
+          </div>
           <button
             type="button"
             onClick={handleDownloadImage}
@@ -943,7 +1023,7 @@ function App() {
               {results.length > 0 ? (
                 renderResultsList()
               ) : (
-                <div className="text-center text-slate-500 font-result py-24">
+                <div className="text-center text-slate-500 font-result py-24 select-none">
                   左ペインで条件とプレイヤーを設定して
                   <br />「{players.length}人のブキを抽選する！」を押してね
                 </div>
