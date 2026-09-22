@@ -1,5 +1,6 @@
 import * as lucideReact from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { SiGithub } from "react-icons/si";
 import { Group, Panel, Separator, usePanelRef } from "react-resizable-panels";
 import {
@@ -12,6 +13,7 @@ import {
 import { ALL_WEAPONS, drawWeapons, type LotteryWeapon } from "./utils/lottery";
 
 function App() {
+  const { t, i18n } = useTranslation();
   interface Player {
     id: string;
     name: string;
@@ -54,6 +56,8 @@ function App() {
   const [history, setHistory] = useState<LotteryHistory[]>([]);
   const [isHistoryOpen, setIsHistoryOpen] = useState<boolean>(false);
   const [isGithubMenuOpen, setIsGithubMenuOpen] = useState<boolean>(false);
+  const [isLanguageMenuOpen, setIsLanguageMenuOpen] = useState<boolean>(false);
+  const language = i18n.language === "en" ? "en" : "ja";
   const [shareFormat, setShareFormat] = useState<"markdown" | "plain">(
     "markdown",
   );
@@ -63,6 +67,8 @@ function App() {
   const historySheetRef = useRef<HTMLDivElement>(null);
   const githubButtonRef = useRef<HTMLDivElement>(null);
   const githubMenuRef = useRef<HTMLDivElement>(null);
+  const languageButtonRef = useRef<HTMLDivElement>(null);
+  const languageMenuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     try {
@@ -113,6 +119,29 @@ function App() {
     return () =>
       document.removeEventListener("pointerdown", handleOutsidePointerDown);
   }, [isGithubMenuOpen]);
+
+  useEffect(() => {
+    if (!isLanguageMenuOpen) return;
+
+    const handleOutsidePointerDown = (event: PointerEvent) => {
+      const target = event.target as Node;
+      if (
+        languageButtonRef.current?.contains(target) ||
+        languageMenuRef.current?.contains(target)
+      ) {
+        return;
+      }
+      setIsLanguageMenuOpen(false);
+    };
+
+    document.addEventListener("pointerdown", handleOutsidePointerDown);
+    return () =>
+      document.removeEventListener("pointerdown", handleOutsidePointerDown);
+  }, [isLanguageMenuOpen]);
+
+  useEffect(() => {
+    document.documentElement.lang = language;
+  }, [language]);
 
   const saveHistory = useCallback(
     (newResults: PlayerResult[]) => {
@@ -385,13 +414,14 @@ function App() {
       return;
     }
     context.scale(scale, scale);
+    const imageFont = language === "ja" ? "'Zen Kaku Gothic New'" : "Inter";
     context.fillStyle = "#0f172a";
     context.fillRect(0, 0, width, height);
     context.fillStyle = "#FEFD4A";
-    context.font = "900 34px 'Zen Kaku Gothic New', sans-serif";
+    context.font = `900 34px ${imageFont}, sans-serif`;
     context.fillText("ブキ抽選結果", 48, 62);
     context.fillStyle = "#94a3b8";
-    context.font = "600 16px 'Google Sans Code', sans-serif";
+    context.font = `600 16px ${imageFont}, sans-serif`;
     context.fillText(new Date().toLocaleString("ja-JP"), 48, 92);
 
     results.forEach(({ player, weapon }, index) => {
@@ -405,17 +435,17 @@ function App() {
       context.roundRect(56, y + 12, 270, 48, 12);
       context.fill();
       context.fillStyle = "#ffffff";
-      context.font = "700 22px 'Google Sans Code', 'LINE Seed JP',  sans-serif";
+      context.font = `700 22px ${imageFont}, sans-serif`;
       context.fillText(
         `#${index + 1} ${player.name || `プレイヤー${index + 1}`}`,
         74,
         y + 43,
       );
       context.fillStyle = "#FEFD4A";
-      context.font = "700 18px 'Zen Kaku Gothic New', sans-serif";
+      context.font = `700 18px ${imageFont}, sans-serif`;
       context.fillText(weapon?.category ?? "なし", 350, y + 31);
       context.fillStyle = "#ffffff";
-      context.font = "700 24px 'LINE Seed JP', sans-serif";
+      context.font = `700 24px ${imageFont}, sans-serif`;
       context.fillText(
         weapon?.name ?? "条件に合うブキがありません",
         350,
@@ -442,12 +472,12 @@ function App() {
         {isCopied ? (
           <>
             <lucideReact.Check className="w-3.5 h-3.5 text-emerald-400" />
-            <span className="text-emerald-500">コピー完了！</span>
+            <span className="text-emerald-500">{t("copied")}</span>
           </>
         ) : (
           <>
             <lucideReact.Copy className="w-3.5 h-3.5 text-slate-400" />
-            <span>結果をコピー</span>
+            <span>{t("copyResult")}</span>
           </>
         )}
       </button>
@@ -464,7 +494,7 @@ function App() {
         >
           <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
         </svg>
-        <span>ポスト</span>
+        <span>{t("post")}</span>
       </button>
       <button
         type="button"
@@ -473,7 +503,7 @@ function App() {
         className="flex items-center gap-1.5 rounded-lg bg-[#6A46FE] px-3 py-2 text-xs font-bold text-white transition hover:bg-[#6A46FE] active:scale-95 font-button cursor-pointer max-lg:order-5 max-lg:col-span-2 max-lg:justify-self-end max-lg:hidden"
       >
         <lucideReact.ImageDown className="h-3.5 w-3.5" />
-        <span>{isImageSaving ? "保存中…" : "画像保存"}</span>
+        <span>{isImageSaving ? "Saving…" : t("saveImage")}</span>
       </button>
       <div className="flex shrink-0 items-center rounded-lg bg-slate-800 p-0.5 text-[11px] font-bold font-button max-lg:contents">
         {(["markdown", "plain"] as const).map((format) => (
@@ -498,7 +528,7 @@ function App() {
     <div className="space-y-2">
       {history.length === 0 ? (
         <p className="py-4 text-center text-xs text-slate-500">
-          履歴はまだありません
+          {t("noHistory")}
         </p>
       ) : (
         history.map((item) => (
@@ -533,7 +563,7 @@ function App() {
             onClick={clearHistory}
             className="w-full rounded-2xl bg-[#6A46FE] py-3.5 text-sm font-black text-slate-100 shadow-lg transition hover:bg-rose-400/90 cursor-pointer"
           >
-            履歴をすべて削除
+            {t("deleteHistory")}
           </button>
         </div>
       )}
@@ -569,7 +599,7 @@ function App() {
       <section className="bg-slate-800/80 border border-slate-700 rounded-2xl p-5 lg:p-6 shadow-xl">
         <div className="flex items-center justify-between mb-3">
           <span className="text-sm font-bold text-slate-300 flex items-center gap-1.5 select-none">
-            <span>ブキ種フィルター</span>
+              <span>{t("categoryFilter")}</span>
             <span className="text-xs font-normal text-[#FEFD4A] bg-[#FEFD4A]/10 px-2 py-0.5 rounded-full">
               {availableWeaponCount}種
             </span>
@@ -580,14 +610,14 @@ function App() {
               onClick={selectAll}
               className="text-slate-400 hover:text-[#FEFD4A] underline cursor-pointer"
             >
-              全選択
+              {t("selectAll")}
             </button>
             <button
               type="button"
               onClick={clearAll}
               className="text-slate-400 hover:text-[#FEFD4A] underline cursor-pointer"
             >
-              全解除
+              {t("clearAll")}
             </button>
           </div>
         </div>
@@ -617,7 +647,7 @@ function App() {
         <div className="mt-5 pt-4 border-t border-slate-700/60">
           <div className="flex items-center justify-between mb-2.5">
             <span className="text-xs font-bold text-slate-300 select-none">
-              ブキ亜種フィルター
+              {t("subspeciesFilter")}
             </span>
             <div className="space-x-3 text-xs font-button">
               <button
@@ -625,14 +655,14 @@ function App() {
                 onClick={() => setSelectedSubspecies([...SUBSPECIES_TYPES])}
                 className="text-slate-400 hover:text-[#FEFD4A] underline cursor-pointer"
               >
-                全選択
+                {t("selectAll")}
               </button>
               <button
                 type="button"
                 onClick={() => setSelectedSubspecies([])}
                 className="text-slate-400 hover:text-[#FEFD4A] underline cursor-pointer"
               >
-                全解除
+                {t("clearAll")}
               </button>
             </div>
           </div>
@@ -662,14 +692,14 @@ function App() {
       <section className="bg-slate-800/80 border border-slate-700 rounded-2xl p-5 lg:p-6 shadow-xl space-y-4">
         <div>
           <span className="text-sm font-bold text-slate-300 select-none">
-            抽選ルール
+            {language === "ja" ? "抽選ルール" : "Draw rule"}
           </span>
           <div className="mt-2 grid grid-cols-1 gap-2 sm:grid-cols-3">
             {(
               [
-                ["random", "完全ランダム"],
-                ["categoryRandom", "ブキ種抽選"],
-                ["variety", "バラエティブキ"],
+                ["random", language === "ja" ? "完全ランダム" : "Random"],
+                ["categoryRandom", language === "ja" ? "ブキ種抽選" : "Random category"],
+                ["variety", language === "ja" ? "バラエティブキ" : "Variety"],
               ] as const
             ).map(([value, label]) => (
               <button
@@ -688,20 +718,26 @@ function App() {
           </div>
           <p className="mt-2 text-[11px] text-slate-400">
             {lotteryRule === "categoryRandom"
-              ? "ブキ種を1つ抽選し、そのブキ種から全員分を抽選"
+              ? language === "ja"
+                ? "ブキ種を1つ抽選し、そのブキ種から全員分を抽選"
+                : "Pick one category, then draw weapons from it"
               : lotteryRule === "variety"
-                ? "全員のブキ種が重複しないように抽選"
-                : "選択したブキから抽選"}
+                ? language === "ja"
+                  ? "全員のブキ種が重複しないように抽選"
+                  : "Draw with a different category for each player"
+                : language === "ja"
+                  ? "選択したブキから抽選"
+                  : "Draw from the selected weapons"}
           </p>
         </div>
         <div className="flex items-center justify-between">
           <span className="text-sm font-bold text-slate-300 select-none">
-            抽選するプレイヤー ({players.length}人)
+            {t("players")} ({players.length}{language === "ja" ? "人" : " players"})
           </span>
           <label
             className={`flex items-center gap-2.5 text-xs font-bold select-none ${lotteryRule === "variety" ? "text-slate-600 cursor-not-allowed" : "text-slate-300 cursor-pointer"}`}
           >
-            <span>ブキ被りを許可</span>
+            <span>{t("allowDuplicates")}</span>
             <div className="relative inline-flex items-center">
               <input
                 type="checkbox"
@@ -748,7 +784,7 @@ function App() {
                   onClick={() => removePlayer(player.id)}
                   className="w-7 h-7 flex items-center justify-center rounded-lg bg-slate-700/60 hover:bg-rose-500/80 text-slate-400 hover:text-white transition cursor-pointer text-xs font-bold"
                 >
-                  ×
+                  <lucideReact.X className="h-4 w-4" />
                 </button>
               )}
             </div>
@@ -760,9 +796,10 @@ function App() {
           <button
             type="button"
             onClick={addPlayer}
-            className="w-full mt-4 py-2 border-2 border-dashed border-slate-700 hover:border-[#FEFD4A]/60 rounded-xl text-xs font-bold text-slate-400 hover:text-[#FEFD4A] transition cursor-pointer font-button"
+            className="mt-4 flex w-full items-center justify-center gap-1.5 rounded-xl border-2 border-dashed border-slate-700 py-2 text-xs font-bold text-slate-400 transition hover:border-[#FEFD4A]/60 hover:text-[#FEFD4A] cursor-pointer font-button"
           >
-            ＋ プレイヤー追加
+            <lucideReact.Plus className="h-4 w-4" />
+            <span>{t("addPlayer").replace(/^[＋+]\s*/, "")}</span>
           </button>
         )}
       </section>
@@ -842,7 +879,7 @@ function App() {
   );
 
   return (
-    <div className="h-screen bg-slate-900 text-white flex flex-col overflow-hidden">
+    <div className={`h-screen bg-slate-900 text-white flex flex-col overflow-hidden ${language === "ja" ? "font-app-ja" : "font-app-en"}`}>
       {/* ヘッダー */}
       <header className="h-14 border-b border-slate-800 px-4 flex items-center justify-between shrink-0 bg-slate-900/90 backdrop-blur z-10">
         <div className="flex items-center gap-3">
@@ -860,7 +897,7 @@ function App() {
             )}
           </button>
           <h1 className="text-xl lg:text-2xl font-title tracking-wider text-[#FEFD4A] select-none">
-            ブキみくじ
+            {t("title")}
           </h1>
         </div>
         <div className="flex items-center gap-2">
@@ -906,7 +943,7 @@ function App() {
                   rel="noreferrer"
                   className="block rounded-lg px-3 py-2 text-xs font-bold text-slate-300 transition hover:bg-[#6A46FE] hover:text-white"
                 >
-                  リポジトリ
+                  {t("repository")}
                 </a>
                 <a
                   href="https://github.com/zibasan/spla3-lottery-weapon/issues/new"
@@ -914,8 +951,48 @@ function App() {
                   rel="noreferrer"
                   className="block rounded-lg px-3 py-2 text-xs font-bold text-slate-300 transition hover:bg-[#6A46FE] hover:text-white"
                 >
-                  バグ報告（Issue）
+                  {t("bugReport")}
                 </a>
+              </div>
+            )}
+          </div>
+          <div
+            ref={languageButtonRef}
+            className="relative rounded-xl border border-slate-700 bg-slate-800"
+          >
+            <button
+              type="button"
+              aria-expanded={isLanguageMenuOpen}
+              onClick={() => setIsLanguageMenuOpen((open) => !open)}
+              className="flex items-center gap-1 rounded-xl p-2 text-xs font-bold text-slate-300 transition hover:bg-slate-700 hover:text-white cursor-pointer font-button"
+            >
+              <lucideReact.Globe2 className="h-5 w-5 lg:hidden" />
+              <span className="hidden lg:inline">{language === "ja" ? t("japanese") : t("english")}</span>
+              <lucideReact.ChevronDown className="hidden h-4 w-4 lg:block" />
+              <span className="sr-only">言語を選択</span>
+            </button>
+            {isLanguageMenuOpen && (
+              <div
+                ref={languageMenuRef}
+                className="absolute right-0 top-11 z-50 w-36 rounded-xl border border-slate-700 bg-slate-900 p-1.5 shadow-2xl"
+              >
+                {([[
+                  "ja",
+                  "日本語",
+                ], ["en", "English"]] as const).map(([value, label]) => (
+                  <button
+                    key={value}
+                    type="button"
+                    onClick={() => {
+                      i18n.changeLanguage(value);
+                      setIsLanguageMenuOpen(false);
+                    }}
+                    className="flex w-full items-center justify-between rounded-lg px-3 py-2 text-xs font-bold text-slate-300 transition hover:bg-[#6A46FE] hover:text-white cursor-pointer"
+                  >
+                    {label}
+                    {language === value && <lucideReact.Check className="h-4 w-4 text-[#FEFD4A]" />}
+                  </button>
+                ))}
               </div>
             )}
           </div>
@@ -949,8 +1026,8 @@ function App() {
                 className="custom-scrollbar absolute right-0 top-11 z-40 hidden max-h-[calc(100vh-5rem)] w-80 overflow-x-hidden overflow-y-auto rounded-2xl border border-slate-700 bg-slate-900 p-4 shadow-2xl lg:block"
               >
                 <div className="mb-3 flex items-center justify-between">
-                  <span className="text-sm font-bold text-white">抽選履歴</span>
-                  <span className="text-[11px] text-slate-500">最大10件</span>
+                  <span className="text-sm font-bold text-white">{t("history")}</span>
+                  <span className="text-[11px] text-slate-500">{t("max10")}</span>
                 </div>
                 {renderHistoryContent()}
               </div>
@@ -1015,7 +1092,7 @@ function App() {
             <div className="w-full max-w-2xl py-2">
               <div className="flex items-center justify-between mb-6 pb-3 border-b border-slate-800">
                 <span className="text-sm font-bold text-slate-400 font-result">
-                  抽選結果 {results.length > 0 && `(${results.length}人分)`}
+                  {t("drawResults")} {results.length > 0 && `(${results.length}${language === "ja" ? "人分" : " players"})`}
                 </span>
                 {results.length > 0 && renderShareButtons()}
               </div>
@@ -1045,7 +1122,7 @@ function App() {
           <div className="flex-1 overflow-y-auto custom-scrollbar p-4 pb-28">
             <div className="flex items-center justify-between mb-4 pb-2 border-b border-slate-800">
               <span className="text-xs font-bold text-slate-400 font-result">
-                抽選結果 ({results.length}人分)
+                {t("drawResults")} ({results.length}{language === "ja" ? "人分" : " players"})
               </span>
               {renderShareButtons()}
             </div>
@@ -1089,7 +1166,7 @@ function App() {
                 className="flex-1 bg-slate-800 hover:bg-slate-700 active:scale-[0.98] border border-slate-700 text-white font-bold font-button text-base py-3.5 rounded-2xl transition cursor-pointer flex items-center justify-center gap-2 shadow-md"
               >
                 <lucideReact.SlidersHorizontal className="w-5 h-5 text-[#FEFD4A]" />
-                設定
+                {t("settings")}
               </button>
               <button
                 type="button"

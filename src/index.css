@@ -7,6 +7,19 @@
   --font-number: "Google Sans Code", sans-serif;
 }
 
+:root {
+  --font-app-ja: 'Zen Kaku Gothic New', sans-serif;
+  --font-app-en: 'Inter', sans-serif;
+}
+
+.font-app-ja {
+  font-family: var(--font-app-ja);
+}
+
+.font-app-en {
+  font-family: var(--font-app-en);
+}
+
 body {
   font-family: "Zen Kaku Gothic New", sans-serif;
 }
