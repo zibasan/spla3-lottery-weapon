@@ -1,5 +1,5 @@
 import * as lucideReact from "lucide-react";
-import { useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Group, Panel, Separator, usePanelRef } from "react-resizable-panels";
 import {
   SUBSPECIES_TYPE_LABELS,
@@ -21,6 +21,16 @@ function App() {
     weapon: LotteryWeapon | null;
   }
 
+  interface LotteryHistory {
+    id: string;
+    createdAt: string;
+    results: PlayerResult[];
+    categories: WeaponCategory[];
+    subspecies: SubspeciesType[];
+    allowDuplicates: boolean;
+    rule: "random" | "categoryRandom" | "variety";
+  }
+
   const [selectedCategories, setSelectedCategories] = useState<
     WeaponCategory[]
   >([...WEAPON_CATEGORIES]);
@@ -39,10 +49,76 @@ function App() {
   const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
   const [isSheetOpen, setIsSheetOpen] = useState<boolean>(false);
   const [isCopied, setIsCopied] = useState<boolean>(false);
+  const [isImageSaving, setIsImageSaving] = useState<boolean>(false);
+  const [history, setHistory] = useState<LotteryHistory[]>([]);
+  const [isHistoryOpen, setIsHistoryOpen] = useState<boolean>(false);
   const [shareFormat, setShareFormat] = useState<"markdown" | "plain">(
     "markdown",
   );
   const leftPanelRef = usePanelRef();
+  const historyButtonRef = useRef<HTMLButtonElement>(null);
+  const historyMenuRef = useRef<HTMLDivElement>(null);
+  const historySheetRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem("spla3-lottery-history");
+      if (saved) {
+        setHistory(JSON.parse(saved) as LotteryHistory[]);
+      }
+    } catch {
+      // 保存データが壊れていてもアプリはそのまま利用できる
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!isHistoryOpen) return;
+
+    const handleOutsidePointerDown = (event: PointerEvent) => {
+      const target = event.target as Node;
+      if (
+        historyButtonRef.current?.contains(target) ||
+        historyMenuRef.current?.contains(target) ||
+        historySheetRef.current?.contains(target)
+      ) {
+        return;
+      }
+      setIsHistoryOpen(false);
+    };
+
+    document.addEventListener("pointerdown", handleOutsidePointerDown);
+    return () =>
+      document.removeEventListener("pointerdown", handleOutsidePointerDown);
+  }, [isHistoryOpen]);
+
+  const saveHistory = useCallback(
+    (newResults: PlayerResult[]) => {
+      const nextHistory: LotteryHistory[] = [
+        {
+          id: crypto.randomUUID(),
+          createdAt: new Date().toISOString(),
+          results: newResults,
+          categories: selectedCategories,
+          subspecies: selectedSubspecies,
+          allowDuplicates,
+          rule: lotteryRule,
+        },
+        ...history,
+      ].slice(0, 10);
+      setHistory(nextHistory);
+      localStorage.setItem(
+        "spla3-lottery-history",
+        JSON.stringify(nextHistory),
+      );
+    },
+    [
+      allowDuplicates,
+      history,
+      lotteryRule,
+      selectedCategories,
+      selectedSubspecies,
+    ],
+  );
 
   const togglePanel = () => {
     const panel = leftPanelRef.current;
@@ -125,7 +201,7 @@ function App() {
   const selectAll = () => setSelectedCategories([...WEAPON_CATEGORIES]);
   const clearAll = () => setSelectedCategories([]);
 
-  const handleDraw = () => {
+  const handleDraw = useCallback(() => {
     const drawnWeapons = drawWeapons({
       categories: selectedCategories,
       subspecies: selectedSubspecies,
@@ -140,7 +216,47 @@ function App() {
     }));
 
     setResults(newResults);
+    saveHistory(newResults);
+  }, [
+    allowDuplicates,
+    lotteryRule,
+    players,
+    selectedCategories,
+    selectedSubspecies,
+    saveHistory,
+  ]);
+
+  const restoreHistory = (item: LotteryHistory) => {
+    setResults(item.results);
+    setSelectedCategories(item.categories ?? [...WEAPON_CATEGORIES]);
+    setSelectedSubspecies(item.subspecies ?? [...SUBSPECIES_TYPES]);
+    setAllowDuplicates(item.allowDuplicates ?? false);
+    setLotteryRule(item.rule ?? "random");
+    setIsHistoryOpen(false);
   };
+
+  const clearHistory = () => {
+    setHistory([]);
+    localStorage.removeItem("spla3-lottery-history");
+  };
+
+  // Enterキーでも抽選できるようにする
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (
+        event.key !== "Enter" ||
+        isShortage ||
+        event.target instanceof HTMLButtonElement
+      ) {
+        return;
+      }
+      event.preventDefault();
+      handleDraw();
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isShortage, handleDraw]);
 
   // プレイヤーごとの個別再抽選
   const handleRedrawSingle = (playerId: string) => {
@@ -229,6 +345,68 @@ function App() {
     window.open(tweetUrl, "_blank", "noopener,noreferrer");
   };
 
+  const handleDownloadImage = () => {
+    if (results.length === 0 || isImageSaving) return;
+    setIsImageSaving(true);
+
+    const canvas = document.createElement("canvas");
+    const scale = 2;
+    const width = 900;
+    const cardHeight = 92;
+    const height = 150 + results.length * cardHeight + 54;
+    canvas.width = width * scale;
+    canvas.height = height * scale;
+    const context = canvas.getContext("2d");
+    if (!context) {
+      setIsImageSaving(false);
+      return;
+    }
+    context.scale(scale, scale);
+    context.fillStyle = "#0f172a";
+    context.fillRect(0, 0, width, height);
+    context.fillStyle = "#FEFD4A";
+    context.font = "900 34px 'Zen Kaku Gothic New', sans-serif";
+    context.fillText("ブキ抽選結果", 48, 62);
+    context.fillStyle = "#94a3b8";
+    context.font = "600 16px 'Google Sans Code', sans-serif";
+    context.fillText(new Date().toLocaleString("ja-JP"), 48, 92);
+
+    results.forEach(({ player, weapon }, index) => {
+      const y = 124 + index * cardHeight;
+      context.fillStyle = "#26105f";
+      context.beginPath();
+      context.roundRect(40, y, width - 80, 72, 16);
+      context.fill();
+      context.fillStyle = "#6A46FE";
+      context.beginPath();
+      context.roundRect(56, y + 12, 270, 48, 12);
+      context.fill();
+      context.fillStyle = "#ffffff";
+      context.font = "700 22px 'Google Sans Code', 'LINE Seed JP',  sans-serif";
+      context.fillText(
+        `#${index + 1} ${player.name || `プレイヤー${index + 1}`}`,
+        74,
+        y + 43,
+      );
+      context.fillStyle = "#FEFD4A";
+      context.font = "700 18px 'Zen Kaku Gothic New', sans-serif";
+      context.fillText(weapon?.category ?? "なし", 350, y + 31);
+      context.fillStyle = "#ffffff";
+      context.font = "700 24px 'LINE Seed JP', sans-serif";
+      context.fillText(
+        weapon?.name ?? "条件に合うブキがありません",
+        350,
+        y + 57,
+      );
+    });
+
+    const link = document.createElement("a");
+    link.download = `spla3-lottery-${new Date().toISOString().slice(0, 10)}.png`;
+    link.href = canvas.toDataURL("image/png");
+    link.click();
+    setIsImageSaving(false);
+  };
+
   // シェアボタングループ
   const renderShareButtons = () => (
     <div className="flex items-center gap-2 rounded-xl border border-slate-700 bg-slate-900/70 p-1.5 max-lg:grid max-lg:grid-cols-[1fr_auto] max-lg:items-stretch max-lg:gap-x-0 max-lg:gap-y-1">
@@ -265,6 +443,15 @@ function App() {
         </svg>
         <span>ポスト</span>
       </button>
+      <button
+        type="button"
+        onClick={handleDownloadImage}
+        title="結果を画像として保存"
+        className="flex items-center gap-1.5 rounded-lg bg-[#6A46FE] px-3 py-2 text-xs font-bold text-white transition hover:bg-[#6A46FE] active:scale-95 font-button cursor-pointer max-lg:order-5 max-lg:col-span-2 max-lg:justify-self-end max-lg:hidden"
+      >
+        <lucideReact.ImageDown className="h-3.5 w-3.5" />
+        <span>{isImageSaving ? "保存中…" : "画像保存"}</span>
+      </button>
       <div className="flex shrink-0 items-center rounded-lg bg-slate-800 p-0.5 text-[11px] font-bold font-button max-lg:contents">
         {(["markdown", "plain"] as const).map((format) => (
           <button
@@ -281,6 +468,50 @@ function App() {
           </button>
         ))}
       </div>
+    </div>
+  );
+
+  const renderHistoryContent = () => (
+    <div className="space-y-2">
+      {history.length === 0 ? (
+        <p className="py-4 text-center text-xs text-slate-500">
+          履歴はまだありません
+        </p>
+      ) : (
+        history.map((item) => (
+          <button
+            key={item.id}
+            type="button"
+            onClick={() => restoreHistory(item)}
+            className="w-full rounded-xl border border-slate-700 bg-slate-800/80 px-3 py-2 text-left transition hover:border-[#6A46FE] hover:bg-[#6A46FE]/20 cursor-pointer"
+          >
+            <span className="block text-[11px] text-slate-400">
+              {new Date(item.createdAt).toLocaleString("ja-JP")}
+            </span>
+            <span className="block text-[11px] text-[#FEFD4A]">
+              {item.rule === "categoryRandom"
+                ? "ブキ種抽選"
+                : item.rule === "variety"
+                  ? "バラエティブキ"
+                  : `完全ランダム${item.allowDuplicates ? "（重複あり）" : "（重複なし）"}`}
+            </span>
+            <span className="block truncate text-xs font-bold text-white">
+              {item.results
+                .map((result) => result.weapon?.name ?? "なし")
+                .join(" ／ ")}
+            </span>
+          </button>
+        ))
+      )}
+      {history.length > 0 && (
+        <button
+          type="button"
+          onClick={clearHistory}
+          className="sticky bottom-0 z-10 mt-3 w-full rounded-2xl bg-[#6A46FE] py-3.5 text-sm font-black text-slate-100 shadow-lg transition hover:bg-rose-400/90 cursor-pointer"
+        >
+          履歴をすべて削除
+        </button>
+      )}
     </div>
   );
 
@@ -605,6 +836,45 @@ function App() {
             スプラ３ ブキ抽選アプリ
           </h1>
         </div>
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={handleDownloadImage}
+            disabled={results.length === 0 || isImageSaving}
+            title="結果を画像として保存"
+            className="flex items-center rounded-xl border border-slate-700 bg-[#6A46FE] p-2 text-white transition hover:bg-[#6A46FE] disabled:cursor-not-allowed disabled:opacity-40 font-button lg:hidden"
+          >
+            <lucideReact.ImageDown className="h-5 w-5" />
+            <span className="sr-only">画像保存</span>
+          </button>
+          <div className="relative">
+            <button
+              type="button"
+              ref={historyButtonRef}
+              onClick={() => setIsHistoryOpen((open) => !open)}
+              className="relative rounded-xl border border-slate-700 bg-slate-800 p-2 text-slate-300 transition hover:border-[#6A46FE] hover:text-white font-button cursor-pointer"
+            >
+              <lucideReact.History className="h-5 w-5" />
+              {history.length > 0 && (
+                <span className="absolute -right-1 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-[#FEFD4A] px-1 text-[10px] font-black text-slate-900">
+                  {history.length}
+                </span>
+              )}
+            </button>
+            {isHistoryOpen && (
+              <div
+                ref={historyMenuRef}
+                className="custom-scrollbar absolute right-0 top-11 z-40 hidden max-h-[calc(100vh-5rem)] w-80 overflow-x-hidden overflow-y-auto rounded-2xl border border-slate-700 bg-slate-900 p-4 shadow-2xl lg:block"
+              >
+                <div className="mb-3 flex items-center justify-between">
+                  <span className="text-sm font-bold text-white">抽選履歴</span>
+                  <span className="text-[11px] text-slate-500">最大10件</span>
+                </div>
+                {renderHistoryContent()}
+              </div>
+            )}
+          </div>
+        </div>
       </header>
 
       {/* 1. PC向けレイアウト（lg以上）：リサイズ可能2ペイン */}
@@ -804,6 +1074,35 @@ function App() {
                     ? `条件に合うブキが足りません (${availableWeaponCount}ブキ)`
                     : "設定を適用して抽選する！"}
                 </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {isHistoryOpen && (
+          <div className="fixed inset-0 z-50 flex flex-col justify-end lg:hidden">
+            <button
+              type="button"
+              aria-label="履歴を閉じる"
+              className="absolute inset-0 bg-black/70 backdrop-blur-xs"
+              onClick={() => setIsHistoryOpen(false)}
+            />
+            <div
+              ref={historySheetRef}
+              className="relative z-10 flex max-h-[75vh] min-h-0 flex-col rounded-t-3xl border-t border-slate-700 bg-slate-900 shadow-2xl"
+            >
+              <div className="flex items-center justify-between border-b border-slate-800 px-6 py-4">
+                <span className="text-sm font-bold text-white">抽選履歴</span>
+                <button
+                  type="button"
+                  onClick={() => setIsHistoryOpen(false)}
+                  className="text-xs text-slate-400"
+                >
+                  閉じる
+                </button>
+              </div>
+              <div className="custom-scrollbar min-h-0 flex-1 overflow-x-hidden overflow-y-auto p-4">
+                {renderHistoryContent()}
               </div>
             </div>
           </div>
