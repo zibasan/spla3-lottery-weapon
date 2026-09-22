@@ -990,7 +990,7 @@ function App() {
                 {(
                   [
                     ["ja", t("japanese")],
-                    ["en", "English"],
+                    ["en", t("english")],
                   ] as const
                 ).map(([value, label]) => (
                   <button
@@ -998,6 +998,7 @@ function App() {
                     type="button"
                     onClick={() => {
                       i18n.changeLanguage(value);
+                      localStorage.setItem("spla3-language", value);
                       setIsLanguageMenuOpen(false);
                     }}
                     className="flex w-full items-center justify-between rounded-lg px-3 py-2 text-xs font-bold text-slate-300 transition hover:bg-[#6A46FE] hover:text-white cursor-pointer"
@@ -1091,7 +1092,7 @@ function App() {
                       ? `${t("noWeapon")} (${availableWeaponCount}${language === "ja" ? "ブキ / " : " weapons / "}${players.length}${t("people")})`
                       : isShortage
                         ? `${t("notEnoughWeapons")} (${availableWeaponCount}${language === "ja" ? "ブキ / " : " weapons / "}${players.length}${t("people")})`
-                        : `${players.length}${t("people")} ${language === "ja" ? "のブキを抽選する！" : "draw weapons!"}`}
+                        : `${t("draw", { count: players.length })}`}
                   </button>
                 </div>
               </div>
@@ -1149,7 +1150,7 @@ function App() {
             <div className="flex items-center justify-between mb-4 pb-2 border-b border-slate-800">
               <span className="text-xs font-bold text-slate-400 font-result">
                 {t("drawResults")} ({results.length}
-                {language === "ja" ? "人分" : t("people")})
+                {t("people")})
               </span>
               {renderShareButtons()}
             </div>
@@ -1171,7 +1172,7 @@ function App() {
                 ? `${t("noWeapon")} (${availableWeaponCount}${language === "ja" ? "ブキ" : " weapons"})`
                 : isShortage
                   ? `${t("notEnoughWeapons")} (${availableWeaponCount}${language === "ja" ? "ブキ / " : " weapons / "}${players.length}${t("people")})`
-                  : `${players.length}${t("people")} ${language === "ja" ? "のブキを抽選する！" : "draw weapons!"}`}
+                  : `${t("draw", { count: players.length })}`}
             </button>
           ) : (
             // 抽選後：[設定] と [抽選する！] の2分割ボタン
@@ -1202,7 +1203,7 @@ function App() {
                 className="flex-[1.5] bg-[#FEFD4A] hover:bg-[#FEFD4A] disabled:bg-slate-700 disabled:text-slate-500 disabled:cursor-not-allowed active:scale-[0.98] text-slate-900 font-black font-button text-base py-3.5 rounded-2xl shadow-lg transition duration-150 cursor-pointer flex items-center justify-center gap-2"
               >
                 <lucideReact.RotateCcw className="w-5 h-5" />
-                抽選する！
+                {t("drawShort")}
               </button>
             </div>
           )}
