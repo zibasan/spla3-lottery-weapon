@@ -1,13 +1,14 @@
 @import "tailwindcss";
 
 @theme {
-  --font-title: 'Dela Gothic One', sans-serif;
-  --font-result: 'LINE Seed JP', sans-serif;
-  --font-button: 'Zen Maru Gothic', sans-serif;
+  --font-title: "Dela Gothic One", sans-serif;
+  --font-result: "LINE Seed JP", sans-serif;
+  --font-button: "Zen Maru Gothic", sans-serif;
+  --font-number: "Google Sans Code", sans-serif;
 }
 
 body {
-  font-family: 'Zen Kaku Gothic New', sans-serif;
+  font-family: "Zen Kaku Gothic New", sans-serif;
 }
 
 .custom-scrollbar {
@@ -29,5 +30,5 @@ body {
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background-color: #facc15;
+  background-color: #fefd4a;
 }

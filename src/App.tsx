@@ -273,7 +273,7 @@ function App() {
             onClick={() => setShareFormat(format)}
             className={`w-20 justify-self-end rounded-md px-2.5 py-1.5 transition cursor-pointer ${format === "markdown" ? "max-lg:order-2" : "max-lg:order-4"} ${
               shareFormat === format
-                ? "bg-yellow-400 text-slate-900 shadow-sm"
+                ? "bg-[#FEFD4A] text-slate-900 shadow-sm"
                 : "text-slate-400 hover:text-slate-200"
             }`}
           >
@@ -297,7 +297,7 @@ function App() {
         {parts[0]}
         <ruby>
           {target}
-          <rt className="text-xs text-yellow-300 font-normal select-none">
+          <rt className="text-xs text-[#FEFD4A] font-normal select-none">
             {text}
           </rt>
         </ruby>
@@ -314,7 +314,7 @@ function App() {
         <div className="flex items-center justify-between mb-3">
           <span className="text-sm font-bold text-slate-300 flex items-center gap-1.5">
             <span>ブキ種フィルター</span>
-            <span className="text-xs font-normal text-yellow-400 bg-yellow-400/10 px-2 py-0.5 rounded-full">
+            <span className="text-xs font-normal text-[#FEFD4A] bg-[#FEFD4A]/10 px-2 py-0.5 rounded-full">
               {availableWeaponCount}種
             </span>
           </span>
@@ -322,14 +322,14 @@ function App() {
             <button
               type="button"
               onClick={selectAll}
-              className="text-slate-400 hover:text-yellow-400 underline cursor-pointer"
+              className="text-slate-400 hover:text-[#FEFD4A] underline cursor-pointer"
             >
               全選択
             </button>
             <button
               type="button"
               onClick={clearAll}
-              className="text-slate-400 hover:text-yellow-400 underline cursor-pointer"
+              className="text-slate-400 hover:text-[#FEFD4A] underline cursor-pointer"
             >
               全解除
             </button>
@@ -347,8 +347,8 @@ function App() {
                 onClick={() => toggleCategory(category)}
                 className={`px-3 py-1.5 rounded-full text-xs font-bold transition cursor-pointer font-button ${
                   isSelected
-                    ? "bg-yellow-400 text-slate-900 shadow-sm"
-                    : "bg-slate-700/60 text-slate-400 hover:bg-slate-700 hover:text-slate-200"
+                    ? "bg-[#FEFD4A] text-slate-900 shadow-sm"
+                    : "bg-[#6A46FE] text-white hover:bg-[#6A46FE] hover:text-white"
                 }`}
               >
                 {category}
@@ -367,14 +367,14 @@ function App() {
               <button
                 type="button"
                 onClick={() => setSelectedSubspecies([...SUBSPECIES_TYPES])}
-                className="text-slate-400 hover:text-yellow-400 underline cursor-pointer"
+                className="text-slate-400 hover:text-[#FEFD4A] underline cursor-pointer"
               >
                 全選択
               </button>
               <button
                 type="button"
                 onClick={() => setSelectedSubspecies([])}
-                className="text-slate-400 hover:text-yellow-400 underline cursor-pointer"
+                className="text-slate-400 hover:text-[#FEFD4A] underline cursor-pointer"
               >
                 全解除
               </button>
@@ -390,8 +390,8 @@ function App() {
                   onClick={() => toggleSubspecies(subspecies)}
                   className={`px-3 py-1 rounded-full text-xs font-bold transition cursor-pointer font-button ${
                     isSelected
-                      ? "bg-yellow-400 text-slate-900 shadow-sm"
-                      : "bg-slate-700/60 text-slate-400 hover:bg-slate-700 hover:text-slate-200"
+                      ? "bg-[#FEFD4A] text-slate-900 shadow-sm"
+                      : "bg-[#6A46FE] text-white hover:bg-[#6A46FE] hover:text-white"
                   }`}
                 >
                   {SUBSPECIES_TYPE_LABELS[subspecies]}
@@ -420,8 +420,8 @@ function App() {
                 onClick={() => setLotteryRule(value)}
                 className={`rounded-xl px-3 py-2 text-xs font-bold transition cursor-pointer font-button ${
                   lotteryRule === value
-                    ? "bg-yellow-400 text-slate-900 shadow-sm"
-                    : "bg-slate-700/60 text-slate-400 hover:bg-slate-700 hover:text-slate-200"
+                    ? "bg-[#FEFD4A] text-slate-900 shadow-sm"
+                    : "bg-[#6A46FE] text-white hover:bg-[#6A46FE] hover:text-white"
                 }`}
               >
                 {label}
@@ -452,7 +452,20 @@ function App() {
                 disabled={lotteryRule === "variety"}
                 className="sr-only peer"
               />
-              <div className="w-9 h-5 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:bg-yellow-400 peer-disabled:opacity-40 transition-colors after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-transform peer-checked:after:translate-x-4"></div>
+              <div className="relative w-9 h-5 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:bg-[#FEFD4A] peer-disabled:opacity-40 transition-colors">
+                <span
+                  className={`absolute top-0.5 left-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-white text-[10px] font-black leading-none text-slate-700 shadow-[0_1px_4px_rgba(0,0,0,0.55)] transition-transform ${allowDuplicates ? "translate-x-4" : ""}`}
+                >
+                  {allowDuplicates ? (
+                    <lucideReact.Check
+                      className="h-2.5 w-2.5"
+                      strokeWidth={3}
+                    />
+                  ) : (
+                    <lucideReact.X className="h-2.5 w-2.5" strokeWidth={3} />
+                  )}
+                </span>
+              </div>
             </div>
           </label>
         </div>
@@ -469,7 +482,7 @@ function App() {
                 value={player.name}
                 onChange={(e) => updatePlayerName(player.id, e.target.value)}
                 placeholder={`プレイヤー${index + 1}`}
-                className="flex-1 bg-slate-900/90 border border-slate-700 rounded-xl px-3 py-1.5 text-sm text-white focus:outline-none focus:border-yellow-400 font-result transition-colors"
+                className="flex-1 bg-slate-900/90 border border-slate-700 rounded-xl px-3 py-1.5 text-sm text-white focus:outline-none focus:border-[#FEFD4A] font-result transition-colors"
               />
               {players.length > 1 && (
                 <button
@@ -489,7 +502,7 @@ function App() {
           <button
             type="button"
             onClick={addPlayer}
-            className="w-full mt-4 py-2 border-2 border-dashed border-slate-700 hover:border-yellow-400/60 rounded-xl text-xs font-bold text-slate-400 hover:text-yellow-400 transition cursor-pointer font-button"
+            className="w-full mt-4 py-2 border-2 border-dashed border-slate-700 hover:border-[#FEFD4A]/60 rounded-xl text-xs font-bold text-slate-400 hover:text-[#FEFD4A] transition cursor-pointer font-button"
           >
             ＋ プレイヤー追加
           </button>
@@ -504,15 +517,15 @@ function App() {
       {results.map(({ player, weapon }, index) => (
         <div
           key={player.id}
-          className="bg-slate-800/90 border border-slate-700 rounded-2xl p-4 lg:px-6 shadow-md flex flex-col lg:flex-row lg:items-center justify-between gap-3 lg:gap-4 transition hover:border-slate-600 min-h-17"
+          className="bg-violet-950/95 border border-violet-700/70 rounded-2xl p-3 lg:px-5 shadow-md flex flex-col lg:flex-row lg:items-center justify-between gap-3 lg:gap-4 transition hover:border-violet-400/80 min-h-17 transform-[perspective(800px)_rotateY(-2deg)_rotateZ(-1deg)]"
         >
           {/* 上段（スマホ） / 左側（PC）: プレイヤー名 */}
           <div className="flex items-center justify-between lg:justify-start gap-2.5 shrink-0 min-w-28">
-            <div className="flex items-center gap-2">
-              <span className="text-xs font-bold text-slate-500 font-result">
+            <div className="flex items-center gap-2 rounded-xl bg-violet-700/80 border border-violet-400/40 px-3 py-2 shadow-inner">
+              <span className="text-ms font-bold text-white font-number">
                 #{index + 1}
               </span>
-              <span className="font-bold text-yellow-400 font-result text-base">
+              <span className="font-bold text-white font-result text-base">
                 {player.name || `プレイヤー${index + 1}`}
               </span>
             </div>
@@ -522,14 +535,14 @@ function App() {
               type="button"
               onClick={() => handleRedrawSingle(player.id)}
               title={`${player.name || `プレイヤー${index + 1}`} のブキを再抽選`}
-              className="lg:hidden p-1.5 rounded-xl bg-slate-700/60 hover:bg-yellow-400 hover:text-slate-900 text-slate-300 transition active:scale-90 cursor-pointer shrink-0"
+              className="lg:hidden p-1.5 rounded-xl bg-slate-700/60 hover:bg-[#FEFD4A] hover:text-slate-900 text-slate-300 transition active:scale-90 cursor-pointer shrink-0"
             >
               <lucideReact.RotateCcw className="w-4 h-4" />
             </button>
           </div>
 
           {/* 下段（スマホ） / 右側（PC）: ブキ情報 ＆ PC用再抽選ボタン */}
-          <div className="flex items-center justify-between lg:justify-end gap-3 flex-1 min-w-0 pt-2 lg:pt-0 border-t border-slate-700/50 lg:border-t-0">
+          <div className="flex items-center justify-between lg:justify-end gap-3 flex-1 min-w-0 pt-2 lg:pt-0 border-t border-violet-700/50 lg:border-t-0">
             {weapon ? (
               <div className="flex flex-wrap items-center justify-start lg:justify-end gap-x-2.5 gap-y-1 min-w-0 flex-1">
                 {/* カテゴリバッジ */}
@@ -555,12 +568,12 @@ function App() {
               </p>
             )}
 
-            {/* PC専用 再抽選ボタン（右端固定！） */}
+            {/* PCの再抽選ボタン */}
             <button
               type="button"
               onClick={() => handleRedrawSingle(player.id)}
               title={`${player.name || `プレイヤー${index + 1}`} のブキを再抽選`}
-              className="hidden lg:flex p-2 rounded-xl bg-slate-700/60 hover:bg-yellow-400 hover:text-slate-900 text-slate-300 transition active:scale-90 cursor-pointer shrink-0 ml-2"
+              className="hidden lg:flex p-2 rounded-xl bg-slate-700/60 hover:bg-[#FEFD4A] hover:text-slate-900 text-slate-300 transition active:scale-90 cursor-pointer shrink-0 ml-2"
             >
               <lucideReact.RotateCcw className="w-4 h-4" />
             </button>
@@ -579,7 +592,7 @@ function App() {
           <button
             type="button"
             onClick={togglePanel}
-            className="hidden lg:flex p-1.5 rounded-lg hover:bg-slate-800 text-slate-400 hover:text-yellow-400 transition cursor-pointer"
+            className="hidden lg:flex p-1.5 rounded-lg hover:bg-slate-800 text-slate-400 hover:text-[#FEFD4A] transition cursor-pointer"
             title={isCollapsed ? "サイドバーを展開" : "サイドバーを折りたたむ"}
           >
             {isCollapsed ? (
@@ -588,7 +601,7 @@ function App() {
               <lucideReact.PanelLeftClose className="w-5 h-5" />
             )}
           </button>
-          <h1 className="text-xl lg:text-2xl font-title tracking-wider text-yellow-400">
+          <h1 className="text-xl lg:text-2xl font-title tracking-wider text-[#FEFD4A]">
             スプラ３ ブキ抽選アプリ
           </h1>
         </div>
@@ -624,7 +637,7 @@ function App() {
                     type="button"
                     onClick={handleDraw}
                     disabled={isShortage}
-                    className="w-full bg-yellow-400 hover:bg-amber-300 disabled:bg-slate-700 disabled:text-slate-500 disabled:cursor-not-allowed active:scale-[0.98] text-slate-900 font-black font-button text-lg py-4 rounded-2xl shadow-lg transition duration-150 cursor-pointer"
+                    className="w-full bg-[#FEFD4A] hover:bg-[#FEFD4A] disabled:bg-slate-700 disabled:text-slate-500 disabled:cursor-not-allowed active:scale-[0.98] text-slate-900 font-black font-button text-lg py-4 rounded-2xl shadow-lg transition duration-150 cursor-pointer"
                   >
                     {availableWeaponCount === 0
                       ? `条件に合うブキがありません (${availableWeaponCount}ブキ / ${players.length}人)`
@@ -638,7 +651,7 @@ function App() {
           </Panel>
 
           {/* スプリッター（リサイザーハンドル） */}
-          <Separator className="w-2 bg-slate-950/40 hover:bg-yellow-400/80 active:bg-yellow-400 transition-colors cursor-col-resize relative flex items-center justify-center group shrink-0">
+          <Separator className="w-2 bg-slate-950/40 hover:bg-[#FEFD4A]/80 active:bg-[#FEFD4A] transition-colors cursor-col-resize relative flex items-center justify-center group shrink-0">
             <div className="w-0.5 h-8 bg-slate-600 group-hover:bg-slate-900 rounded-full transition-colors" />
           </Separator>
 
@@ -696,7 +709,7 @@ function App() {
               type="button"
               onClick={handleDraw}
               disabled={isShortage}
-              className="w-full bg-yellow-400 hover:bg-amber-300 disabled:bg-slate-700 disabled:text-slate-500 disabled:cursor-not-allowed active:scale-[0.98] text-slate-900 font-black font-button text-lg py-3.5 rounded-2xl shadow-lg transition duration-150 cursor-pointer"
+              className="w-full bg-[#FEFD4A] hover:bg-[#FEFD4A] disabled:bg-slate-700 disabled:text-slate-500 disabled:cursor-not-allowed active:scale-[0.98] text-slate-900 font-black font-button text-lg py-3.5 rounded-2xl shadow-lg transition duration-150 cursor-pointer"
             >
               {availableWeaponCount === 0
                 ? `条件に合うブキがありません (${availableWeaponCount}ブキ)`
@@ -710,10 +723,10 @@ function App() {
               {/* 抽選ボタンdisabled時の「設定を確認してね」吹き出し */}
               {isShortage && (
                 <div className="absolute -top-12 left-4 z-30 animate-bounce pointer-events-none">
-                  <div className="relative bg-yellow-400 text-slate-900 text-xs font-bold font-button px-3 py-1.5 rounded-xl shadow-lg flex items-center gap-1">
+                  <div className="relative bg-[#FEFD4A] text-slate-900 text-xs font-bold font-button px-3 py-1.5 rounded-xl shadow-lg flex items-center gap-1">
                     <span>設定を確認してね</span>
                     {/* 吹き出しの三角 */}
-                    <div className="absolute -bottom-1 left-6 w-2.5 h-2.5 bg-yellow-400 rotate-45" />
+                    <div className="absolute -bottom-1 left-6 w-2.5 h-2.5 bg-[#FEFD4A] rotate-45" />
                   </div>
                 </div>
               )}
@@ -723,14 +736,14 @@ function App() {
                 onClick={() => setIsSheetOpen(true)}
                 className="flex-1 bg-slate-800 hover:bg-slate-700 active:scale-[0.98] border border-slate-700 text-white font-bold font-button text-base py-3.5 rounded-2xl transition cursor-pointer flex items-center justify-center gap-2 shadow-md"
               >
-                <lucideReact.SlidersHorizontal className="w-5 h-5 text-yellow-400" />
+                <lucideReact.SlidersHorizontal className="w-5 h-5 text-[#FEFD4A]" />
                 設定
               </button>
               <button
                 type="button"
                 onClick={handleDraw}
                 disabled={isShortage}
-                className="flex-[1.5] bg-yellow-400 hover:bg-amber-300 disabled:bg-slate-700 disabled:text-slate-500 disabled:cursor-not-allowed active:scale-[0.98] text-slate-900 font-black font-button text-base py-3.5 rounded-2xl shadow-lg transition duration-150 cursor-pointer flex items-center justify-center gap-2"
+                className="flex-[1.5] bg-[#FEFD4A] hover:bg-[#FEFD4A] disabled:bg-slate-700 disabled:text-slate-500 disabled:cursor-not-allowed active:scale-[0.98] text-slate-900 font-black font-button text-base py-3.5 rounded-2xl shadow-lg transition duration-150 cursor-pointer flex items-center justify-center gap-2"
               >
                 <lucideReact.RotateCcw className="w-5 h-5" />
                 抽選する！
@@ -785,7 +798,7 @@ function App() {
                     handleDraw();
                   }}
                   disabled={isShortage}
-                  className="w-full bg-yellow-400 hover:bg-amber-300 disabled:bg-slate-700 disabled:text-slate-500 disabled:cursor-not-allowed active:scale-[0.98] text-slate-900 font-black font-button text-base py-3.5 rounded-2xl shadow-lg transition duration-150 cursor-pointer"
+                  className="w-full bg-[#FEFD4A] hover:bg-[#FEFD4A] disabled:bg-slate-700 disabled:text-slate-500 disabled:cursor-not-allowed active:scale-[0.98] text-slate-900 font-black font-button text-base py-3.5 rounded-2xl shadow-lg transition duration-150 cursor-pointer"
                 >
                   {isShortage
                     ? `条件に合うブキが足りません (${availableWeaponCount}ブキ)`
