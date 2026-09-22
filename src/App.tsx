@@ -41,8 +41,8 @@ function App() {
     SubspeciesType[]
   >([...SUBSPECIES_TYPES]);
   const [players, setPlayers] = useState<Player[]>([
-    { id: "1", name: "プレイヤー1" },
-    { id: "2", name: "プレイヤー2" },
+    { id: "1", name: t("player1") },
+    { id: "2", name: t("player2") },
   ]);
   const [allowDuplicates, setAllowDuplicates] = useState<boolean>(false);
   const [lotteryRule, setLotteryRule] = useState<
@@ -217,7 +217,7 @@ function App() {
     const nextNumber = players.length + 1;
     setPlayers((prev) => [
       ...prev,
-      { id: crypto.randomUUID(), name: `プレイヤー${nextNumber}` },
+      { id: crypto.randomUUID(), name: `${t("player")}${nextNumber}` },
     ]);
   };
 
@@ -352,11 +352,11 @@ function App() {
       return "";
     }
     const lines = results.map(({ player, weapon }, index) => {
-      const pName = player.name || `プレイヤー${index + 1}`;
+      const pName = player.name || `${t("player")} ${index + 1}`;
       if (!weapon) {
         return shareFormat === "markdown"
-          ? `- **${pName}**：なし`
-          : `${pName}: なし`;
+          ? `- **${pName}**：${t("none")}`
+          : `${pName}: ${t("none")}`;
       }
       const sub = weapon.subspeciesType
         ? `・${SUBSPECIES_TYPE_LABELS[weapon.subspeciesType]}`
@@ -367,9 +367,9 @@ function App() {
     });
 
     if (shareFormat === "markdown") {
-      return `## スプラ3 ブキ抽選結果 \n\n${lines.join("\n")}`;
+      return `## ${t("resultTitleLong")} \n\n${lines.join("\n")}`;
     }
-    return `スプラ3 ブキ抽選結果\n${lines.join("\n")}`;
+    return `${t("resultTitleLong")}\n${lines.join("\n")}`;
   };
 
   // クリップボードへコピー
@@ -419,9 +419,9 @@ function App() {
     context.fillRect(0, 0, width, height);
     context.fillStyle = "#FEFD4A";
     context.font = `900 34px ${imageFont}, sans-serif`;
-    context.fillText("ブキ抽選結果", 48, 62);
+    context.fillText(t("resultTitleShort"), 48, 62);
     context.fillStyle = "#94a3b8";
-    context.font = `600 16px ${imageFont}, sans-serif`;
+    context.font = `600 16px 'Google Sans Code', sans-serif`;
     context.fillText(new Date().toLocaleString("ja-JP"), 48, 92);
 
     results.forEach(({ player, weapon }, index) => {
@@ -437,20 +437,16 @@ function App() {
       context.fillStyle = "#ffffff";
       context.font = `700 22px ${imageFont}, sans-serif`;
       context.fillText(
-        `#${index + 1} ${player.name || `プレイヤー${index + 1}`}`,
+        `#${index + 1} ${player.name || `${t("player")} ${index + 1}`}`,
         74,
         y + 43,
       );
       context.fillStyle = "#FEFD4A";
       context.font = `700 18px ${imageFont}, sans-serif`;
-      context.fillText(weapon?.category ?? "なし", 350, y + 31);
+      context.fillText(weapon?.category ?? t("none"), 350, y + 31);
       context.fillStyle = "#ffffff";
-      context.font = `700 24px ${imageFont}, sans-serif`;
-      context.fillText(
-        weapon?.name ?? "条件に合うブキがありません",
-        350,
-        y + 57,
-      );
+      context.font = `700 24px 'LINE Seed JP', sans-serif`;
+      context.fillText(weapon?.name ?? t("noMatchWeapons"), 350, y + 57);
     });
 
     const link = document.createElement("a");
@@ -466,25 +462,31 @@ function App() {
       <button
         type="button"
         onClick={handleCopy}
-        title="結果をクリップボードにコピー"
+        title={t("copyResultDesc")}
         className="order-1 flex min-w-28 flex-1 items-center justify-center gap-1.5 whitespace-nowrap rounded-lg bg-slate-800 px-4 py-2 text-xs font-black text-slate-300 shadow-sm transition hover:bg-slate-700 active:scale-95 font-button cursor-pointer max-lg:w-fit max-lg:justify-self-end"
       >
         {isCopied ? (
           <>
             <lucideReact.Check className="w-3.5 h-3.5 text-emerald-400" />
-            <span className="text-emerald-500">{t("copied")}</span>
+            <span
+              className={`text-emerald-500 ${language === "ja" ? "font-app-ja" : "font-app-en"}`}
+            >
+              {t("copied")}
+            </span>
           </>
         ) : (
           <>
             <lucideReact.Copy className="w-3.5 h-3.5 text-slate-400" />
-            <span>{t("copyResult")}</span>
+            <span className={language === "ja" ? "font-app-ja" : "font-app-ja"}>
+              {t("copyResult")}
+            </span>
           </>
         )}
       </button>
       <button
         type="button"
         onClick={handleShareTwitter}
-        title="X (Twitter) でシェア"
+        title={t("postDesc")}
         className="order-3 flex w-fit items-center justify-center gap-1.5 rounded-lg bg-slate-800 px-3 py-2 text-xs font-bold text-slate-300 transition hover:bg-slate-700 hover:text-white active:scale-95 font-button cursor-pointer max-lg:w-full max-lg:justify-self-end"
       >
         <svg
@@ -499,7 +501,7 @@ function App() {
       <button
         type="button"
         onClick={handleDownloadImage}
-        title="結果を画像として保存"
+        title={t("saveImageDesc")}
         className="flex items-center gap-1.5 rounded-lg bg-[#6A46FE] px-3 py-2 text-xs font-bold text-white transition hover:bg-[#6A46FE] active:scale-95 font-button cursor-pointer max-lg:order-5 max-lg:col-span-2 max-lg:justify-self-end max-lg:hidden"
       >
         <lucideReact.ImageDown className="h-3.5 w-3.5" />
@@ -517,7 +519,7 @@ function App() {
                 : "text-slate-400 hover:text-slate-200"
             }`}
           >
-            {format === "markdown" ? "Markdown" : "プレーン"}
+            {format === "markdown" ? t("markdown") : t("plain")}
           </button>
         ))}
       </div>
@@ -543,14 +545,14 @@ function App() {
             </span>
             <span className="block text-[11px] text-[#FEFD4A]">
               {item.rule === "categoryRandom"
-                ? "ブキ種抽選"
+                ? t("categoryRandom")
                 : item.rule === "variety"
-                  ? "バラエティブキ"
-                  : `完全ランダム${item.allowDuplicates ? "（重複あり）" : "（重複なし）"}`}
+                  ? t("variety")
+                  : `${t("random")}${item.allowDuplicates ? t("duplicateOn") : t("duplicateOff")}`}
             </span>
             <span className="block truncate text-xs font-bold text-white">
               {item.results
-                .map((result) => result.weapon?.name ?? "なし")
+                .map((result) => result.weapon?.name ?? t("none"))
                 .join(" ／ ")}
             </span>
           </button>
@@ -599,7 +601,7 @@ function App() {
       <section className="bg-slate-800/80 border border-slate-700 rounded-2xl p-5 lg:p-6 shadow-xl">
         <div className="flex items-center justify-between mb-3">
           <span className="text-sm font-bold text-slate-300 flex items-center gap-1.5 select-none">
-              <span>{t("categoryFilter")}</span>
+            <span>{t("categoryFilter")}</span>
             <span className="text-xs font-normal text-[#FEFD4A] bg-[#FEFD4A]/10 px-2 py-0.5 rounded-full">
               {availableWeaponCount}種
             </span>
@@ -692,14 +694,14 @@ function App() {
       <section className="bg-slate-800/80 border border-slate-700 rounded-2xl p-5 lg:p-6 shadow-xl space-y-4">
         <div>
           <span className="text-sm font-bold text-slate-300 select-none">
-            {language === "ja" ? "抽選ルール" : "Draw rule"}
+            {t("drawRule")}
           </span>
           <div className="mt-2 grid grid-cols-1 gap-2 sm:grid-cols-3">
             {(
               [
-                ["random", language === "ja" ? "完全ランダム" : "Random"],
-                ["categoryRandom", language === "ja" ? "ブキ種抽選" : "Random category"],
-                ["variety", language === "ja" ? "バラエティブキ" : "Variety"],
+                ["random", t("random")],
+                ["categoryRandom", t("categoryRandom")],
+                ["variety", t("variety")],
               ] as const
             ).map(([value, label]) => (
               <button
@@ -718,21 +720,16 @@ function App() {
           </div>
           <p className="mt-2 text-[11px] text-slate-400">
             {lotteryRule === "categoryRandom"
-              ? language === "ja"
-                ? "ブキ種を1つ抽選し、そのブキ種から全員分を抽選"
-                : "Pick one category, then draw weapons from it"
+              ? t("categoryRandomDescription")
               : lotteryRule === "variety"
-                ? language === "ja"
-                  ? "全員のブキ種が重複しないように抽選"
-                  : "Draw with a different category for each player"
-                : language === "ja"
-                  ? "選択したブキから抽選"
-                  : "Draw from the selected weapons"}
+                ? t("varietyDescription")
+                : t("randomDescription")}
           </p>
         </div>
         <div className="flex items-center justify-between">
           <span className="text-sm font-bold text-slate-300 select-none">
-            {t("players")} ({players.length}{language === "ja" ? "人" : " players"})
+            {t("players")} ({players.length}
+            {t("people")})
           </span>
           <label
             className={`flex items-center gap-2.5 text-xs font-bold select-none ${lotteryRule === "variety" ? "text-slate-600 cursor-not-allowed" : "text-slate-300 cursor-pointer"}`}
@@ -775,7 +772,7 @@ function App() {
                 type="text"
                 value={player.name}
                 onChange={(e) => updatePlayerName(player.id, e.target.value)}
-                placeholder={`プレイヤー${index + 1}`}
+                placeholder={`${t("player")} ${index + 1}`}
                 className="flex-1 bg-slate-900/90 border border-slate-700 rounded-xl px-3 py-1.5 text-sm text-white focus:outline-none focus:border-[#FEFD4A] font-result transition-colors"
               />
               {players.length > 1 && (
@@ -829,7 +826,9 @@ function App() {
             <button
               type="button"
               onClick={() => handleRedrawSingle(player.id)}
-              title={`${player.name || `プレイヤー${index + 1}`} のブキを再抽選`}
+              title={t("redrawWeapon", {
+                name: player.name || `プレイヤー${index + 1}`,
+              })}
               className="lg:hidden p-1.5 rounded-xl bg-slate-700/60 hover:bg-[#FEFD4A] hover:text-slate-900 text-slate-300 transition active:scale-90 cursor-pointer shrink-0"
             >
               <lucideReact.RotateCcw className="w-4 h-4" />
@@ -859,7 +858,7 @@ function App() {
               </div>
             ) : (
               <p className="text-rose-400 text-xs py-1 font-result">
-                条件に合うブキがありません
+                {t("noWeapon")}
               </p>
             )}
 
@@ -867,7 +866,9 @@ function App() {
             <button
               type="button"
               onClick={() => handleRedrawSingle(player.id)}
-              title={`${player.name || `プレイヤー${index + 1}`} のブキを再抽選`}
+              title={t("redrawWeapon", {
+                name: player.name || `${t("player")} ${index + 1}`,
+              })}
               className="hidden lg:flex p-2 rounded-xl bg-slate-700/60 hover:bg-[#FEFD4A] hover:text-slate-900 text-slate-300 transition active:scale-90 cursor-pointer shrink-0 ml-2"
             >
               <lucideReact.RotateCcw className="w-4 h-4" />
@@ -879,7 +880,9 @@ function App() {
   );
 
   return (
-    <div className={`h-screen bg-slate-900 text-white flex flex-col overflow-hidden ${language === "ja" ? "font-app-ja" : "font-app-en"}`}>
+    <div
+      className={`h-screen bg-slate-900 text-white flex flex-col overflow-hidden ${language === "ja" ? "font-app-ja" : "font-app-en"}`}
+    >
       {/* ヘッダー */}
       <header className="h-14 border-b border-slate-800 px-4 flex items-center justify-between shrink-0 bg-slate-900/90 backdrop-blur z-10">
         <div className="flex items-center gap-3">
@@ -888,7 +891,7 @@ function App() {
             type="button"
             onClick={togglePanel}
             className="hidden lg:flex p-1.5 rounded-lg hover:bg-slate-800 text-slate-400 hover:text-[#FEFD4A] transition cursor-pointer"
-            title={isCollapsed ? "サイドバーを展開" : "サイドバーを折りたたむ"}
+            title={isCollapsed ? t("expandSidebar") : t("collapseSidebar")}
           >
             {isCollapsed ? (
               <lucideReact.PanelLeftOpen className="w-5 h-5" />
@@ -896,7 +899,13 @@ function App() {
               <lucideReact.PanelLeftClose className="w-5 h-5" />
             )}
           </button>
-          <h1 className="text-xl lg:text-2xl font-title tracking-wider text-[#FEFD4A] select-none">
+          <h1
+            className={`text-xl lg:text-2xl tracking-wider text-[#FEFD4A] select-none ${
+              language === "ja"
+                ? "font-title-ja"
+                : "font-title-en font-extrabold"
+            }`}
+          >
             {t("title")}
           </h1>
         </div>
@@ -908,7 +917,7 @@ function App() {
             <div className="flex items-stretch overflow-hidden rounded-xl">
               <button
                 type="button"
-                title="GitHubリポジトリを開く"
+                title={t("openRepo")}
                 onClick={() =>
                   window.open(
                     "https://github.com/zibasan/spla3-lottery-weapon",
@@ -919,17 +928,17 @@ function App() {
                 className="flex items-center rounded-l-xl p-2 text-slate-300 transition hover:bg-slate-700 hover:text-white cursor-pointer"
               >
                 <SiGithub className="h-5 w-5" />
-                <span className="sr-only">GitHubリポジトリを開く</span>
+                <span className="sr-only">{t("openRepo")}</span>
               </button>
               <button
                 type="button"
-                title="GitHubメニューを開く"
+                title={t("openRepoMenu")}
                 aria-expanded={isGithubMenuOpen}
                 onClick={() => setIsGithubMenuOpen((open) => !open)}
                 className="flex items-center rounded-r-xl border-l border-slate-700 p-2 text-slate-300 transition hover:bg-slate-700 hover:text-white cursor-pointer"
               >
                 <lucideReact.ChevronDown className="h-4 w-4" />
-                <span className="sr-only">GitHubメニューを開く</span>
+                <span className="sr-only">{t("openRepoMenu")}</span>
               </button>
             </div>
             {isGithubMenuOpen && (
@@ -967,7 +976,9 @@ function App() {
               className="flex items-center gap-1 rounded-xl p-2 text-xs font-bold text-slate-300 transition hover:bg-slate-700 hover:text-white cursor-pointer font-button"
             >
               <lucideReact.Globe2 className="h-5 w-5 lg:hidden" />
-              <span className="hidden lg:inline">{language === "ja" ? t("japanese") : t("english")}</span>
+              <span className="hidden lg:inline">
+                {language === "ja" ? t("japanese") : t("english")}
+              </span>
               <lucideReact.ChevronDown className="hidden h-4 w-4 lg:block" />
               <span className="sr-only">言語を選択</span>
             </button>
@@ -976,10 +987,12 @@ function App() {
                 ref={languageMenuRef}
                 className="absolute right-0 top-11 z-50 w-36 rounded-xl border border-slate-700 bg-slate-900 p-1.5 shadow-2xl"
               >
-                {([[
-                  "ja",
-                  "日本語",
-                ], ["en", "English"]] as const).map(([value, label]) => (
+                {(
+                  [
+                    ["ja", t("japanese")],
+                    ["en", "English"],
+                  ] as const
+                ).map(([value, label]) => (
                   <button
                     key={value}
                     type="button"
@@ -990,7 +1003,9 @@ function App() {
                     className="flex w-full items-center justify-between rounded-lg px-3 py-2 text-xs font-bold text-slate-300 transition hover:bg-[#6A46FE] hover:text-white cursor-pointer"
                   >
                     {label}
-                    {language === value && <lucideReact.Check className="h-4 w-4 text-[#FEFD4A]" />}
+                    {language === value && (
+                      <lucideReact.Check className="h-4 w-4 text-[#FEFD4A]" />
+                    )}
                   </button>
                 ))}
               </div>
@@ -1000,7 +1015,7 @@ function App() {
             type="button"
             onClick={handleDownloadImage}
             disabled={results.length === 0 || isImageSaving}
-            title="結果を画像として保存"
+            title={t("saveImageDesc")}
             className="flex items-center rounded-xl border border-slate-700 bg-[#6A46FE] p-2 text-white transition hover:bg-[#6A46FE] disabled:cursor-not-allowed disabled:opacity-40 font-button lg:hidden"
           >
             <lucideReact.ImageDown className="h-5 w-5" />
@@ -1026,8 +1041,12 @@ function App() {
                 className="custom-scrollbar absolute right-0 top-11 z-40 hidden max-h-[calc(100vh-5rem)] w-80 overflow-x-hidden overflow-y-auto rounded-2xl border border-slate-700 bg-slate-900 p-4 shadow-2xl lg:block"
               >
                 <div className="mb-3 flex items-center justify-between">
-                  <span className="text-sm font-bold text-white">{t("history")}</span>
-                  <span className="text-[11px] text-slate-500">{t("max10")}</span>
+                  <span className="text-sm font-bold text-white">
+                    {t("history")}
+                  </span>
+                  <span className="text-[11px] text-slate-500">
+                    {t("max10")}
+                  </span>
                 </div>
                 {renderHistoryContent()}
               </div>
@@ -1069,10 +1088,10 @@ function App() {
                     className="w-full bg-[#FEFD4A] hover:bg-[#FEFD4A] disabled:bg-slate-700 disabled:text-slate-500 disabled:cursor-not-allowed active:scale-[0.98] text-slate-900 font-black font-button text-lg py-4 rounded-2xl shadow-lg transition duration-150 cursor-pointer"
                   >
                     {availableWeaponCount === 0
-                      ? `条件に合うブキがありません (${availableWeaponCount}ブキ / ${players.length}人)`
+                      ? `${t("noWeapon")} (${availableWeaponCount}${language === "ja" ? "ブキ / " : " weapons / "}${players.length}${t("people")})`
                       : isShortage
-                        ? `条件に合うブキが足りません (${availableWeaponCount}ブキ / ${players.length}人)`
-                        : `${players.length}人のブキを抽選する！`}
+                        ? `${t("notEnoughWeapons")} (${availableWeaponCount}${language === "ja" ? "ブキ / " : " weapons / "}${players.length}${t("people")})`
+                        : `${players.length}${t("people")} ${language === "ja" ? "のブキを抽選する！" : "draw weapons!"}`}
                   </button>
                 </div>
               </div>
@@ -1092,7 +1111,9 @@ function App() {
             <div className="w-full max-w-2xl py-2">
               <div className="flex items-center justify-between mb-6 pb-3 border-b border-slate-800">
                 <span className="text-sm font-bold text-slate-400 font-result">
-                  {t("drawResults")} {results.length > 0 && `(${results.length}${language === "ja" ? "人分" : " players"})`}
+                  {t("drawResults")}{" "}
+                  {results.length > 0 &&
+                    `(${results.length}${language === "ja" ? "人分" : t("people")})`}
                 </span>
                 {results.length > 0 && renderShareButtons()}
               </div>
@@ -1101,8 +1122,13 @@ function App() {
                 renderResultsList()
               ) : (
                 <div className="text-center text-slate-500 font-result py-24 select-none">
-                  左ペインで条件とプレイヤーを設定して
-                  <br />「{players.length}人のブキを抽選する！」を押してね
+                  {t("drawPrompt", { count: players.length })
+                    .split("\n")
+                    .map((line) => (
+                      <span className="block" key={line}>
+                        {line}
+                      </span>
+                    ))}
                 </div>
               )}
             </div>
@@ -1122,7 +1148,8 @@ function App() {
           <div className="flex-1 overflow-y-auto custom-scrollbar p-4 pb-28">
             <div className="flex items-center justify-between mb-4 pb-2 border-b border-slate-800">
               <span className="text-xs font-bold text-slate-400 font-result">
-                {t("drawResults")} ({results.length}{language === "ja" ? "人分" : " players"})
+                {t("drawResults")} ({results.length}
+                {language === "ja" ? "人分" : t("people")})
               </span>
               {renderShareButtons()}
             </div>
@@ -1141,10 +1168,10 @@ function App() {
               className="w-full bg-[#FEFD4A] hover:bg-[#FEFD4A] disabled:bg-slate-700 disabled:text-slate-500 disabled:cursor-not-allowed active:scale-[0.98] text-slate-900 font-black font-button text-lg py-3.5 rounded-2xl shadow-lg transition duration-150 cursor-pointer"
             >
               {availableWeaponCount === 0
-                ? `条件に合うブキがありません (${availableWeaponCount}ブキ)`
+                ? `${t("noWeapon")} (${availableWeaponCount}${language === "ja" ? "ブキ" : " weapons"})`
                 : isShortage
-                  ? `条件に合うブキが足りません (${availableWeaponCount}ブキ / ${players.length}人)`
-                  : `${players.length}人のブキを抽選する！`}
+                  ? `${t("notEnoughWeapons")} (${availableWeaponCount}${language === "ja" ? "ブキ / " : " weapons / "}${players.length}${t("people")})`
+                  : `${players.length}${t("people")} ${language === "ja" ? "のブキを抽選する！" : "draw weapons!"}`}
             </button>
           ) : (
             // 抽選後：[設定] と [抽選する！] の2分割ボタン
@@ -1153,7 +1180,7 @@ function App() {
               {isShortage && (
                 <div className="absolute -top-12 left-4 z-30 animate-bounce pointer-events-none">
                   <div className="relative bg-[#FEFD4A] text-slate-900 text-xs font-bold font-button px-3 py-1.5 rounded-xl shadow-lg flex items-center gap-1">
-                    <span>設定を確認してね</span>
+                    <span>{t("checkSettings")}</span>
                     {/* 吹き出しの三角 */}
                     <div className="absolute -bottom-1 left-6 w-2.5 h-2.5 bg-[#FEFD4A] rotate-45" />
                   </div>
@@ -1187,7 +1214,7 @@ function App() {
             {/* 背景オーバーレイ */}
             <button
               type="button"
-              aria-label="閉じる"
+              aria-label={t("closeMenu")}
               className="absolute inset-0 bg-black/70 backdrop-blur-xs transition-opacity cursor-default"
               onClick={() => setIsSheetOpen(false)}
             />
@@ -1230,8 +1257,8 @@ function App() {
                   className="w-full bg-[#FEFD4A] hover:bg-[#FEFD4A] disabled:bg-slate-700 disabled:text-slate-500 disabled:cursor-not-allowed active:scale-[0.98] text-slate-900 font-black font-button text-base py-3.5 rounded-2xl shadow-lg transition duration-150 cursor-pointer"
                 >
                   {isShortage
-                    ? `条件に合うブキが足りません (${availableWeaponCount}ブキ)`
-                    : "設定を適用して抽選する！"}
+                    ? `${t("notEnoughWeapons")} (${availableWeaponCount}${language === "ja" ? "ブキ" : " weapons"})`
+                    : t("applyAndDraw")}
                 </button>
               </div>
             </div>
@@ -1242,7 +1269,7 @@ function App() {
           <div className="fixed inset-0 z-50 flex flex-col justify-end lg:hidden">
             <button
               type="button"
-              aria-label="履歴を閉じる"
+              aria-label={t("closeHistory")}
               className="absolute inset-0 bg-black/70 backdrop-blur-xs"
               onClick={() => setIsHistoryOpen(false)}
             />
@@ -1251,13 +1278,15 @@ function App() {
               className="relative z-10 flex max-h-[75vh] min-h-0 flex-col rounded-t-3xl border-t border-slate-700 bg-slate-900 shadow-2xl"
             >
               <div className="flex items-center justify-between border-b border-slate-800 px-6 py-4">
-                <span className="text-sm font-bold text-white">抽選履歴</span>
+                <span className="text-sm font-bold text-white">
+                  {t("history")}
+                </span>
                 <button
                   type="button"
                   onClick={() => setIsHistoryOpen(false)}
                   className="text-xs text-slate-400"
                 >
-                  閉じる
+                  {t("close")}
                 </button>
               </div>
               <div className="custom-scrollbar min-h-0 flex-1 overflow-x-hidden overflow-y-auto p-4">

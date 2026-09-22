@@ -1,15 +1,18 @@
 @import "tailwindcss";
 
 @theme {
-  --font-title: "Dela Gothic One", sans-serif;
-  --font-result: "LINE Seed JP", sans-serif;
-  --font-button: "Zen Maru Gothic", sans-serif;
+  --font-title-ja: "Dela Gothic One", sans-serif;
+  --font-title-en: "Inter", sans-serif;
+  --font-result-ja: "LINE Seed JP", sans-serif;
+  --font-result-en: "Inter", sans-serif;
+  --font-button-ja: "Zen Maru Gothic", sans-serif;
+  --font-button-en: "Inter", sans-serif;
   --font-number: "Google Sans Code", sans-serif;
 }
 
 :root {
-  --font-app-ja: 'Zen Kaku Gothic New', sans-serif;
-  --font-app-en: 'Inter', sans-serif;
+  --font-app-ja: "Zen Kaku Gothic New", sans-serif;
+  --font-app-en: "Inter", sans-serif;
 }
 
 .font-app-ja {
@@ -19,6 +22,11 @@
 .font-app-en {
   font-family: var(--font-app-en);
 }
+
+.font-app-ja .font-result { font-family: var(--font-result-ja); }
+.font-app-en .font-result { font-family: var(--font-result-en); }
+.font-app-ja .font-button { font-family: var(--font-button-ja); }
+.font-app-en .font-button { font-family: var(--font-button-en); }
 
 body {
   font-family: "Zen Kaku Gothic New", sans-serif;
