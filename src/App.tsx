@@ -32,6 +32,9 @@ function App() {
     { id: "2", name: "プレイヤー2" },
   ]);
   const [allowDuplicates, setAllowDuplicates] = useState<boolean>(false);
+  const [lotteryRule, setLotteryRule] = useState<
+    "random" | "categoryRandom" | "variety"
+  >("random");
   const [results, setResults] = useState<PlayerResult[]>([]);
   const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
   const [isSheetOpen, setIsSheetOpen] = useState<boolean>(false);
@@ -65,10 +68,19 @@ function App() {
     }
     return true;
   }).length;
+  const availableCategoryCount = new Set(
+    ALL_WEAPONS.filter((w) => {
+      if (!selectedCategories.includes(w.category)) return false;
+      return !w.subspeciesType || selectedSubspecies.includes(w.subspeciesType);
+    }).map((w) => w.category),
+  ).size;
 
-  const isShortage = allowDuplicates
-    ? availableWeaponCount === 0
-    : availableWeaponCount < players.length;
+  const isShortage =
+    lotteryRule === "variety"
+      ? availableCategoryCount < players.length
+      : allowDuplicates
+        ? availableWeaponCount === 0
+        : availableWeaponCount < players.length;
 
   const addPlayer = () => {
     if (players.length >= 8) {
@@ -119,6 +131,7 @@ function App() {
       subspecies: selectedSubspecies,
       count: players.length,
       allowDuplicates,
+      rule: lotteryRule,
     });
 
     const newResults: PlayerResult[] = players.map((player, index) => ({
@@ -218,17 +231,17 @@ function App() {
 
   // シェアボタングループ
   const renderShareButtons = () => (
-    <div className="flex items-center gap-2 rounded-xl border border-slate-700 bg-slate-900/70 p-1.5">
+    <div className="flex items-center gap-2 rounded-xl border border-slate-700 bg-slate-900/70 p-1.5 max-lg:grid max-lg:grid-cols-[1fr_auto] max-lg:items-stretch max-lg:gap-x-0 max-lg:gap-y-1">
       <button
         type="button"
         onClick={handleCopy}
         title="結果をクリップボードにコピー"
-        className="flex min-w-28 flex-1 items-center justify-center gap-1.5 rounded-lg bg-slate-800 px-4 py-2 text-xs font-black text-slate-300 shadow-sm transition hover:bg-slate-700 active:scale-95 font-button cursor-pointer"
+        className="order-1 flex min-w-28 flex-1 items-center justify-center gap-1.5 whitespace-nowrap rounded-lg bg-slate-800 px-4 py-2 text-xs font-black text-slate-300 shadow-sm transition hover:bg-slate-700 active:scale-95 font-button cursor-pointer max-lg:w-fit max-lg:justify-self-end"
       >
         {isCopied ? (
           <>
             <lucideReact.Check className="w-3.5 h-3.5 text-emerald-400" />
-            <span className="text-emerald-700">コピー完了！</span>
+            <span className="text-emerald-500">コピー完了！</span>
           </>
         ) : (
           <>
@@ -241,7 +254,7 @@ function App() {
         type="button"
         onClick={handleShareTwitter}
         title="X (Twitter) でシェア"
-        className="flex items-center gap-1.5 rounded-lg bg-slate-800 px-3 py-2 text-xs font-bold text-slate-300 transition hover:bg-slate-700 hover:text-white active:scale-95 font-button cursor-pointer"
+        className="order-3 flex w-fit items-center justify-center gap-1.5 rounded-lg bg-slate-800 px-3 py-2 text-xs font-bold text-slate-300 transition hover:bg-slate-700 hover:text-white active:scale-95 font-button cursor-pointer max-lg:w-full max-lg:justify-self-end"
       >
         <svg
           aria-hidden="true"
@@ -252,13 +265,13 @@ function App() {
         </svg>
         <span>ポスト</span>
       </button>
-      <div className="flex shrink-0 items-center rounded-lg bg-slate-800 p-0.5 text-[11px] font-bold font-button">
+      <div className="flex shrink-0 items-center rounded-lg bg-slate-800 p-0.5 text-[11px] font-bold font-button max-lg:contents">
         {(["markdown", "plain"] as const).map((format) => (
           <button
             key={format}
             type="button"
             onClick={() => setShareFormat(format)}
-            className={`rounded-md px-2.5 py-1.5 transition cursor-pointer ${
+            className={`w-20 justify-self-end rounded-md px-2.5 py-1.5 transition cursor-pointer ${format === "markdown" ? "max-lg:order-2" : "max-lg:order-4"} ${
               shareFormat === format
                 ? "bg-yellow-400 text-slate-900 shadow-sm"
                 : "text-slate-400 hover:text-slate-200"
@@ -391,20 +404,55 @@ function App() {
 
       {/* プレイヤー設定エリア */}
       <section className="bg-slate-800/80 border border-slate-700 rounded-2xl p-5 lg:p-6 shadow-xl space-y-4">
+        <div>
+          <span className="text-sm font-bold text-slate-300">抽選ルール</span>
+          <div className="mt-2 grid grid-cols-1 gap-2 sm:grid-cols-3">
+            {(
+              [
+                ["random", "完全ランダム"],
+                ["categoryRandom", "ブキ種抽選"],
+                ["variety", "バラエティブキ"],
+              ] as const
+            ).map(([value, label]) => (
+              <button
+                key={value}
+                type="button"
+                onClick={() => setLotteryRule(value)}
+                className={`rounded-xl px-3 py-2 text-xs font-bold transition cursor-pointer font-button ${
+                  lotteryRule === value
+                    ? "bg-yellow-400 text-slate-900 shadow-sm"
+                    : "bg-slate-700/60 text-slate-400 hover:bg-slate-700 hover:text-slate-200"
+                }`}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+          <p className="mt-2 text-[11px] text-slate-500">
+            {lotteryRule === "categoryRandom"
+              ? "ブキ種を1つ抽選し、そのブキ種から全員分を抽選"
+              : lotteryRule === "variety"
+                ? "全員のブキ種が重複しないように抽選"
+                : "選択したブキから抽選"}
+          </p>
+        </div>
         <div className="flex items-center justify-between">
           <span className="text-sm font-bold text-slate-300">
             抽選するプレイヤー ({players.length}人)
           </span>
-          <label className="flex items-center gap-2.5 text-xs text-slate-300 font-bold cursor-pointer select-none">
+          <label
+            className={`flex items-center gap-2.5 text-xs font-bold select-none ${lotteryRule === "variety" ? "text-slate-600 cursor-not-allowed" : "text-slate-300 cursor-pointer"}`}
+          >
             <span>ブキ被りを許可</span>
             <div className="relative inline-flex items-center">
               <input
                 type="checkbox"
                 checked={allowDuplicates}
                 onChange={(e) => setAllowDuplicates(e.target.checked)}
+                disabled={lotteryRule === "variety"}
                 className="sr-only peer"
               />
-              <div className="w-9 h-5 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:bg-yellow-400 transition-colors after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-transform peer-checked:after:translate-x-4"></div>
+              <div className="w-9 h-5 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:bg-yellow-400 peer-disabled:opacity-40 transition-colors after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-transform peer-checked:after:translate-x-4"></div>
             </div>
           </label>
         </div>
@@ -560,27 +608,31 @@ function App() {
             onResize={(size) => {
               setIsCollapsed(size.inPixels === 0);
             }}
-            className={`h-full custom-scrollbar bg-slate-900/40 ${
-              isCollapsed ? "hidden overflow-hidden" : "overflow-y-auto"
+            className={`h-full flex flex-col bg-slate-900/40 ${
+              isCollapsed ? "hidden overflow-hidden" : "overflow-hidden"
             }`}
           >
             {!isCollapsed && (
-              <div className="p-6 space-y-6 min-w-95">
-                {renderSettings()}
+              <div className="flex h-full min-w-95 flex-col">
+                <div className="custom-scrollbar flex-1 overflow-y-auto p-6 space-y-6">
+                  {renderSettings()}
+                </div>
 
                 {/* 抽選ボタン */}
-                <button
-                  type="button"
-                  onClick={handleDraw}
-                  disabled={isShortage}
-                  className="w-full bg-yellow-400 hover:bg-amber-300 disabled:bg-slate-700 disabled:text-slate-500 disabled:cursor-not-allowed active:scale-[0.98] text-slate-900 font-black font-button text-lg py-4 rounded-2xl shadow-lg transition duration-150 cursor-pointer"
-                >
-                  {availableWeaponCount === 0
-                    ? `条件に合うブキがありません (${availableWeaponCount}ブキ / ${players.length}人)`
-                    : isShortage
-                      ? `条件に合うブキが足りません (${availableWeaponCount}ブキ / ${players.length}人)`
-                      : `${players.length}人のブキを抽選する！`}
-                </button>
+                <div className="shrink-0 border-t border-slate-800 bg-slate-900/95 p-6 backdrop-blur">
+                  <button
+                    type="button"
+                    onClick={handleDraw}
+                    disabled={isShortage}
+                    className="w-full bg-yellow-400 hover:bg-amber-300 disabled:bg-slate-700 disabled:text-slate-500 disabled:cursor-not-allowed active:scale-[0.98] text-slate-900 font-black font-button text-lg py-4 rounded-2xl shadow-lg transition duration-150 cursor-pointer"
+                  >
+                    {availableWeaponCount === 0
+                      ? `条件に合うブキがありません (${availableWeaponCount}ブキ / ${players.length}人)`
+                      : isShortage
+                        ? `条件に合うブキが足りません (${availableWeaponCount}ブキ / ${players.length}人)`
+                        : `${players.length}人のブキを抽選する！`}
+                  </button>
+                </div>
               </div>
             )}
           </Panel>
