@@ -504,13 +504,15 @@ function App() {
         ))
       )}
       {history.length > 0 && (
-        <button
-          type="button"
-          onClick={clearHistory}
-          className="sticky bottom-0 z-10 mt-3 w-full rounded-2xl bg-[#6A46FE] py-3.5 text-sm font-black text-slate-100 shadow-lg transition hover:bg-rose-400/90 cursor-pointer"
-        >
-          履歴をすべて削除
-        </button>
+        <div className="sticky -bottom-4 z-10 -mx-4 -mb-6 mt-3 bg-slate-900 px-4 pb-6 pt-3">
+          <button
+            type="button"
+            onClick={clearHistory}
+            className="w-full rounded-2xl bg-[#6A46FE] py-3.5 text-sm font-black text-slate-100 shadow-lg transition hover:bg-rose-400/90 cursor-pointer"
+          >
+            履歴をすべて削除
+          </button>
+        </div>
       )}
     </div>
   );
@@ -833,7 +835,7 @@ function App() {
             )}
           </button>
           <h1 className="text-xl lg:text-2xl font-title tracking-wider text-[#FEFD4A]">
-            スプラ３ ブキ抽選アプリ
+            ブキみくじ
           </h1>
         </div>
         <div className="flex items-center gap-2">
