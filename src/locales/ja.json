@@ -74,5 +74,8 @@
   "animationDuration": "演出の長さ",
   "showTemplatePlayers": "登録プレイヤーを表示",
   "renameTemplate": "テンプレート名を変更",
-  "rolling": "抽選中..."
+  "rolling": "抽選中...",
+  "enableLotterySound": "抽選演出の音を鳴らす",
+  "soundVolume": "音量",
+  "soundSource": "音源: 効果音ラボ"
 }

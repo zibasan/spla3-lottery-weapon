@@ -71,6 +71,8 @@ function App() {
   const [templateName, setTemplateName] = useState("");
   const [animationEnabled, setAnimationEnabled] = useState(false);
   const [animationDuration, setAnimationDuration] = useState(1200);
+  const [soundEnabled, setSoundEnabled] = useState(false);
+  const [soundVolume, setSoundVolume] = useState(0.7);
   const [isRolling, setIsRolling] = useState(false);
   const [expandedTemplateIds, setExpandedTemplateIds] = useState<string[]>([]);
   const [_editingTemplateId, _setEditingTemplateId] = useState<string | null>(
@@ -93,6 +95,8 @@ function App() {
   const languageMenuRef = useRef<HTMLDivElement>(null);
   const otherMenuRef = useRef<HTMLDivElement>(null);
   const rollingTimerRef = useRef<number | null>(null);
+  const rollAudioRef = useRef<HTMLAudioElement | null>(null);
+  const resultAudioRef = useRef<HTMLAudioElement | null>(null);
   const detailSettingsLoadedRef = useRef(false);
 
   useEffect(() => {
@@ -104,11 +108,17 @@ function App() {
           templates: PlayerTemplate[];
           animationEnabled: boolean;
           animationDuration: number;
+          soundEnabled: boolean;
+          soundVolume: number;
+          detailSection: "excluded" | "templates" | "animation";
         }>;
         setExcludedWeapons(settings.excludedWeapons ?? []);
         setTemplates(settings.templates ?? []);
         setAnimationEnabled(settings.animationEnabled ?? false);
         setAnimationDuration(settings.animationDuration ?? 1200);
+        setSoundEnabled(settings.soundEnabled ?? false);
+        setSoundVolume(settings.soundVolume ?? 0.7);
+        setDetailSection(settings.detailSection ?? "excluded");
       }
       detailSettingsLoadedRef.current = true;
       const saved = localStorage.getItem("spla3-lottery-history");
@@ -121,17 +131,46 @@ function App() {
   }, []);
 
   useEffect(() => {
+    const rollAudio = new Audio("/audio/lottery_roll.mp3");
+    const resultAudio = new Audio("/audio/lottery_result.mp3");
+    rollAudio.preload = "auto";
+    resultAudio.preload = "auto";
+    rollAudioRef.current = rollAudio;
+    resultAudioRef.current = resultAudio;
+    return () => {
+      rollAudio.pause();
+      resultAudio.pause();
+      rollAudioRef.current = null;
+      resultAudioRef.current = null;
+    };
+  }, []);
+
+  useEffect(() => {
     if (!detailSettingsLoadedRef.current) return;
-    localStorage.setItem(
-      "spla3-detail-settings",
-      JSON.stringify({
-        excludedWeapons,
-        templates,
-        animationEnabled,
-        animationDuration,
-      }),
-    );
-  }, [excludedWeapons, templates, animationEnabled, animationDuration]);
+    const saveTimer = window.setTimeout(() => {
+      localStorage.setItem(
+        "spla3-detail-settings",
+        JSON.stringify({
+          excludedWeapons,
+          templates,
+          animationEnabled,
+          animationDuration,
+          soundEnabled,
+          soundVolume,
+          detailSection,
+        }),
+      );
+    }, 0);
+    return () => window.clearTimeout(saveTimer);
+  }, [
+    excludedWeapons,
+    templates,
+    animationEnabled,
+    animationDuration,
+    soundEnabled,
+    soundVolume,
+    detailSection,
+  ]);
 
   useEffect(() => {
     if (!isHistoryOpen) return;
@@ -325,6 +364,27 @@ function App() {
   const selectAll = () => setSelectedCategories([...WEAPON_CATEGORIES]);
   const clearAll = () => setSelectedCategories([]);
 
+  const playLotterySound = useCallback(
+    (isFinal = false) => {
+      if (!soundEnabled) return;
+      const audio = isFinal ? resultAudioRef.current : rollAudioRef.current;
+      if (!audio) return;
+      audio.volume = soundVolume;
+      audio.currentTime = 0;
+      void audio.play().catch(() => {
+        // ブラウザの自動再生制限などで再生できない場合は無視する
+      });
+    },
+    [soundEnabled, soundVolume],
+  );
+
+  const stopLotteryRollSound = useCallback(() => {
+    const audio = rollAudioRef.current;
+    if (!audio) return;
+    audio.pause();
+    audio.currentTime = 0;
+  }, []);
+
   const handleDraw = useCallback(() => {
     if (isRolling) return;
     const makeResults = (): PlayerResult[] => {
@@ -341,17 +401,18 @@ function App() {
         weapon: drawnWeapons[index] ?? null,
       }));
     };
-    if (!animationEnabled) {
+    if (!animationEnabled || animationDuration <= 0) {
       const newResults = makeResults();
       setResults(newResults);
       saveHistory(newResults);
+      if (animationEnabled && animationDuration <= 0) playLotterySound(true);
       return;
     }
     setIsRolling(true);
-    rollingTimerRef.current = window.setInterval(
-      () => setResults(makeResults()),
-      80,
-    );
+    playLotterySound();
+    rollingTimerRef.current = window.setInterval(() => {
+      setResults(makeResults());
+    }, 80);
     window.setTimeout(() => {
       if (rollingTimerRef.current)
         window.clearInterval(rollingTimerRef.current);
@@ -359,6 +420,8 @@ function App() {
       const newResults = makeResults();
       setResults(newResults);
       saveHistory(newResults);
+      stopLotteryRollSound();
+      playLotterySound(true);
       setIsRolling(false);
     }, animationDuration);
   }, [
@@ -372,6 +435,8 @@ function App() {
     saveHistory,
     selectedCategories,
     selectedSubspecies,
+    playLotterySound,
+    stopLotteryRollSound,
   ]);
 
   const restoreHistory = (item: LotteryHistory) => {
@@ -1256,6 +1321,36 @@ function App() {
               onChange={setAnimationEnabled}
             />
           </div>
+          <div className="mt-2 flex items-center justify-between rounded-lg bg-slate-800 px-3 py-3 text-sm text-slate-200">
+            <span className={`flex items-center gap-2 ${!animationEnabled ? "text-slate-500" : "text-slate-200"}`}>
+              <span>{t("enableLotterySound")}</span>
+              <a href="https://soundeffect-lab.info/" target="_blank" rel="noreferrer" className="text-[11px] font-normal text-slate-400 underline decoration-slate-600 underline-offset-2 hover:text-[#FEFD4A]">{t("soundSource")}</a>
+            </span>
+            <DetailToggle
+              checked={soundEnabled}
+              onChange={setSoundEnabled}
+              disabled={!animationEnabled}
+            />
+          </div>
+          {soundEnabled && (
+            <div className="mt-2 rounded-lg bg-slate-800 px-3 py-3">
+              <div className="mb-2 flex items-center justify-between text-sm text-slate-200">
+                <span>{t("soundVolume")}</span>
+                <span className="font-number font-bold text-[#FEFD4A]">
+                  {Math.round(soundVolume * 100)}%
+                </span>
+              </div>
+              <input
+                type="range"
+                min="0"
+                max="1"
+                step="0.05"
+                value={soundVolume}
+                onChange={(event) => setSoundVolume(Number(event.target.value))}
+                className="h-2 w-full cursor-ew-resize appearance-none rounded-full bg-slate-600 accent-[#FEFD4A] [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-slate-900 [&::-webkit-slider-thumb]:bg-[#FEFD4A]"
+              />
+            </div>
+          )}
           <div className="mt-2 rounded-lg bg-slate-800 px-3 py-3">
             <div className="mb-2 flex items-center justify-between text-sm text-slate-200">
               <span
@@ -1273,7 +1368,7 @@ function App() {
             </div>
             <input
               type="range"
-              min="100"
+              min="0"
               max="3000"
               step="100"
               value={animationDuration}

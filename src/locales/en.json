@@ -74,5 +74,8 @@
   "animationDuration": "Animation duration",
   "showTemplatePlayers": "Show players",
   "renameTemplate": "Rename template",
-  "rolling": "Drawing..."
+  "rolling": "Drawing...",
+  "enableLotterySound": "Play lottery animation sounds",
+  "soundVolume": "Volume",
+  "soundSource": "Sound source: Sound Effect Lab(JP)"
 }
