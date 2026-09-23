@@ -765,7 +765,7 @@ function App() {
         <div className="space-y-2 max-h-47 overflow-y-auto pr-1.5 custom-scrollbar">
           {players.map((player, index) => (
             <div key={player.id} className="flex items-center gap-2">
-              <span className="text-xs font-bold text-slate-500 w-6 text-right font-result">
+              <span className="text-xs font-bold text-slate-500 w-6 text-right font-number">
                 #{index + 1}
               </span>
               <input
@@ -773,7 +773,7 @@ function App() {
                 value={player.name}
                 onChange={(e) => updatePlayerName(player.id, e.target.value)}
                 placeholder={`${t("player")} ${index + 1}`}
-                className="flex-1 bg-slate-900/90 border border-slate-700 rounded-xl px-3 py-1.5 text-sm text-white focus:outline-none focus:border-[#FEFD4A] font-result transition-colors"
+                className="min-w-0 flex-1 bg-slate-900/90 border border-slate-700 rounded-xl px-3 py-1.5 text-sm text-white focus:outline-none focus:border-[#FEFD4A] font-result transition-colors"
               />
               {players.length > 1 && (
                 <button
@@ -829,9 +829,9 @@ function App() {
               title={t("redrawWeapon", {
                 name: player.name || `プレイヤー${index + 1}`,
               })}
-              className="lg:hidden p-1.5 rounded-xl bg-slate-700/60 hover:bg-[#FEFD4A] hover:text-slate-900 text-slate-300 transition active:scale-90 cursor-pointer shrink-0"
+              className="lg:hidden flex h-10 w-10 items-center justify-center rounded-xl bg-slate-700/60 p-2 hover:bg-[#FEFD4A] hover:text-slate-900 text-slate-300 transition active:scale-90 cursor-pointer shrink-0"
             >
-              <lucideReact.RotateCcw className="w-4 h-4" />
+              <lucideReact.RotateCcw className="h-5 w-5" />
             </button>
           </div>
 
@@ -881,10 +881,10 @@ function App() {
 
   return (
     <div
-      className={`h-screen bg-slate-900 text-white flex flex-col overflow-hidden ${language === "ja" ? "font-app-ja" : "font-app-en"}`}
+      className={`h-screen min-h-0 bg-slate-900 text-white flex flex-col overflow-hidden supports-[height:100dvh]:h-dvh ${language === "ja" ? "font-app-ja" : "font-app-en"}`}
     >
       {/* ヘッダー */}
-      <header className="h-14 border-b border-slate-800 px-4 flex items-center justify-between shrink-0 bg-slate-900/90 backdrop-blur z-10">
+      <header className="sticky top-0 z-40 flex h-14 shrink-0 items-center justify-between border-b border-slate-800 bg-slate-900/95 px-4 backdrop-blur">
         <div className="flex items-center gap-3">
           {/* 左ペイン開閉ボタン */}
           <button
@@ -1141,12 +1141,12 @@ function App() {
       <div className="flex lg:hidden flex-1 overflow-hidden relative flex-col">
         {results.length === 0 ? (
           // 【抽選前】：全面に設定画面を表示
-          <div className="flex-1 overflow-y-auto custom-scrollbar p-4 pb-28 space-y-4">
+          <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain custom-scrollbar p-4 pb-40 space-y-4">
             {renderSettings()}
           </div>
         ) : (
           // 【抽選後】：全面に結果リストを表示
-          <div className="flex-1 overflow-y-auto custom-scrollbar p-4 pb-28">
+          <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain custom-scrollbar p-4 pb-40">
             <div className="flex items-center justify-between mb-4 pb-2 border-b border-slate-800">
               <span className="text-xs font-bold text-slate-400 font-result">
                 {t("drawResults")} ({results.length}
