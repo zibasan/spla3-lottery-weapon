@@ -435,7 +435,7 @@ function App() {
       context.roundRect(56, y + 12, 270, 48, 12);
       context.fill();
       context.fillStyle = "#ffffff";
-      context.font = `700 22px ${imageFont}, sans-serif`;
+      context.font = `700 22px 'Google Sans Code', 'LINE Seed JP', sans-serif`;
       context.fillText(
         `#${index + 1} ${player.name || `${t("player")} ${index + 1}`}`,
         74,
@@ -446,7 +446,25 @@ function App() {
       context.fillText(weapon?.category ?? t("none"), 350, y + 31);
       context.fillStyle = "#ffffff";
       context.font = `700 24px 'LINE Seed JP', sans-serif`;
-      context.fillText(weapon?.name ?? t("noMatchWeapons"), 350, y + 57);
+      const weaponName = weapon?.name ?? t("noMatchWeapons");
+      context.fillText(weaponName, 350, y + 57);
+      if (weapon?.ruby) {
+        const rubyIndex = weaponName.indexOf(weapon.ruby.target);
+        if (rubyIndex >= 0) {
+          const prefixWidth = context.measureText(
+            weaponName.slice(0, rubyIndex),
+          ).width;
+          const targetWidth = context.measureText(weapon.ruby.target).width;
+          context.font = `600 12px 'LINE Seed JP', sans-serif`;
+          context.fillStyle = "#FEFD4A";
+          const rubyWidth = context.measureText(weapon.ruby.text).width;
+          context.fillText(
+            weapon.ruby.text,
+            350 + prefixWidth + (targetWidth - rubyWidth) / 2,
+            y + 72,
+          );
+        }
+      }
     });
 
     const link = document.createElement("a");
