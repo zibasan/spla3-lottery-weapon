@@ -3,6 +3,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { SiGithub } from "react-icons/si";
 import { Group, Panel, Separator, usePanelRef } from "react-resizable-panels";
+import packageJson from "../package.json";
 import {
   SUBSPECIES_TYPE_LABELS,
   SUBSPECIES_TYPES,
@@ -926,6 +927,9 @@ function App() {
           >
             {t("title")}
           </h1>
+          <span className="rounded-full border border-[#6A46FE]/60 bg-[#6A46FE]/20 px-2 py-0.5 text-[10px] font-bold tracking-wide text-[#FEFD4A] font-number select-none">
+            v{packageJson.version}
+          </span>
         </div>
         <div className="flex items-center gap-2">
           <div
