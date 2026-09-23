@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.10.1](https://github.com/zibasan/spla3-lottery-weapon/compare/v0.10.0...v0.10.1) (2026-09-23)
+
+
+### Bug Fixes
+
+* 全選択/全解除ボタンの挙動を調整 ([eef7958](https://github.com/zibasan/spla3-lottery-weapon/commit/eef79587d44d83e1ab9096470c35820b1cd78098))
+
 ## 0.10.0 (2026-09-23)
 
 
