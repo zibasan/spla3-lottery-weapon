@@ -737,14 +737,16 @@ function App() {
             <button
               type="button"
               onClick={selectAll}
-              className="text-slate-400 hover:text-[#FEFD4A] underline cursor-pointer"
+              className="text-slate-400 hover:text-[#FEFD4A] enabled:underline cursor-pointer transition disabled:text-slate-600 disabled:cursor-not-allowed"
+              disabled={selectedCategories.length === 11}
             >
               {t("selectAll")}
             </button>
             <button
               type="button"
               onClick={clearAll}
-              className="text-slate-400 hover:text-[#FEFD4A] underline cursor-pointer"
+              className="text-slate-400 hover:text-[#FEFD4A] enabled:underline cursor-pointer transition disabled:text-slate-600 disabled:cursor-not-allowed"
+              disabled={selectedCategories.length === 0}
             >
               {t("clearAll")}
             </button>
@@ -782,14 +784,16 @@ function App() {
               <button
                 type="button"
                 onClick={() => setSelectedSubspecies([...SUBSPECIES_TYPES])}
-                className="text-slate-400 hover:text-[#FEFD4A] underline cursor-pointer"
+                className="text-slate-400 hover:text-[#FEFD4A] cursor-pointer enabled:underline transition disabled:text-slate-600 disabled:cursor-not-allowed"
+                disabled={selectedSubspecies.length === 6}
               >
                 {t("selectAll")}
               </button>
               <button
                 type="button"
                 onClick={() => setSelectedSubspecies([])}
-                className="text-slate-400 hover:text-[#FEFD4A] underline cursor-pointer"
+                className="text-slate-400 hover:text-[#FEFD4A] cursor-pointer enabled:underline transition disabled:text-slate-600 disabled:cursor-not-allowed"
+                disabled={selectedSubspecies.length === 0}
               >
                 {t("clearAll")}
               </button>
