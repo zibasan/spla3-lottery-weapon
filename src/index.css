@@ -23,10 +23,18 @@
   font-family: var(--font-app-en);
 }
 
-.font-app-ja .font-result { font-family: var(--font-result-ja); }
-.font-app-en .font-result { font-family: var(--font-result-en); }
-.font-app-ja .font-button { font-family: var(--font-button-ja); }
-.font-app-en .font-button { font-family: var(--font-button-en); }
+.font-app-ja .font-result {
+  font-family: var(--font-result-ja);
+}
+.font-app-en .font-result {
+  font-family: var(--font-result-en);
+}
+.font-app-ja .font-button {
+  font-family: var(--font-button-ja);
+}
+.font-app-en .font-button {
+  font-family: var(--font-button-en);
+}
 
 body {
   font-family: "Zen Kaku Gothic New", sans-serif;

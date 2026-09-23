@@ -9,7 +9,7 @@
     "lint": "bun biome lint ./src",
     "lint@fix": "bun biome lint ./src --write",
     "format": "bun biome format ./src --write",
-    "check": "bun biome lint ./src",
+    "check": "bun biome check ./src",
     "check@fix": "bun biome lint ./src --write",
     "preview": "vite preview"
   },

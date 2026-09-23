@@ -57,5 +57,22 @@
   "saveImageDesc": "結果を画像として保存",
   "redrawWeapon": "{{name}}のブキを再抽選",
   "closeMenu": "閉じる",
-  "closeHistory": "履歴を閉じる"
+  "closeHistory": "履歴を閉じる",
+  "detailsSettings": "詳細設定",
+  "other": "その他",
+  "excludedWeapons": "除外するブキ",
+  "clearExcluded": "除外を全解除",
+  "excludedCount": "{{count}}件除外中",
+  "playerTemplates": "プレイヤーテンプレート",
+  "templateNamePlaceholder": "テンプレート名（任意）",
+  "saveTemplate": "保存",
+  "noTemplates": "テンプレートはありません",
+  "template": "テンプレート",
+  "deleteTemplate": "テンプレートを削除",
+  "lotteryAnimation": "抽選演出",
+  "enableAnimation": "抽選演出を有効にする",
+  "animationDuration": "演出の長さ",
+  "showTemplatePlayers": "登録プレイヤーを表示",
+  "renameTemplate": "テンプレート名を変更",
+  "rolling": "抽選中..."
 }
