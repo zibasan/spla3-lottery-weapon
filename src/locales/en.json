@@ -57,5 +57,22 @@
   "saveImageDesc": "Save result as an image",
   "redrawWeapon": "Redraw {{name}}'s weapon",
   "closeMenu": "Close",
-  "closeHistory": "Close history"
+  "closeHistory": "Close history",
+  "detailsSettings": "Advanced settings",
+  "other": "Other",
+  "excludedWeapons": "Excluded Weapons",
+  "clearExcluded": "Clear Exclusions",
+  "excludedCount": "{{count}} excluded",
+  "playerTemplates": "Player Templates",
+  "templateNamePlaceholder": "Template Name (optional)",
+  "saveTemplate": "Save",
+  "noTemplates": "No templates",
+  "template": "Template",
+  "deleteTemplate": "Delete template",
+  "lotteryAnimation": "Lottery Animation",
+  "enableAnimation": "Enable lottery animation",
+  "animationDuration": "Animation duration",
+  "showTemplatePlayers": "Show players",
+  "renameTemplate": "Rename template",
+  "rolling": "Drawing..."
 }

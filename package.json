@@ -1,7 +1,7 @@
 {
   "name": "spla3-lottery-weapon",
-  "private": true,
-  "version": "1.0.0",
+  "private": true
+  "version": "0.9.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -9,7 +9,7 @@
     "lint": "bun biome lint ./src",
     "lint@fix": "bun biome lint ./src --write",
     "format": "bun biome format ./src --write",
-    "check": "bun biome lint ./src",
+    "check": "bun biome check ./src",
     "check@fix": "bun biome lint ./src --write",
     "preview": "vite preview"
   },
