@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.11.0](https://github.com/zibasan/spla3-lottery-weapon/compare/v0.10.1...v0.11.0) (2026-09-24)
+
+
+### Features
+
+* プレイヤーリストをブラウザに保存できるようにした ([7d97bdc](https://github.com/zibasan/spla3-lottery-weapon/commit/7d97bdcf65d90785b63d8450edef4a1152a1262b))
+* 共有リンクを生成して抽選結果などを共有できるようにした ([8f162d6](https://github.com/zibasan/spla3-lottery-weapon/commit/8f162d640b27ddf209f89002bfd2e259aff635f9))
+* 抽選演出時に音を鳴らせるようにした ([fdc08c4](https://github.com/zibasan/spla3-lottery-weapon/commit/fdc08c4083ae2ef4e8e414eefc66d85039aff17f))
+
 ## [0.10.1](https://github.com/zibasan/spla3-lottery-weapon/compare/v0.10.0...v0.10.1) (2026-09-23)
 
 
