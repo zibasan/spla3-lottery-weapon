@@ -85,13 +85,14 @@ function App() {
   const [animationDuration, setAnimationDuration] = useState(1200);
   const [soundEnabled, setSoundEnabled] = useState(false);
   const [soundVolume, setSoundVolume] = useState(0.7);
+  const [persistPlayers, setPersistPlayers] = useState(false);
   const [isRolling, setIsRolling] = useState(false);
   const [expandedTemplateIds, setExpandedTemplateIds] = useState<string[]>([]);
   const [_editingTemplateId, _setEditingTemplateId] = useState<string | null>(
     null,
   );
   const [detailSection, setDetailSection] = useState<
-    "excluded" | "templates" | "animation"
+    "excluded" | "players" | "templates" | "animation"
   >("excluded");
   const language = i18n.language === "en" ? "en" : "ja";
   const [shareFormat, setShareFormat] = useState<"markdown" | "plain">(
@@ -124,7 +125,9 @@ function App() {
           animationDuration: number;
           soundEnabled: boolean;
           soundVolume: number;
-          detailSection: "excluded" | "templates" | "animation";
+          detailSection: "excluded" | "players" | "templates" | "animation";
+          persistPlayers: boolean;
+          savedPlayers: Player[];
         }>;
         setExcludedWeapons(settings.excludedWeapons ?? []);
         setTemplates(settings.templates ?? []);
@@ -133,6 +136,10 @@ function App() {
         setSoundEnabled(settings.soundEnabled ?? false);
         setSoundVolume(settings.soundVolume ?? 0.7);
         setDetailSection(settings.detailSection ?? "excluded");
+        setPersistPlayers(settings.persistPlayers ?? false);
+        if (settings.persistPlayers && Array.isArray(settings.savedPlayers) && settings.savedPlayers.length > 0) {
+          setPlayers(settings.savedPlayers);
+        }
       }
       detailSettingsLoadedRef.current = true;
       const shareParam = new URLSearchParams(window.location.search).get(
@@ -195,6 +202,8 @@ function App() {
           soundEnabled,
           soundVolume,
           detailSection,
+          persistPlayers,
+          savedPlayers: persistPlayers ? players : undefined,
         }),
       );
     }, 0);
@@ -207,6 +216,8 @@ function App() {
     soundEnabled,
     soundVolume,
     detailSection,
+    persistPlayers,
+    players,
   ]);
 
   useEffect(() => {
@@ -1215,6 +1226,7 @@ function App() {
       <nav className="hidden w-56 shrink-0 border-r border-slate-800 bg-slate-950/30 p-3 lg:block">
         {[
           ["excluded", t("excludedWeapons")],
+          ["players", t("playerLists")],
           ["templates", t("playerTemplates")],
           ["animation", t("lotteryAnimation")],
         ].map(([value, label]) => (
@@ -1222,7 +1234,7 @@ function App() {
             key={value}
             type="button"
             onClick={() =>
-              setDetailSection(value as "excluded" | "templates" | "animation")
+              setDetailSection(value as "excluded" | "players" | "templates" | "animation")
             }
             className={`mb-1 w-full rounded-xl px-3 py-2 text-left text-sm font-bold cursor-pointer transition ${detailSection === value ? "bg-[#6A46FE] text-white" : "text-slate-400 hover:bg-slate-800 hover:text-white"}`}
           >
@@ -1280,6 +1292,10 @@ function App() {
               );
             })}
           </div>
+        </section>
+        <section className={detailSection === "players" ? "" : "hidden"}>
+          <h3 className="mb-2 font-bold text-white">{t("playerLists")}</h3>
+          <div className="flex items-center justify-between rounded-lg bg-slate-800 px-3 py-3 text-sm text-slate-200"><span>{t("savePlayers")}</span><DetailToggle checked={persistPlayers} onChange={setPersistPlayers} /></div>
         </section>
         <section className={detailSection === "templates" ? "" : "hidden"}>
           <h3 className="mb-2 font-bold text-white">{t("playerTemplates")}</h3>
@@ -1668,7 +1684,7 @@ function App() {
               type="button"
               aria-expanded={isLanguageMenuOpen}
               onClick={() => setIsLanguageMenuOpen((open) => !open)}
-              className="flex items-center gap-1 rounded-xl p-2 text-xs font-bold text-slate-300 transition hover:bg-slate-700 hover:text-white cursor-pointer font-button"
+              className="flex h-9 min-h-9 items-center gap-1 rounded-xl px-2 text-xs font-bold text-slate-300 transition hover:bg-slate-700 hover:text-white cursor-pointer font-button"
             >
               <lucideReact.Globe2 className="h-5 w-5 lg:hidden" />
               <span className="hidden lg:inline">
@@ -2020,6 +2036,7 @@ function App() {
                     setDetailSection(
                       event.target.value as
                         | "excluded"
+                        | "players"
                         | "templates"
                         | "animation",
                     )
@@ -2027,6 +2044,7 @@ function App() {
                   className="rounded-lg border border-slate-700 bg-slate-800 px-2 py-1 text-xs text-slate-200 outline-none lg:hidden"
                 >
                   <option value="excluded">{t("excludedWeapons")}</option>
+                  <option value="players">{t("playerLists")}</option>
                   <option value="templates">{t("playerTemplates")}</option>
                   <option value="animation">{t("lotteryAnimation")}</option>
                 </select>

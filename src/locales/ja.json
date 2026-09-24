@@ -81,5 +81,7 @@
   "shareMenu": "共有メニュー",
   "shareLink": "リンクを共有",
   "copyShareLink": "共有リンクをコピー",
-  "shareDescription": "抽選条件と結果を共有"
+  "shareDescription": "抽選条件と結果を共有",
+  "savePlayers": "プレイヤーリストをブラウザに保存",
+  "playerLists": "プレイヤーリスト"
 }
