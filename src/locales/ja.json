@@ -77,5 +77,9 @@
   "rolling": "抽選中...",
   "enableLotterySound": "抽選演出の音を鳴らす",
   "soundVolume": "音量",
-  "soundSource": "音源: 効果音ラボ"
+  "soundSource": "音源: 効果音ラボ",
+  "shareMenu": "共有メニュー",
+  "shareLink": "リンクを共有",
+  "copyShareLink": "共有リンクをコピー",
+  "shareDescription": "抽選条件と結果を共有"
 }

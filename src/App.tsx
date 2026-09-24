@@ -31,6 +31,16 @@ function App() {
     players: Player[];
   }
 
+  interface SharePayload {
+    categories: WeaponCategory[];
+    subspecies: SubspeciesType[];
+    allowDuplicates: boolean;
+    rule: "random" | "categoryRandom" | "variety";
+    players: Player[];
+    results: PlayerResult[];
+    excludedWeapons?: string[];
+  }
+
   interface LotteryHistory {
     id: string;
     createdAt: string;
@@ -62,6 +72,8 @@ function App() {
   const [isImageSaving, setIsImageSaving] = useState<boolean>(false);
   const [history, setHistory] = useState<LotteryHistory[]>([]);
   const [isHistoryOpen, setIsHistoryOpen] = useState<boolean>(false);
+  const [isShareMenuOpen, setIsShareMenuOpen] = useState(false);
+  const [isShareCopied, setIsShareCopied] = useState(false);
   const [isGithubMenuOpen, setIsGithubMenuOpen] = useState<boolean>(false);
   const [isLanguageMenuOpen, setIsLanguageMenuOpen] = useState<boolean>(false);
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
@@ -89,6 +101,8 @@ function App() {
   const historyButtonRef = useRef<HTMLButtonElement>(null);
   const historyMenuRef = useRef<HTMLDivElement>(null);
   const historySheetRef = useRef<HTMLDivElement>(null);
+  const shareButtonRef = useRef<HTMLDivElement>(null);
+  const shareMenuRef = useRef<HTMLDivElement>(null);
   const githubButtonRef = useRef<HTMLDivElement>(null);
   const githubMenuRef = useRef<HTMLDivElement>(null);
   const languageButtonRef = useRef<HTMLDivElement>(null);
@@ -121,6 +135,29 @@ function App() {
         setDetailSection(settings.detailSection ?? "excluded");
       }
       detailSettingsLoadedRef.current = true;
+      const shareParam = new URLSearchParams(window.location.search).get(
+        "share",
+      );
+      if (shareParam) {
+        try {
+          const shared = JSON.parse(
+            decodeURIComponent(shareParam),
+          ) as SharePayload;
+          if (Array.isArray(shared.players) && Array.isArray(shared.results)) {
+            setSelectedCategories(shared.categories ?? [...WEAPON_CATEGORIES]);
+            setSelectedSubspecies(shared.subspecies ?? [...SUBSPECIES_TYPES]);
+            setAllowDuplicates(shared.allowDuplicates ?? false);
+            setLotteryRule(shared.rule ?? "random");
+            setPlayers(shared.players);
+            setResults(shared.results);
+            setExcludedWeapons(shared.excludedWeapons ?? []);
+            const cleanUrl = `${window.location.pathname}${window.location.hash}`;
+            window.history.replaceState({}, "", cleanUrl);
+          }
+        } catch {
+          // 不正な共有URLは通常起動として扱う
+        }
+      }
       const saved = localStorage.getItem("spla3-lottery-history");
       if (saved) {
         setHistory(JSON.parse(saved) as LotteryHistory[]);
@@ -191,6 +228,22 @@ function App() {
     return () =>
       document.removeEventListener("pointerdown", handleOutsidePointerDown);
   }, [isHistoryOpen]);
+
+  useEffect(() => {
+    if (!isShareMenuOpen) return;
+    const handleOutsidePointerDown = (event: PointerEvent) => {
+      const target = event.target as Node;
+      if (
+        shareButtonRef.current?.contains(target) ||
+        shareMenuRef.current?.contains(target)
+      )
+        return;
+      setIsShareMenuOpen(false);
+    };
+    document.addEventListener("pointerdown", handleOutsidePointerDown);
+    return () =>
+      document.removeEventListener("pointerdown", handleOutsidePointerDown);
+  }, [isShareMenuOpen]);
 
   useEffect(() => {
     if (!isGithubMenuOpen) return;
@@ -532,6 +585,45 @@ function App() {
       return `## ${t("resultTitleLong")} \n\n${lines.join("\n")}`;
     }
     return `${t("resultTitleLong")}\n${lines.join("\n")}`;
+  };
+
+  const createShareUrl = () => {
+    const payload: SharePayload = {
+      categories: selectedCategories,
+      subspecies: selectedSubspecies,
+      allowDuplicates,
+      rule: lotteryRule,
+      players,
+      results,
+      excludedWeapons,
+    };
+    return `${window.location.origin}${window.location.pathname}?share=${encodeURIComponent(JSON.stringify(payload))}`;
+  };
+
+  const handleShareLink = async () => {
+    const url = createShareUrl();
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: t("title"),
+          text: t("shareDescription"),
+          url,
+        });
+        setIsShareMenuOpen(false);
+        return;
+      } catch {
+        // キャンセル時はメニューを開いたままにする
+      }
+    }
+    await navigator.clipboard.writeText(url);
+    setIsShareCopied(true);
+    window.setTimeout(() => setIsShareCopied(false), 2000);
+  };
+
+  const handleCopyShareLink = async () => {
+    await navigator.clipboard.writeText(createShareUrl());
+    setIsShareCopied(true);
+    window.setTimeout(() => setIsShareCopied(false), 2000);
   };
 
   // クリップボードへコピー
@@ -1322,9 +1414,18 @@ function App() {
             />
           </div>
           <div className="mt-2 flex items-center justify-between rounded-lg bg-slate-800 px-3 py-3 text-sm text-slate-200">
-            <span className={`flex items-center gap-2 ${!animationEnabled ? "text-slate-500" : "text-slate-200"}`}>
+            <span
+              className={`flex items-center gap-2 ${!animationEnabled ? "text-slate-500" : "text-slate-200"}`}
+            >
               <span>{t("enableLotterySound")}</span>
-              <a href="https://soundeffect-lab.info/" target="_blank" rel="noreferrer" className="text-[11px] font-normal text-slate-400 underline decoration-slate-600 underline-offset-2 hover:text-[#FEFD4A]">{t("soundSource")}</a>
+              <a
+                href="https://soundeffect-lab.info/"
+                target="_blank"
+                rel="noreferrer"
+                className="text-[11px] font-normal text-slate-400 underline decoration-slate-600 underline-offset-2 hover:text-[#FEFD4A]"
+              >
+                {t("soundSource")}
+              </a>
             </span>
             <DetailToggle
               checked={soundEnabled}
@@ -1523,6 +1624,41 @@ function App() {
                 </div>
               )}
             </div>
+          </div>
+          <div ref={shareButtonRef} className="relative">
+            <button
+              type="button"
+              aria-expanded={isShareMenuOpen}
+              onClick={() => setIsShareMenuOpen((open) => !open)}
+              title={t("shareMenu")}
+              className="rounded-xl border border-slate-700 bg-slate-800 p-2 text-slate-300 transition hover:bg-slate-700 hover:text-white cursor-pointer"
+            >
+              <lucideReact.Share2 className="h-5 w-5" />
+              <span className="sr-only">{t("shareMenu")}</span>
+            </button>
+            {isShareMenuOpen && (
+              <div
+                ref={shareMenuRef}
+                className="absolute right-0 top-11 z-50 w-56 rounded-xl border border-slate-700 bg-slate-900 p-1.5 shadow-2xl"
+              >
+                <button
+                  type="button"
+                  onClick={handleShareLink}
+                  className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-xs font-bold text-slate-300 cursor-pointer transition hover:bg-[#6A46FE] hover:text-white"
+                >
+                  <lucideReact.Share2 className="h-4 w-4" />
+                  {t("shareLink")}
+                </button>
+                <button
+                  type="button"
+                  onClick={handleCopyShareLink}
+                  className={`flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-xs font-bold cursor-pointer transition hover:bg-[#6A46FE] hover:text-white ${isShareCopied ? "text-emerald-400" : "text-slate-300"}`}
+                >
+                  <lucideReact.Copy className="h-4 w-4" />
+                  {isShareCopied ? t("copied") : t("copyShareLink")}
+                </button>
+              </div>
+            )}
           </div>
           <div
             ref={languageButtonRef}
