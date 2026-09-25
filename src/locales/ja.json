@@ -84,5 +84,28 @@
   "shareDescription": "抽選条件と結果を共有",
   "savePlayers": "プレイヤーリストをブラウザに保存",
   "playerLists": "プレイヤーリスト",
-  "languageSettings": "言語設定"
+  "languageSettings": "言語設定",
+  "weaponCategories": {
+    "シューター": "シューター",
+    "ローラー": "ローラー",
+    "チャージャー": "チャージャー",
+    "ブラスター": "ブラスター",
+    "フデ": "フデ",
+    "スロッシャー": "スロッシャー",
+    "スピナー": "スピナー",
+    "マニューバー": "マニューバー",
+    "シェルター": "シェルター",
+    "ワイパー": "ワイパー",
+    "ストリンガー": "ストリンガー"
+  },
+  "subspeciesCategories": {
+    "colab&custom": "カスタム・コラボ",
+    "bankara": "バンカラコレクション",
+    "hero": "ヒーロー",
+    "octo": "オクタ",
+    "order": "オーダー",
+    "pet": "スプラトゥーン レイダース"
+  },
+  "weaponCandiateAmount": "{{count}}ブキ",
+  "version": "バージョン"
 }

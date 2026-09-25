@@ -84,5 +84,28 @@
   "shareDescription": "Share lottery settings and results",
   "savePlayers": "Save the player list to the browser",
   "playerLists": "Player list",
-  "languageSettings": "Language"
+  "languageSettings": "Language",
+  "weaponCategories": {
+    "シューター": "Shooters",
+    "ローラー": "Rollers",
+    "チャージャー": "Chargers",
+    "ブラスター": "Blasters",
+    "フデ": "Brushes",
+    "スロッシャー": "Sloshers",
+    "スピナー": "Splatlings",
+    "マニューバー": "Dualies",
+    "シェルター": "Brellas",
+    "ワイパー": "Splatanas",
+    "ストリンガー": "Stringers"
+  },
+  "subspeciesCategories": {
+    "colab&custom": "Colab, Neo, etc.",
+    "bankara": "Splatlands Collection",
+    "hero": "Hero Shot Repl.",
+    "octo": "Octo Shot Repl.",
+    "order": "Order weapons",
+    "pet": "Plastic-Bottle Shot Repl."
+  },
+  "weaponCandiateAmount": "{{count}} weapons",
+  "version": "Version"
 }

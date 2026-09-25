@@ -1530,7 +1530,7 @@ function App() {
           >
             {t("title")}
           </h1>
-          <span className="rounded-full border border-[#6A46FE]/60 bg-[#6A46FE]/20 px-2 py-0.5 text-[10px] font-bold tracking-wide text-[#FEFD4A] font-number select-none">
+          <span className="hidden rounded-full border border-[#6A46FE]/60 bg-[#6A46FE]/20 px-2 py-0.5 text-[10px] font-bold tracking-wide text-[#FEFD4A] font-number select-none lg:inline-flex">
             v{packageJson.version}
           </span>
         </div>
@@ -1554,6 +1554,7 @@ function App() {
             </button>
             {isOtherMenuOpen && (
               <div className="absolute right-0 top-11 z-50 w-44 rounded-xl border border-slate-700 bg-slate-900 p-1.5 shadow-2xl">
+                <div className="mb-1 flex items-center justify-between border-b border-slate-800 px-3 pb-2 text-[10px] font-bold text-slate-500"><span>{t("version")}</span><span className="rounded-full border border-[#6A46FE]/60 bg-[#6A46FE]/20 px-2 py-0.5 text-[#FEFD4A] font-number">v{packageJson.version}</span></div>
                 <button
                   type="button"
                   onClick={() => {
