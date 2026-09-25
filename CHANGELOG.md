@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.11.1](https://github.com/zibasan/spla3-lottery-weapon/compare/v0.11.0...v0.11.1) (2026-09-25)
+
+
+### Bug Fixes
+
+* Service Workerが古いキャッシュを保持し続ける問題を修正 ([c69a05c](https://github.com/zibasan/spla3-lottery-weapon/commit/c69a05c075ca0c87fabeadcf9c422a08457b3872))
+
 ## [0.11.0](https://github.com/zibasan/spla3-lottery-weapon/compare/v0.10.1...v0.11.0) (2026-09-24)
 
 
