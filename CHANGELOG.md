@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.11.2](https://github.com/zibasan/spla3-lottery-weapon/compare/v0.11.1...v0.11.2) (2026-09-25)
+
+
+### Bug Fixes
+
+* スマホレイアウトのとき、ブキ名の文字をスクロールできないようにした ([e88426e](https://github.com/zibasan/spla3-lottery-weapon/commit/e88426e44aea4f556ab996758dd82fe45043966b))
+* スマホレイアウトのボタンを整理した ([1900de1](https://github.com/zibasan/spla3-lottery-weapon/commit/1900de17680d198746c18af21fb028ca613f8e49))
+
 ## [0.11.1](https://github.com/zibasan/spla3-lottery-weapon/compare/v0.11.0...v0.11.1) (2026-09-25)
 
 
