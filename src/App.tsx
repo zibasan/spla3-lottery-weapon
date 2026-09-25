@@ -1581,6 +1581,10 @@ function App() {
                 >
                   {t("bugReport")}
                 </a>
+                <div className="my-1 border-t border-slate-800 pt-1">
+                  <span className="block px-3 py-1 text-[10px] font-bold uppercase text-slate-500">{t("languageSettings")}</span>
+                  {([["ja", t("japanese")], ["en", t("english")]] as const).map(([value, label]) => <button key={value} type="button" onClick={() => { i18n.changeLanguage(value); localStorage.setItem("spla3-language", value); setIsOtherMenuOpen(false); }} className="flex w-full items-center justify-between rounded-lg px-3 py-2 text-left text-xs font-bold text-slate-300 hover:bg-[#6A46FE] hover:text-white"><span>{label}</span>{language === value && <lucideReact.Check className="h-4 w-4 text-[#FEFD4A]" />}</button>)}
+                </div>
               </div>
             )}
           </div>
@@ -1678,7 +1682,7 @@ function App() {
           </div>
           <div
             ref={languageButtonRef}
-            className="relative rounded-xl border border-slate-700 bg-slate-800"
+            className="relative hidden rounded-xl border border-slate-700 bg-slate-800 lg:block"
           >
             <button
               type="button"
@@ -2038,7 +2042,7 @@ function App() {
                         | "excluded"
                         | "players"
                         | "templates"
-                        | "animation",
+                        | "animation"
                     )
                   }
                   className="rounded-lg border border-slate-700 bg-slate-800 px-2 py-1 text-xs text-slate-200 outline-none lg:hidden"

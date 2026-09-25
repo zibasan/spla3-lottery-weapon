@@ -83,5 +83,6 @@
   "copyShareLink": "Copy share link",
   "shareDescription": "Share lottery settings and results",
   "savePlayers": "Save the player list to the browser",
-  "playerLists": "Player list"
+  "playerLists": "Player list",
+  "languageSettings": "Language"
 }
