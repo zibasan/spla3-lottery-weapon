@@ -17,7 +17,13 @@ createRoot(rootElement).render(
 );
 
 if ("serviceWorker" in navigator && import.meta.env.PROD) {
+  let reloadedForServiceWorker = false;
+  navigator.serviceWorker.addEventListener("controllerchange", () => {
+    if (reloadedForServiceWorker) return;
+    reloadedForServiceWorker = true;
+    window.location.reload();
+  });
   window.addEventListener("load", () => {
-    navigator.serviceWorker.register("/sw.js");
+    navigator.serviceWorker.register("/sw.js", { updateViaCache: "none" });
   });
 }
