@@ -137,7 +137,11 @@ function App() {
         setSoundVolume(settings.soundVolume ?? 0.7);
         setDetailSection(settings.detailSection ?? "excluded");
         setPersistPlayers(settings.persistPlayers ?? false);
-        if (settings.persistPlayers && Array.isArray(settings.savedPlayers) && settings.savedPlayers.length > 0) {
+        if (
+          settings.persistPlayers &&
+          Array.isArray(settings.savedPlayers) &&
+          settings.savedPlayers.length > 0
+        ) {
           setPlayers(settings.savedPlayers);
         }
       }
@@ -894,14 +898,14 @@ function App() {
     <>
       {/* カテゴリ絞り込み */}
       <section className="bg-slate-800/80 border border-slate-700 rounded-2xl p-5 lg:p-6 shadow-xl">
-        <div className="flex items-center justify-between mb-3">
-          <span className="text-sm font-bold text-slate-300 flex items-center gap-1.5 select-none">
+        <div className="mb-3 flex items-center justify-between gap-3">
+          <span className="flex min-w-0 flex-1 flex-wrap items-center gap-1.5 text-sm font-bold text-slate-300 select-none">
             <span>{t("categoryFilter")}</span>
-            <span className="text-xs font-normal text-[#FEFD4A] bg-[#FEFD4A]/10 px-2 py-0.5 rounded-full">
-              {availableWeaponCount}種
+            <span className="whitespace-nowrap text-xs text-[#FEFD4A] bg-[#FEFD4A]/10 px-2 py-0.5 rounded-full font-bold">
+              {t("weaponCandiateAmount", { count: availableWeaponCount })}
             </span>
           </span>
-          <div className="space-x-3 text-xs font-button">
+          <div className="flex shrink-0 items-center gap-3 text-xs font-button">
             <button
               type="button"
               onClick={selectAll}
@@ -936,7 +940,7 @@ function App() {
                     : "bg-[#6A46FE] text-white hover:bg-[#6A46FE] hover:text-white"
                 }`}
               >
-                {category}
+                {t(`weaponCategories.${category}`)}
               </button>
             );
           })}
@@ -945,7 +949,7 @@ function App() {
         {/* 亜種フィルター */}
         <div className="mt-5 pt-4 border-t border-slate-700/60">
           <div className="flex items-center justify-between mb-2.5">
-            <span className="text-xs font-bold text-slate-300 select-none">
+            <span className="text-sm font-bold text-slate-300 select-none">
               {t("subspeciesFilter")}
             </span>
             <div className="space-x-3 text-xs font-button">
@@ -981,7 +985,7 @@ function App() {
                       : "bg-[#6A46FE] text-white hover:bg-[#6A46FE] hover:text-white"
                   }`}
                 >
-                  {SUBSPECIES_TYPE_LABELS[subspecies]}
+                  {t(`subspeciesCategories.${subspecies}`)}
                 </button>
               );
             })}
@@ -1234,7 +1238,9 @@ function App() {
             key={value}
             type="button"
             onClick={() =>
-              setDetailSection(value as "excluded" | "players" | "templates" | "animation")
+              setDetailSection(
+                value as "excluded" | "players" | "templates" | "animation",
+              )
             }
             className={`mb-1 w-full rounded-xl px-3 py-2 text-left text-sm font-bold cursor-pointer transition ${detailSection === value ? "bg-[#6A46FE] text-white" : "text-slate-400 hover:bg-slate-800 hover:text-white"}`}
           >
@@ -1295,7 +1301,13 @@ function App() {
         </section>
         <section className={detailSection === "players" ? "" : "hidden"}>
           <h3 className="mb-2 font-bold text-white">{t("playerLists")}</h3>
-          <div className="flex items-center justify-between rounded-lg bg-slate-800 px-3 py-3 text-sm text-slate-200"><span>{t("savePlayers")}</span><DetailToggle checked={persistPlayers} onChange={setPersistPlayers} /></div>
+          <div className="flex items-center justify-between rounded-lg bg-slate-800 px-3 py-3 text-sm text-slate-200">
+            <span>{t("savePlayers")}</span>
+            <DetailToggle
+              checked={persistPlayers}
+              onChange={setPersistPlayers}
+            />
+          </div>
         </section>
         <section className={detailSection === "templates" ? "" : "hidden"}>
           <h3 className="mb-2 font-bold text-white">{t("playerTemplates")}</h3>
@@ -1583,8 +1595,31 @@ function App() {
                   {t("bugReport")}
                 </a>
                 <div className="my-1 border-t border-slate-800 pt-1">
-                  <span className="block px-3 py-1 text-[10px] font-bold uppercase text-slate-500">{t("languageSettings")}</span>
-                  {([["ja", t("japanese")], ["en", t("english")]] as const).map(([value, label]) => <button key={value} type="button" onClick={() => { i18n.changeLanguage(value); localStorage.setItem("spla3-language", value); setIsOtherMenuOpen(false); }} className="flex w-full items-center justify-between rounded-lg px-3 py-2 text-left text-xs font-bold text-slate-300 hover:bg-[#6A46FE] hover:text-white"><span>{label}</span>{language === value && <lucideReact.Check className="h-4 w-4 text-[#FEFD4A]" />}</button>)}
+                  <span className="block px-3 py-1 text-[10px] font-bold uppercase text-slate-500">
+                    {t("languageSettings")}
+                  </span>
+                  {(
+                    [
+                      ["ja", t("japanese")],
+                      ["en", t("english")],
+                    ] as const
+                  ).map(([value, label]) => (
+                    <button
+                      key={value}
+                      type="button"
+                      onClick={() => {
+                        i18n.changeLanguage(value);
+                        localStorage.setItem("spla3-language", value);
+                        setIsOtherMenuOpen(false);
+                      }}
+                      className="flex w-full items-center justify-between rounded-lg px-3 py-2 text-left text-xs font-bold text-slate-300 hover:bg-[#6A46FE] hover:text-white"
+                    >
+                      <span>{label}</span>
+                      {language === value && (
+                        <lucideReact.Check className="h-4 w-4 text-[#FEFD4A]" />
+                      )}
+                    </button>
+                  ))}
                 </div>
               </div>
             )}
@@ -2043,7 +2078,7 @@ function App() {
                         | "excluded"
                         | "players"
                         | "templates"
-                        | "animation"
+                        | "animation",
                     )
                   }
                   className="rounded-lg border border-slate-700 bg-slate-800 px-2 py-1 text-xs text-slate-200 outline-none lg:hidden"
