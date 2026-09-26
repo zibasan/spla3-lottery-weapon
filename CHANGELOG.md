@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.12.2](https://github.com/zibasan/spla3-lottery-weapon/compare/v0.12.1...v0.12.2) (2026-09-26)
+
+
+### Bug Fixes
+
+* 英語のときコピーした結果テキストのブキ名が日本語表記になっていた問題を修正 ([0b8d885](https://github.com/zibasan/spla3-lottery-weapon/commit/0b8d885f902a647eb5d26a068a9b8480130e6ad8))
+* 英語のとき除外ブキのブキ名が日本語表記になっていた問題を修正 ([6206a37](https://github.com/zibasan/spla3-lottery-weapon/commit/6206a37051b9d0776f64215b74892d22d905710b))
+
 ## [0.12.1](https://github.com/zibasan/spla3-lottery-weapon/compare/v0.12.0...v0.12.1) (2026-09-26)
 
 
