@@ -712,10 +712,19 @@ function App() {
       );
       context.fillStyle = "#FEFD4A";
       context.font = `700 18px ${imageFont}, sans-serif`;
-      context.fillText(weapon?.category ?? t("none"), 350, y + 31);
+      context.fillText(
+        t(`weaponCategories.${weapon?.category}`) ?? t("none"),
+        350,
+        y + 31,
+      );
       context.fillStyle = "#ffffff";
-      context.font = `700 24px 'LINE Seed JP', sans-serif`;
-      const weaponName = weapon?.name ?? t("noMatchWeapons");
+      context.font =
+        language === "ja"
+          ? `700 24px 'LINE Seed JP', sans-serif`
+          : `700 24px 'Inter', sans-serif`;
+      const weaponName =
+        (language === "ja" ? weapon?.name : weapon?.nameEn) ??
+        t("noMatchWeapons");
       context.fillText(weaponName, 350, y + 57);
       if (weapon?.ruby) {
         const rubyIndex = weaponName.indexOf(weapon.ruby.target);
@@ -866,6 +875,14 @@ function App() {
     weapon: LotteryWeapon;
     muted?: boolean;
   }) {
+    if (language === "en") {
+      return (
+        <span className={`inline-block ${muted ? "text-slate-500" : ""}`}>
+          {weapon.nameEn}
+        </span>
+      );
+    }
+
     if (!weapon.ruby) {
       return (
         <span className={`inline-block ${muted ? "text-slate-500" : ""}`}>
@@ -1131,7 +1148,7 @@ function App() {
               onClick={() => handleRedrawSingle(player.id)}
               disabled={isRolling}
               title={t("redrawWeapon", {
-                name: player.name || `プレイヤー${index + 1}`,
+                name: player.name || `${t("player")} ${index + 1}`,
               })}
               className="lg:hidden flex h-10 w-10 items-center justify-center rounded-xl bg-slate-700/60 p-2 hover:bg-[#FEFD4A] hover:text-slate-900 text-slate-300 transition active:scale-90 cursor-pointer shrink-0 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-slate-700/60 disabled:hover:text-slate-300"
             >
@@ -1147,7 +1164,7 @@ function App() {
                 <span
                   className={`text-[10px] lg:text-[11px] font-semibold px-2 lg:px-2.5 py-0.5 rounded-full font-result shrink-0 ${isRolling ? "bg-slate-700/50 text-slate-500" : "bg-yellow-400/20 text-yellow-300"}`}
                 >
-                  {weapon.category}
+                  {t(`weaponCategories.${weapon.category}`)}
                 </span>
 
                 {/* ブキ名 */}
@@ -1162,7 +1179,7 @@ function App() {
                   <span
                     className={`text-xs font-result shrink-0 ${isRolling ? "text-slate-500" : "text-slate-400"}`}
                   >
-                    ({SUBSPECIES_TYPE_LABELS[weapon.subspeciesType]})
+                    ({t(`subspeciesCategories.${weapon.subspeciesType}`)})
                   </span>
                 )}
               </div>
@@ -1566,7 +1583,12 @@ function App() {
             </button>
             {isOtherMenuOpen && (
               <div className="absolute right-0 top-11 z-50 w-44 rounded-xl border border-slate-700 bg-slate-900 p-1.5 shadow-2xl">
-                <div className="mb-1 flex items-center justify-between border-b border-slate-800 px-3 pb-2 text-[10px] font-bold text-slate-500"><span>{t("version")}</span><span className="rounded-full border border-[#6A46FE]/60 bg-[#6A46FE]/20 px-2 py-0.5 text-[#FEFD4A] font-number">v{packageJson.version}</span></div>
+                <div className="mb-1 flex items-center justify-between border-b border-slate-800 px-3 pb-2 text-[10px] font-bold text-slate-500">
+                  <span>{t("version")}</span>
+                  <span className="rounded-full border border-[#6A46FE]/60 bg-[#6A46FE]/20 px-2 py-0.5 text-[#FEFD4A] font-number">
+                    v{packageJson.version}
+                  </span>
+                </div>
                 <button
                   type="button"
                   onClick={() => {
