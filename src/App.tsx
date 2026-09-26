@@ -1286,7 +1286,7 @@ function App() {
           <p className="mb-3 text-sm text-slate-400">
             {t("excludedCount", { count: excludedWeapons.length })}
           </p>
-          <div className="grid grid-cols-2 gap-2 rounded-xl border border-slate-700 p-2">
+          <div className="grid max-h-132 grid-cols-3 gap-2 rounded-xl border border-slate-700 p-2 overflow-y-auto">
             {ALL_WEAPONS.map((weapon) => {
               const checked = excludedWeapons.includes(weapon.name);
               const limitReached =
@@ -1313,8 +1313,8 @@ function App() {
                       <lucideReact.Check className="h-3 w-3" strokeWidth={3} />
                     )}
                   </span>
-                  <span className="max-w-full overflow-hidden whitespace-normal wrap-break-word lg:truncate">
-                    {weapon.name}
+                  <span className="max-w-full overflow-hidden whitespace-normal wrap-break-word">
+                    {language === "ja" ? weapon.name : weapon.nameEn}
                   </span>
                 </button>
               );
