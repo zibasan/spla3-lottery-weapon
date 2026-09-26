@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.12.1](https://github.com/zibasan/spla3-lottery-weapon/compare/v0.12.0...v0.12.1) (2026-09-26)
+
+
+### Bug Fixes
+
+* 英語のとき履歴メニューのブキ名が日本語表記になっていた問題を修正 ([7efb141](https://github.com/zibasan/spla3-lottery-weapon/commit/7efb141b9deb74c608b3cb1cf1ead02534616ff9))
+
 ## [0.12.0](https://github.com/zibasan/spla3-lottery-weapon/compare/v0.11.2...v0.12.0) (2026-09-26)
 
 
