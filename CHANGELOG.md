@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.12.0](https://github.com/zibasan/spla3-lottery-weapon/compare/v0.11.2...v0.12.0) (2026-09-26)
+
+
+### Features
+
+* ブキ名の英語表記に対応 ([0138ef4](https://github.com/zibasan/spla3-lottery-weapon/commit/0138ef4c95bd9b5a4668fc3a299f845fa2bd8ece))
+
+
+### Bug Fixes
+
+* スマホレイアウトのバージョン表記を移動 ([85c7d95](https://github.com/zibasan/spla3-lottery-weapon/commit/85c7d95c6cf5c1ddae98dde5119e0387ba21f5b1))
+* ブキ名の英語表記を追加 ([b67a8ca](https://github.com/zibasan/spla3-lottery-weapon/commit/b67a8cac666071ef2722327de9f572059709301e))
+
 ## [0.11.2](https://github.com/zibasan/spla3-lottery-weapon/compare/v0.11.1...v0.11.2) (2026-09-25)
 
 
