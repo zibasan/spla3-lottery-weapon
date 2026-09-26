@@ -5,7 +5,6 @@ import { SiGithub } from "react-icons/si";
 import { Group, Panel, Separator, usePanelRef } from "react-resizable-panels";
 import packageJson from "../package.json";
 import {
-  SUBSPECIES_TYPE_LABELS,
   SUBSPECIES_TYPES,
   type SubspeciesType,
   WEAPON_CATEGORIES,
@@ -578,6 +577,7 @@ function App() {
 
   // シェア用テキストの生成
   const generateShareText = () => {
+    const shareLink = createShareUrl();
     if (results.length === 0) {
       return "";
     }
@@ -589,17 +589,20 @@ function App() {
           : `${pName}: ${t("none")}`;
       }
       const sub = weapon.subspeciesType
-        ? `・${SUBSPECIES_TYPE_LABELS[weapon.subspeciesType]}`
+        ? `・${t(`subspeciesCategories.${weapon.subspeciesType}`)}`
         : "";
+      const weaponName = language === "ja" ? weapon.name : weapon.nameEn;
+      const weaponCategoryName = t(`weaponCategories.${weapon.category}`);
+
       return shareFormat === "markdown"
-        ? `- **${pName}**：${weapon.name}（${weapon.category}${sub}）`
-        : `${pName}: ${weapon.name} (${weapon.category}${sub})`;
+        ? `- **${pName}**：${weaponName} (${weaponCategoryName}${sub})`
+        : `${pName}: ${weaponName} (${weaponCategoryName}${sub})`;
     });
 
     if (shareFormat === "markdown") {
-      return `## ${t("resultTitleLong")} \n\n${lines.join("\n")}`;
+      return `## ${t("resultTitleLong")}\n\n${lines.join("\n")}\n\n[結果と抽選条件を見る](${shareLink})`;
     }
-    return `${t("resultTitleLong")}\n${lines.join("\n")}`;
+    return `${t("resultTitleLong")}\n${lines.join("\n")}\n\n結果と抽選条件を見る: ${shareLink}`;
   };
 
   const createShareUrl = () => {
@@ -759,7 +762,7 @@ function App() {
         type="button"
         onClick={handleCopy}
         title={t("copyResultDesc")}
-        className="order-1 flex min-w-28 flex-1 items-center justify-center gap-1.5 whitespace-nowrap rounded-lg bg-slate-800 px-4 py-2 text-xs font-black text-slate-300 shadow-sm transition hover:bg-slate-700 active:scale-95 font-button cursor-pointer max-lg:w-fit max-lg:justify-self-end"
+        className="order-1 flex min-w-28 flex-1 items-center justify-center gap-1.5 whitespace-nowrap rounded-lg bg-slate-800 px-4 py-2 text-xs font-bold text-slate-300 shadow-sm transition hover:bg-slate-700 active:scale-95 font-button cursor-pointer max-lg:w-fit max-lg:justify-self-end"
       >
         {isCopied ? (
           <>
@@ -773,7 +776,7 @@ function App() {
         ) : (
           <>
             <lucideReact.Copy className="w-3.5 h-3.5 text-slate-400" />
-            <span className={language === "ja" ? "font-app-ja" : "font-app-ja"}>
+            <span className={language === "ja" ? "font-app-ja" : "font-app-en"}>
               {t("copyResult")}
             </span>
           </>
