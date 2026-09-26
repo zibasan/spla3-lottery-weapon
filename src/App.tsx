@@ -848,7 +848,12 @@ function App() {
             </span>
             <span className="block truncate text-xs font-bold text-white">
               {item.results
-                .map((result) => result.weapon?.name ?? t("none"))
+                .map(
+                  (result) =>
+                    (language === "ja"
+                      ? result.weapon?.name
+                      : result.weapon?.nameEn) ?? t("none"),
+                )
                 .join(" ／ ")}
             </span>
           </button>
