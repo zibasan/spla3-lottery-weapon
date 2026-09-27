@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.14.0](https://github.com/zibasan/spla3-lottery-weapon/compare/v0.13.0...v0.14.0) (2026-09-27)
+
+
+### Features
+
+* トークン方式を採用して共有リンクの文字数を削減した ([0395272](https://github.com/zibasan/spla3-lottery-weapon/commit/0395272412cdb4fade0ee7addb1a6374eb05390b))
+
+
+### Bug Fixes
+
+* 各種抽選ルールでの個別再抽選で、ルールが適用されない問題を修正 ([7a748c3](https://github.com/zibasan/spla3-lottery-weapon/commit/7a748c38d30eb561d4e619b710505b074e8e059a))
+
 ## [0.13.0](https://github.com/zibasan/spla3-lottery-weapon/compare/v0.12.2...v0.13.0) (2026-09-27)
 
 
