@@ -100,7 +100,7 @@
 2. **PC:** Choose the drawing conditions from the menu on the left.\
    **Smartphone:** Choose the drawing conditions from the displayed screen.
 
-3. Press `Draw weapons for N players!` to draw weapons.
+3. Press `Draw weapons for N players!` / `Draw!` to draw weapons.
 
 > [!TIP]
 > On PC, you can press Enter to draw when no button is focused.
