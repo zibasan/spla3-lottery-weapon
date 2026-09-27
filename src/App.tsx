@@ -11,6 +11,11 @@ import {
   type WeaponCategory,
 } from "./data/weapons";
 import { ALL_WEAPONS, drawWeapons, type LotteryWeapon } from "./utils/lottery";
+import {
+  decodeShareToken,
+  encodeShareToken,
+  type SharePayload,
+} from "./utils/share";
 
 function App() {
   const { t, i18n } = useTranslation();
@@ -28,16 +33,6 @@ function App() {
     id: string;
     name: string;
     players: Player[];
-  }
-
-  interface SharePayload {
-    categories: WeaponCategory[];
-    subspecies: SubspeciesType[];
-    allowDuplicates: boolean;
-    rule: "random" | "categoryRandom" | "variety";
-    players: Player[];
-    results: PlayerResult[];
-    excludedWeapons?: string[];
   }
 
   interface LotteryHistory {
@@ -112,6 +107,41 @@ function App() {
   const rollAudioRef = useRef<HTMLAudioElement | null>(null);
   const resultAudioRef = useRef<HTMLAudioElement | null>(null);
   const detailSettingsLoadedRef = useRef(false);
+  const shareUrlCacheRef = useRef(new Map<string, Promise<string>>());
+
+  /** 抽選条件＋結果から共有トークンURLを得る。同じペイロードは1回の生成に抑える */
+  const createShareUrl = useCallback((): Promise<string> => {
+    const payload: SharePayload = {
+      categories: selectedCategories,
+      subspecies: selectedSubspecies,
+      allowDuplicates,
+      rule: lotteryRule,
+      players,
+      results,
+      excludedWeapons,
+    };
+    const key = JSON.stringify(payload);
+    const cached = shareUrlCacheRef.current.get(key);
+    if (cached) return cached;
+    const promise = (async () => {
+      const origin = `${window.location.origin}${window.location.pathname}`;
+      return `${origin}?s=${await encodeShareToken(payload)}`;
+    })();
+    shareUrlCacheRef.current.set(key, promise);
+    if (shareUrlCacheRef.current.size > 50) {
+      const firstKey = shareUrlCacheRef.current.keys().next().value;
+      if (firstKey !== undefined) shareUrlCacheRef.current.delete(firstKey);
+    }
+    return promise;
+  }, [
+    selectedCategories,
+    selectedSubspecies,
+    allowDuplicates,
+    lotteryRule,
+    players,
+    results,
+    excludedWeapons,
+  ]);
 
   useEffect(() => {
     try {
@@ -145,32 +175,52 @@ function App() {
         }
       }
       detailSettingsLoadedRef.current = true;
-      const shareParam = new URLSearchParams(window.location.search).get(
-        "share",
-      );
-      if (shareParam) {
-        try {
-          const shared = JSON.parse(
-            decodeURIComponent(shareParam),
-          ) as SharePayload;
-          if (Array.isArray(shared.players) && Array.isArray(shared.results)) {
-            setSelectedCategories(shared.categories ?? [...WEAPON_CATEGORIES]);
-            setSelectedSubspecies(shared.subspecies ?? [...SUBSPECIES_TYPES]);
-            setAllowDuplicates(shared.allowDuplicates ?? false);
-            setLotteryRule(shared.rule ?? "random");
-            setPlayers(shared.players);
-            setResults(shared.results);
-            setExcludedWeapons(shared.excludedWeapons ?? []);
-            const cleanUrl = `${window.location.pathname}${window.location.hash}`;
-            window.history.replaceState({}, "", cleanUrl);
-          }
-        } catch {
-          // 不正な共有URLは通常起動として扱う
+      // 共有URLの復元（?s= トークン / ?share= 旧形式）
+      {
+        const params = new URLSearchParams(window.location.search);
+        const tokenParam = params.get("s");
+        const shareParam = params.get("share");
+        if (tokenParam || shareParam) {
+          void (async () => {
+            try {
+              let shared: SharePayload | null = null;
+              if (tokenParam) {
+                shared = await decodeShareToken(tokenParam);
+              } else if (shareParam) {
+                shared = JSON.parse(
+                  decodeURIComponent(shareParam),
+                ) as SharePayload;
+              }
+              if (shared && Array.isArray(shared.results)) {
+                const restoredPlayers =
+                  Array.isArray(shared.players) && shared.players.length > 0
+                    ? shared.players
+                    : shared.results.map((r) => r.player);
+                setSelectedCategories(
+                  shared.categories ?? [...WEAPON_CATEGORIES],
+                );
+                setSelectedSubspecies(
+                  shared.subspecies ?? [...SUBSPECIES_TYPES],
+                );
+                setAllowDuplicates(shared.allowDuplicates ?? false);
+                setLotteryRule(shared.rule ?? "random");
+                if (restoredPlayers.length > 0) {
+                  setPlayers(restoredPlayers);
+                }
+                setResults(shared.results);
+                setExcludedWeapons(shared.excludedWeapons ?? []);
+                const cleanUrl = `${window.location.pathname}${window.location.hash}`;
+                window.history.replaceState({}, "", cleanUrl);
+              }
+            } catch {
+              // 不正な共有URLは通常起動として扱う
+            }
+          })();
         }
-      }
-      const saved = localStorage.getItem("spla3-lottery-history");
-      if (saved) {
-        setHistory(JSON.parse(saved) as LotteryHistory[]);
+        const saved = localStorage.getItem("spla3-lottery-history");
+        if (saved) {
+          setHistory(JSON.parse(saved) as LotteryHistory[]);
+        }
       }
     } catch {
       // 保存データが壊れていてもアプリはそのまま利用できる
@@ -191,6 +241,18 @@ function App() {
       resultAudioRef.current = null;
     };
   }, []);
+
+  // 抽選結果がある場合、共有URLを事前生成しておく（共有操作を即座に完了させる）
+  useEffect(() => {
+    if (results.length === 0) return;
+    void createShareUrl();
+  }, [results, createShareUrl]);
+
+  // 共有メニューを開いたときも即座にURLを生成する
+  useEffect(() => {
+    if (!isShareMenuOpen || results.length === 0) return;
+    void createShareUrl();
+  }, [isShareMenuOpen, results, createShareUrl]);
 
   useEffect(() => {
     if (!detailSettingsLoadedRef.current) return;
@@ -512,6 +574,10 @@ function App() {
 
   const restoreHistory = (item: LotteryHistory) => {
     setResults(item.results);
+    const restoredPlayers = item.results.map((r) => r.player);
+    if (restoredPlayers.length > 0) {
+      setPlayers(restoredPlayers);
+    }
     setSelectedCategories(item.categories ?? [...WEAPON_CATEGORIES]);
     setSelectedSubspecies(item.subspecies ?? [...SUBSPECIES_TYPES]);
     setAllowDuplicates(item.allowDuplicates ?? false);
@@ -597,12 +663,10 @@ function App() {
     );
   };
 
-  // シェア用テキストの生成
-  const generateShareText = () => {
-    const shareLink = createShareUrl();
-    if (results.length === 0) {
-      return "";
-    }
+  // シェア用テキストの生成（共有URLは非同期で解決する）
+  const generateShareText = async () => {
+    if (results.length === 0) return "";
+    const shareLink = await createShareUrl();
     const lines = results.map(({ player, weapon }, index) => {
       const pName = player.name || `${t("player")} ${index + 1}`;
       if (!weapon) {
@@ -627,21 +691,8 @@ function App() {
     return `${t("resultTitleLong")}\n${lines.join("\n")}\n\n結果と抽選条件を見る: ${shareLink}`;
   };
 
-  const createShareUrl = () => {
-    const payload: SharePayload = {
-      categories: selectedCategories,
-      subspecies: selectedSubspecies,
-      allowDuplicates,
-      rule: lotteryRule,
-      players,
-      results,
-      excludedWeapons,
-    };
-    return `${window.location.origin}${window.location.pathname}?share=${encodeURIComponent(JSON.stringify(payload))}`;
-  };
-
   const handleShareLink = async () => {
-    const url = createShareUrl();
+    const url = await createShareUrl();
     if (navigator.share) {
       try {
         await navigator.share({
@@ -661,14 +712,14 @@ function App() {
   };
 
   const handleCopyShareLink = async () => {
-    await navigator.clipboard.writeText(createShareUrl());
+    await navigator.clipboard.writeText(await createShareUrl());
     setIsShareCopied(true);
     window.setTimeout(() => setIsShareCopied(false), 2000);
   };
 
   // クリップボードへコピー
   const handleCopy = async () => {
-    const text = generateShareText();
+    const text = await generateShareText();
     if (!text) {
       return;
     }
@@ -682,8 +733,8 @@ function App() {
   };
 
   // X（Twitter）でシェア
-  const handleShareTwitter = () => {
-    const text = generateShareText();
+  const handleShareTwitter = async () => {
+    const text = await generateShareText();
     if (!text) {
       return;
     }
