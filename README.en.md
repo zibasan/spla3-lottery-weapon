@@ -20,7 +20,7 @@
 </p>
 
 <p align="center">
-  🌐 <a href="README">日本語</a>・English
+  🌐 <a href="README.md">日本語</a>・English
 </p>
 
 <p align="center">

@@ -24,23 +24,17 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/zibasan/spla3-lottery-weapon/stargazers"><img alt="stars" src="https://img.shields.io/github/stars/zibasan/spla3-lottery-weapon?style=flat-square&logoColor=%23ffd700&color=%23ffd700&labelColor=23272e"></a>
-  <a href="https://github.com/zibasan/spla3-lottery-weapon/network/members"><img alt="forks" src="https://img.shields.io/github/forks/zibasan/spla3-lottery-weapon?style=flat-square&color=%2387ceeb&labelColor=23272e
-  "></a>
-  <a href="https://github.com/zibasan/spla3-lottery-weapon/releases"><img alt="releases" src="https://img.shields.io/github/v/release/zibasan/spla3-lottery-weapon?display_name=release&style=flat-square&color=%23e9967a&labelColor=23272e
-  "></a>
-  <a href="LICENSE"><img alt="license" src="https://img.shields.io/github/license/zibasan/spla3-lottery-weapon?style=flat-square&color=%2320b2aa
-  &labelColor=23272e"></a>
-  <a href="https://spla3-lottery-weapon.pages.dev/"><img src="https://img.shields.io/badge/%E3%82%A2%E3%83%97%E3%83%AA%E3%81%AF%E3%81%93%E3%81%A1%E3%82%89-CF%20Pages?style=flat-square&logo=cloudflarepages&labelColor=23272e&color=%234169e1
-  " alt="app" /></a>
+  <a href="https://github.com/zibasan/spla3-lottery-weapon/stargazers"><img alt="stars" src="https://img.shields.io/github/stars/zibasan/spla3-lottery-weapon?style=flat-square&logoColor=%23ffd700&color=%23ffd700&labelColor=23272e" /></a>
+  <a href="https://github.com/zibasan/spla3-lottery-weapon/network/members"><img alt="forks" src="https://img.shields.io/github/forks/zibasan/spla3-lottery-weapon?style=flat-square&color=%2387ceeb&labelColor=23272e" /></a>
+  <a href="https://github.com/zibasan/spla3-lottery-weapon/releases"><img alt="releases" src="https://img.shields.io/github/v/release/zibasan/spla3-lottery-weapon?display_name=release&style=flat-square&color=%23e9967a&labelColor=23272e" /></a>
+  <a href="LICENSE"><img alt="license" src="https://img.shields.io/github/license/zibasan/spla3-lottery-weapon?style=flat-square&color=%2320b2aa&labelColor=23272e" /></a>
+  <a href="https://spla3-lottery-weapon.pages.dev/"><img src="https://img.shields.io/badge/%E3%82%A2%E3%83%97%E3%83%AA%E3%81%AF%E3%81%93%E3%81%A1%E3%82%89-CF%20Pages?style=flat-square&logo=cloudflarepages&labelColor=23272e&color=%234169e1" alt="app" /></a>
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/React-v19-blue?style=flat-square&logo=react&labelColor=23272e
-  " alt="react"/>
+  <img src="https://img.shields.io/badge/React-v19-blue?style=flat-square&logo=react&labelColor=23272e" alt="react" />
   <img src="https://img.shields.io/badge/TypeScript-6.0.2-6495ed?style=flat-square&logo=typescript&labelColor=23272e" alt="typescript" />
-  <a href="https://github.com/zibasan/spla3-lottery-weapon/commits/main/"><img src="https://img.shields.io/github/last-commit/zibasan/spla3-lottery-weapon?style=flat-square&labelColor=23272e&color=da70d6
-  " alt="last commit" /></a>
+  <a href="https://github.com/zibasan/spla3-lottery-weapon/commits/main/"><img src="https://img.shields.io/github/last-commit/zibasan/spla3-lottery-weapon?style=flat-square&labelColor=23272e&color=da70d6" alt="last commit" /></a>
 </p>
 
 ---
