@@ -90,14 +90,10 @@
 
 > [!NOTE]
 > PCからアクセスしたときとスマホからアクセスしたときでレイアウトが変わります。
-> <figure>
->   <img src=".github/readme/overview.png" alt="PC Layout"/>
->   <figcaption align="center"><em>PC版</em></figcaption>
-> </figure>
-> <figure>
->   <img src=".github/readme/smartphone.png" alt="Smartphone Layout" height="350" />
->   <figcaption align="left"><em>スマホ版</em></figcaption>
-> </figure>
+> <h3 align="center">PC版</h3>
+> <img src=".github/readme/overview.png" alt="PC Layout"/>
+> <h3 align="center">スマホ版</h3>
+> <img src=".github/readme/smartphone.png" alt="Smartphone Layout" height="350" />
 
 1. **[アプリ](https://spla3-lottery-weapon.pages.dev/)** にアクセスします。
 

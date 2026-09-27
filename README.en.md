@@ -90,14 +90,10 @@
 
 > [!NOTE]
 > The layout changes depending on whether you access the app from a PC or a smartphone.
-> <figure>
->   <img src=".github/readme/overview_en.png" alt="PC Layout"/>
->   <figcaption align="center"><em>PC version</em></figcaption>
-> </figure>
-> <figure>
->   <img src=".github/readme/smartphone_en.png" alt="Smartphone Layout" height="350" />
->   <figcaption align="left"><em>Smartphone version</em></figcaption>
-> </figure>
+> <h3 align="center">PC Ver.</h3>
+> <img src=".github/readme/overview_en.png" alt="PC Layout"/>
+> <h3 align="center">Smartphone Ver.</h3>
+> <img src=".github/readme/smartphone_en.png" alt="Smartphone Layout" height="350" />
 
 1. Open the **[app](https://spla3-lottery-weapon.pages.dev/)**.
 
