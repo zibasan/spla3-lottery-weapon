@@ -107,5 +107,6 @@
     "pet": "Plastic-Bottle Shot Repl."
   },
   "weaponCandiateAmount": "{{count}} weapons",
-  "version": "Version"
+  "version": "Version",
+  "openReadme": "Open README"
 }

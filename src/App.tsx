@@ -319,6 +319,10 @@ function App() {
     document.documentElement.lang = language;
   }, [language]);
 
+  useEffect(() => {
+    document.title = t("title");
+  }, [t]);
+
   const saveHistory = useCallback(
     (newResults: PlayerResult[]) => {
       const nextHistory: LotteryHistory[] = [
@@ -1624,6 +1628,18 @@ function App() {
                 >
                   {t("bugReport")}
                 </a>
+                <a
+                  href={
+                    language === "ja"
+                      ? "https://github.com/zibasan/spla3-lottery-weapon/blob/main/README.md"
+                      : "https://github.com/zibasan/spla3-lottery-weapon/blob/main/README.en.md"
+                  }
+                  target="_blank"
+                  rel="noreferrer"
+                  className="block rounded-lg px-3 py-2 text-xs font-bold text-slate-300 hover:bg-[#6A46FE] hover:text-white"
+                >
+                  {t("openReadme")}
+                </a>
                 <div className="my-1 border-t border-slate-800 pt-1">
                   <span className="block px-3 py-1 text-[10px] font-bold uppercase text-slate-500">
                     {t("languageSettings")}
@@ -1706,6 +1722,18 @@ function App() {
                     className="block rounded-lg px-3 py-2 text-xs font-bold text-slate-300 transition hover:bg-[#6A46FE] hover:text-white"
                   >
                     {t("bugReport")}
+                  </a>
+                  <a
+                    href={
+                      language === "ja"
+                        ? "https://github.com/zibasan/spla3-lottery-weapon/blob/main/README.md"
+                        : "https://github.com/zibasan/spla3-lottery-weapon/blob/main/README.en.md"
+                    }
+                    target="_blank"
+                    rel="noreferrer"
+                    className="block rounded-lg px-3 py-2 text-xs font-bold text-slate-300 transition hover:bg-[#6A46FE] hover:text-white"
+                  >
+                    {t("openReadme")}
                   </a>
                 </div>
               )}

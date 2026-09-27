@@ -107,5 +107,6 @@
     "pet": "スプラトゥーン レイダース"
   },
   "weaponCandiateAmount": "{{count}}ブキ",
-  "version": "バージョン"
+  "version": "バージョン",
+  "openReadme": "READMEを開く"
 }
