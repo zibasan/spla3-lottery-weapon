@@ -238,12 +238,22 @@
 ## バグ報告・要望
 
 機能のリクエストや、このアプリに貢献してくれる方は、 **[Pull Request](https://github.com/zibasan/spla3-lottery-weapon/pulls) や [Issues](https://github.com/zibasan/spla3-lottery-weapon/issues)** でお気軽にお知らせください。\
-くわしくは **[こちら](CONTRIBUTING.md)** をご覧ください。
+くわしくは **[CONTRIBUTING.md](CONTRIBUTING.md)** をご覧ください。
 
 ## 現在のバージョン
 
 <a href="https://github.com/zibasan/spla3-lottery-weapon/releases"><img alt="releases" src="https://img.shields.io/github/v/release/zibasan/spla3-lottery-weapon?display_name=release&style=flat-square&color=%23e9967a&labelColor=23272e
   "></a>
+
+## 技術スタック
+
+- React
+
+- Vite
+
+- Tailwind CSS
+
+- TypeScript
 
 ## ライセンス
 

@@ -236,11 +236,21 @@ Press the settings button (↓) at the top to open the advanced settings.
 ## Contributing
 
 If you have a feature request or would like to contribute to this app, feel free to let us know through **[Pull Requests](https://github.com/zibasan/spla3-lottery-weapon/pulls) or [Issues](https://github.com/zibasan/spla3-lottery-weapon/issues)**.\
-For more information, please see **[CONTRIBUTING.md](CONTRIBUTING.md)**.
+For more information, please see **[CONTRIBUTING.md](CONTRIBUTING.en.md)**.
 
 ## Current Version
 
 <a href="https://github.com/zibasan/spla3-lottery-weapon/releases"><img alt="releases" src="https://img.shields.io/github/v/release/zibasan/spla3-lottery-weapon?display_name=release&style=flat-square&color=%23e9967a&labelColor=23272e"></a>
+
+## Tech Stacks
+
+- React
+
+- Vite
+
+- Tailwind CSS
+
+- TypeScript
 
 ## License
 
