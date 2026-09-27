@@ -242,8 +242,7 @@
 
 ## 現在のバージョン
 
-<a href="https://github.com/zibasan/spla3-lottery-weapon/releases"><img alt="releases" src="https://img.shields.io/github/v/release/zibasan/spla3-lottery-weapon?display_name=release&style=flat-square&color=%23e9967a&labelColor=23272e
-  "></a>
+<a href="https://github.com/zibasan/spla3-lottery-weapon/releases"><img alt="releases" src="https://img.shields.io/github/v/release/zibasan/spla3-lottery-weapon?display_name=release&style=flat-square&color=%23e9967a&labelColor=23272e"></a>
 
 ## 技術スタック
 
