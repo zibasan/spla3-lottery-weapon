@@ -544,7 +544,7 @@ function App() {
 
   // プレイヤーごとの個別再抽選
   const handleRedrawSingle = (playerId: string) => {
-    const pool = ALL_WEAPONS.filter((w) => {
+    let pool = ALL_WEAPONS.filter((w) => {
       if (!selectedCategories.includes(w.category)) {
         return false;
       }
@@ -555,12 +555,30 @@ function App() {
       return true;
     });
 
+    const otherResults = results.filter(
+      (r) => r.player.id !== playerId && r.weapon !== null,
+    );
+
+    // バラエティルールのときは、他のプレイヤーが使用しているカテゴリを除外
+    if (lotteryRule === "variety") {
+      const otherCategories = new Set(
+        otherResults.map((r) => r.weapon?.category),
+      );
+      pool = pool.filter((w) => !otherCategories.has(w.category));
+    }
+
+    // ブキ種抽演出（全員同一カテゴリ）ルールのときは、他プレイヤーが使用しているカテゴリに限定
+    if (lotteryRule === "categoryRandom") {
+      const currentCategory = otherResults[0]?.weapon?.category;
+      if (currentCategory) {
+        pool = pool.filter((w) => w.category === currentCategory);
+      }
+    }
+
     // 被りなし設定の場合は、他のプレイヤーが現在持っているブキを除外
     const otherAssignedNames = allowDuplicates
       ? []
-      : results
-          .filter((r) => r.player.id !== playerId && r.weapon !== null)
-          .map((r) => r.weapon?.name);
+      : otherResults.map((r) => r.weapon?.name);
 
     const availablePool = pool.filter(
       (w) => !otherAssignedNames.includes(w.name),
