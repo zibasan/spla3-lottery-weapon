@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.13.0](https://github.com/zibasan/spla3-lottery-weapon/compare/v0.12.2...v0.13.0) (2026-09-27)
+
+
+### Features
+
+* アプリから言語に応じたREADMEを開けるようにした ([9f95437](https://github.com/zibasan/spla3-lottery-weapon/commit/9f95437393ee72f45b7f70ac9731467135cb91a6))
+
+
+### Bug Fixes
+
+* 使用していない依存関係を削除 ([386851b](https://github.com/zibasan/spla3-lottery-weapon/commit/386851b972d30d7f3752e92fe2d4e2433f89c950))
+
 ## [0.12.2](https://github.com/zibasan/spla3-lottery-weapon/compare/v0.12.1...v0.12.2) (2026-09-26)
 
 
