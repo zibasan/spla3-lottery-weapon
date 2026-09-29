@@ -1,0 +1,44 @@
+name: Build and Release
+
+on:
+  release:
+    types: [published]
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ${{matrix.os}}
+
+    strategy:
+      matrix:
+        os: [windows-latest, macos-latest, ubuntu-latest]
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Test Build
+        if: github.event_name == 'pull_request'
+        run: bun run build
+
+      - name: Build & Publish Electron App
+        if: github.event_name == 'release'
+        run: bun run electron:build
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
