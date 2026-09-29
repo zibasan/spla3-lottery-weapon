@@ -1,6 +1,7 @@
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { app, BrowserWindow, shell } from "electron";
+import { t } from "i18next";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -14,7 +15,7 @@ function createWindow() {
     minWidth: 800,
     minHeight: 600,
     icon: path.join(__dirname, '../public/favicon.png'),
-    title: "ブキみくじ",
+    title: t("title"),
     titleBarStyle: "hidden",
     titleBarOverlay: {
       color: "#0f172b",
