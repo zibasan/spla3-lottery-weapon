@@ -25,3 +25,6 @@ dist-ssr
 
 docs/image/
 docs/progress.md
+
+# electron build
+dist-electron

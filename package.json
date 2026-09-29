@@ -4,6 +4,7 @@
   "version": "0.14.0",
   "type": "module",
   "license": "MIT",
+  "main": "dist-electron/main.js",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
@@ -12,7 +13,9 @@
     "format": "bun biome format ./src --write",
     "check": "bun biome check ./src",
     "check@fix": "bun biome check ./src --write",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "electron:dev": "cross-env ELECTRON=true vite",
+    "electron:build": "tsc -b && vite build && electron-builder"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.3.3",
@@ -35,8 +38,12 @@
     "@types/react-dom": "^19.2.7",
     "@vitejs/plugin-react": "^6.1.1",
     "babel-plugin-react-compiler": "^1.0.0",
+    "cross-env": "^10.1.0",
+    "electron": "^44.4.5",
+    "electron-builder": "^26.15.3",
     "globals": "^17.12.0",
     "typescript": "~6.0.2",
-    "vite": "^8.3.0"
+    "vite": "^8.3.0",
+    "vite-plugin-electron": "^1.1.2"
   }
 }
