@@ -23,6 +23,11 @@
     "directories": {
       "output": "release"
     },
+    "publish": {
+      "provider": "github",
+      "owner": "zibasan",
+      "repo": "spla3-lottery-weapon"
+    },
     "win": {
       "icon": "public/icon.ico"
     },
@@ -35,6 +40,7 @@
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.3.3",
+    "electron-updater": "^6.8.9",
     "i18next": "^26.4.2",
     "lucide-react": "^1.47.0",
     "react": "^19.2.8",

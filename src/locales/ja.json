@@ -108,5 +108,16 @@
   },
   "weaponCandiateAmount": "{{count}}ブキ",
   "version": "バージョン",
-  "openReadme": "READMEを開く"
+  "openReadme": "READMEを開く",
+  "appUpdates": "アップデート",
+  "checkForUpdates": "更新を確認",
+  "checkingForUpdates": "確認中...",
+  "updateAvailable": "更新あり (v{{version}})",
+  "updateReadyToDownload": "v{{version}} をダウンロード",
+  "downloadingUpdate": "ダウンロード中 ({{percent}}%)",
+  "updateDownloaded": "再起動して更新",
+  "updateNotAvailable": "最新バージョンです",
+  "autoDownloadUpdates": "アップデートを自動でダウンロード",
+  "updateError": "更新エラー"
 }
+

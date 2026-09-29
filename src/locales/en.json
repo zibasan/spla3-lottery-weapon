@@ -108,5 +108,16 @@
   },
   "weaponCandiateAmount": "{{count}} weapons",
   "version": "Version",
-  "openReadme": "Open README"
+  "openReadme": "Open README",
+  "appUpdates": "Updates",
+  "checkForUpdates": "Check for updates",
+  "checkingForUpdates": "Checking...",
+  "updateAvailable": "Update available (v{{version}})",
+  "updateReadyToDownload": "Download v{{version}}",
+  "downloadingUpdate": "Downloading ({{percent}}%)",
+  "updateDownloaded": "Restart to update",
+  "updateNotAvailable": "App is up to date",
+  "autoDownloadUpdates": "Automatically download updates",
+  "updateError": "Update error"
 }
+
