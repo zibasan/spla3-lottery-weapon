@@ -15,27 +15,62 @@
     "check@fix": "bun biome check ./src --write",
     "preview": "vite preview",
     "electron:dev": "cross-env ELECTRON=true vite",
-    "electron:build": "tsc -b && vite build && electron-builder"
+    "electron:build": "tsc -b && vite build && electron-builder",
+    "dist": "bun run electron:build",
+    "dist:win": "bun run build && electron-builder --win --x64 --arm64",
+    "dist:mac": "bun run build && electron-builder --mac --x64 --arm64",
+    "dist:linux": "bun run build && electron-builder --linux AppImage --x64"
   },
   "build": {
     "appId": "com.zibasan.weaponlottery",
-    "productName": "ブキみくじ",
+    "productName": "Weapon_Loterry",
+    "artifactName": "${productName}-Setup-${version}-${arch}.${ext}",
     "directories": {
-      "output": "release"
+      "output": "release/${version}"
     },
+    "files": [
+      "dist/**/*",
+      "dist-electron/**/*"
+    ],
     "publish": {
       "provider": "github",
       "owner": "zibasan",
       "repo": "spla3-lottery-weapon"
     },
     "win": {
-      "icon": "public/icon.ico"
+      "icon": "public/icon.ico",
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        }
+      ]
     },
     "mac": {
-      "icon": "public/icon.icns"
+      "icon": "public/icon.icns",
+      "target": [
+        {
+          "target": "default",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        }
+      ]
     },
     "linux": {
-      "icon": "public/icon.png"
+      "icon": "public/icon.png",
+      "target": [
+        {
+          "target": "AppImage",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
     }
   },
   "dependencies": {
