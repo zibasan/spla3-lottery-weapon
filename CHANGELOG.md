@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.15.1](https://github.com/zibasan/spla3-lottery-weapon/compare/v0.15.0...v0.15.1) (2026-09-29)
+
+
+### Bug Fixes
+
+* **ci:** BuildのActionに権限を付与 ([51e0703](https://github.com/zibasan/spla3-lottery-weapon/commit/51e07037636f617e2029382274cbe701e8cd1870))
+
 ## [0.15.0](https://github.com/zibasan/spla3-lottery-weapon/compare/v0.14.0...v0.15.0) (2026-09-29)
 
 
