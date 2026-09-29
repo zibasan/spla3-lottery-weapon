@@ -15,6 +15,12 @@ function createWindow() {
     minHeight: 600,
     icon: path.join(__dirname, '../public/favicon.png'),
     title: "ブキみくじ",
+    titleBarStyle: "hidden",
+    titleBarOverlay: {
+      color: "#00000000",
+      symbolColor: "#ffffff",
+      height: 32,
+    },
     autoHideMenuBar: true,
     webPreferences: {
       nodeIntegration: false,

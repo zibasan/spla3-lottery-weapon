@@ -109,6 +109,11 @@ function App() {
   const detailSettingsLoadedRef = useRef(false);
   const shareUrlCacheRef = useRef(new Map<string, Promise<string>>());
 
+  // Electron環境検出
+  const isElectron = navigator.userAgent.includes("Electron");
+  // macOS判定（ウィンドウコントロールの位置が左か右かの判断に使用）
+  const isMac = navigator.userAgent.includes("Macintosh");
+
   /** 抽選条件＋結果から共有トークンURLを得る。同じペイロードは1回の生成に抑える */
   const createShareUrl = useCallback((): Promise<string> => {
     const payload: SharePayload = {
@@ -1616,8 +1621,18 @@ function App() {
       className={`h-screen min-h-0 bg-slate-900 text-white flex flex-col overflow-hidden supports-[height:100dvh]:h-dvh ${language === "ja" ? "font-app-ja" : "font-app-en"}`}
     >
       {/* ヘッダー */}
-      <header className="sticky top-0 z-40 flex h-14 shrink-0 items-center justify-between border-b border-slate-800 bg-slate-900/95 px-4 backdrop-blur">
-        <div className="flex items-center gap-3">
+      <header
+        className="sticky top-0 z-40 flex h-14 shrink-0 items-center justify-between border-b border-slate-800 bg-slate-900/95 px-4 backdrop-blur"
+        style={isElectron ? { WebkitAppRegion: "drag" } as React.CSSProperties : undefined}
+      >
+        <div
+          className="flex items-center gap-3"
+          style={isElectron ? { WebkitAppRegion: "no-drag" } as React.CSSProperties : undefined}
+        >
+          {/* macOSのウィンドウコントロール（左側）のスペーサー */}
+          {isElectron && isMac && (
+            <div className="w-16 shrink-0" aria-hidden="true" />
+          )}
           {/* 左ペイン開閉ボタン */}
           <button
             type="button"
@@ -1644,7 +1659,10 @@ function App() {
             v{packageJson.version}
           </span>
         </div>
-        <div className="flex items-center gap-2">
+        <div
+          className="flex items-center gap-2"
+          style={isElectron ? { WebkitAppRegion: "no-drag" } as React.CSSProperties : undefined}
+        >
           <button
             type="button"
             onClick={() => setIsDetailsOpen(true)}
@@ -1931,6 +1949,10 @@ function App() {
               </div>
             )}
           </div>
+          {/* Windowsのウィンドウコントロール（右側）のスペーサー */}
+          {isElectron && !isMac && (
+            <div className="w-36 shrink-0" aria-hidden="true" />
+          )}
         </div>
       </header>
 
