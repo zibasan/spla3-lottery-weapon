@@ -13,6 +13,7 @@ function createWindow() {
     height: 800,
     minWidth: 800,
     minHeight: 600,
+    icon: path.join(__dirname, '../public/favicon.png'),
     title: "ブキみくじ",
     autoHideMenuBar: true,
     webPreferences: {

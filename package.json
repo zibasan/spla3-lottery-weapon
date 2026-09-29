@@ -17,6 +17,22 @@
     "electron:dev": "cross-env ELECTRON=true vite",
     "electron:build": "tsc -b && vite build && electron-builder"
   },
+  "build": {
+    "appId": "com.zibasan.weaponlottery",
+    "productName": "ブキみくじ",
+    "directories": {
+      "output": "release"
+    },
+    "win": {
+      "icon": "public/icon.ico"
+    },
+    "mac": {
+      "icon": "public/icon.icns"
+    },
+    "linux": {
+      "icon": "public/icon.png"
+    }
+  },
   "dependencies": {
     "@tailwindcss/vite": "^4.3.3",
     "i18next": "^26.4.2",
