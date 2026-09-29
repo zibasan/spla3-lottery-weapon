@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.15.0](https://github.com/zibasan/spla3-lottery-weapon/compare/v0.14.0...v0.15.0) (2026-09-29)
+
+
+### Features
+
+* デスクトップ版(Electron)アプリをリリース ([#14](https://github.com/zibasan/spla3-lottery-weapon/issues/14)) ([4c8f454](https://github.com/zibasan/spla3-lottery-weapon/commit/4c8f454313fe9eec8a0dc75f5c48d8c51a30272b))
+
 ## [0.14.0](https://github.com/zibasan/spla3-lottery-weapon/compare/v0.13.0...v0.14.0) (2026-09-27)
 
 
