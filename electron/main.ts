@@ -17,9 +17,9 @@ function createWindow() {
     title: "ブキみくじ",
     titleBarStyle: "hidden",
     titleBarOverlay: {
-      color: "#00000000",
+      color: "#0f172b",
       symbolColor: "#ffffff",
-      height: 32,
+      height: 50,
     },
     autoHideMenuBar: true,
     webPreferences: {
