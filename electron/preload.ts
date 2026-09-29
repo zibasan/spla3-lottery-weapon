@@ -17,6 +17,7 @@ export interface ElectronAPI {
   startDownload: () => Promise<void>;
   quitAndInstall: () => Promise<void>;
   setAutoDownload: (enabled: boolean) => Promise<void>;
+  simulateUpdate?: () => Promise<void>;
   onCheckingForUpdate: (callback: () => void) => () => void;
   onUpdateAvailable: (callback: (info: UpdateInfo) => void) => () => void;
   onUpdateNotAvailable: (callback: () => void) => () => void;
@@ -30,6 +31,7 @@ const electronAPI: ElectronAPI = {
   startDownload: () => ipcRenderer.invoke("start-download"),
   quitAndInstall: () => ipcRenderer.invoke("quit-and-install"),
   setAutoDownload: (enabled: boolean) => ipcRenderer.invoke("set-auto-download", enabled),
+  simulateUpdate: () => ipcRenderer.invoke("simulate-update"),
 
   onCheckingForUpdate: (callback) => {
     const listener = () => callback();

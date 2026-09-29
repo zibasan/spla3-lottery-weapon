@@ -1750,6 +1750,28 @@ function App() {
                   </button>
                 </div>
               )}
+
+              {/* 開発モード用シミュレーションテスト */}
+              {import.meta.env.DEV && (
+                <div className="mt-4 pt-3 border-t border-slate-700/60 flex items-center justify-between">
+                  <div className="flex flex-col">
+                    <span className="text-xs font-bold text-amber-400">🧪 アップデート動作テスト（Dev用）</span>
+                    <span className="text-[11px] text-slate-400">更新検知→ダウンロード→再起動のUIフローをシミュレーション</span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (window.electronAPI?.simulateUpdate) {
+                        window.electronAPI.simulateUpdate();
+                      }
+                    }}
+                    className="flex items-center gap-1 rounded-lg border border-amber-500/50 bg-amber-500/20 px-2.5 py-1.5 text-xs font-bold text-amber-300 hover:bg-amber-500 hover:text-slate-900 transition cursor-pointer"
+                  >
+                    <lucideReact.Play className="h-3.5 w-3.5" />
+                    <span>テスト実行</span>
+                  </button>
+                </div>
+              )}
             </div>
           </section>
         )}

@@ -108,6 +108,38 @@ autoUpdater.on("error", (err) => {
 });
 
 // ----------------------------------------------------
+// シミュレーション（開発用テスト）
+// ----------------------------------------------------
+let isSimulating = false;
+
+function simulateDownload() {
+  const steps = [10, 28, 48, 68, 85, 96, 100];
+  let index = 0;
+  const interval = setInterval(() => {
+    if (!mainWindow) {
+      clearInterval(interval);
+      return;
+    }
+    const percent = steps[index];
+    mainWindow.webContents.send("download-progress", {
+      percent,
+      bytesPerSecond: 1024 * 1024 * 3.2,
+      transferred: (1024 * 1024 * 45 * percent) / 100,
+      total: 1024 * 1024 * 45,
+    });
+    index++;
+    if (index >= steps.length) {
+      clearInterval(interval);
+      setTimeout(() => {
+        mainWindow?.webContents.send("update-downloaded", {
+          version: "0.15.0",
+        });
+      }, 500);
+    }
+  }, 350);
+}
+
+// ----------------------------------------------------
 // IPC ハンドラー
 // ----------------------------------------------------
 ipcMain.handle("check-for-updates", async () => {
@@ -119,7 +151,30 @@ ipcMain.handle("check-for-updates", async () => {
   }
 });
 
+ipcMain.handle("simulate-update", () => {
+  if (!mainWindow) return;
+  isSimulating = true;
+  mainWindow.webContents.send("checking-for-update");
+
+  setTimeout(() => {
+    mainWindow?.webContents.send("update-available", {
+      version: "0.15.0",
+      releaseNotes: "新機能テスト・バグ修正が含まれるアップデートです。",
+    });
+
+    if (autoUpdater.autoDownload) {
+      setTimeout(() => {
+        simulateDownload();
+      }, 800);
+    }
+  }, 600);
+});
+
 ipcMain.handle("start-download", async () => {
+  if (isSimulating) {
+    simulateDownload();
+    return;
+  }
   try {
     await autoUpdater.downloadUpdate();
   } catch (err: unknown) {
@@ -129,6 +184,11 @@ ipcMain.handle("start-download", async () => {
 });
 
 ipcMain.handle("quit-and-install", () => {
+  if (isSimulating) {
+    app.relaunch();
+    app.exit(0);
+    return;
+  }
   autoUpdater.quitAndInstall();
 });
 
