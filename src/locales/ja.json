@@ -118,6 +118,9 @@
   "updateDownloaded": "再起動して更新",
   "updateNotAvailable": "最新バージョンです",
   "autoDownloadUpdates": "アップデートを自動でダウンロード",
+  "updateCheckInterval": "自動更新確認の間隔",
+  "intervalHours": "{{count}}時間ごと",
+  "intervalDisabled": "無効（手動のみ）",
   "updateError": "更新エラー"
 }
 

@@ -126,11 +126,17 @@ function App() {
     const saved = localStorage.getItem("spla3-auto-download-updates");
     return saved !== null ? saved === "true" : true;
   });
+  const [updateCheckInterval, setUpdateCheckInterval] = useState<number>(() => {
+    if (typeof localStorage === "undefined") return 4;
+    const saved = localStorage.getItem("spla3-update-check-interval");
+    return saved !== null ? Number(saved) : 4;
+  });
 
   useEffect(() => {
     if (!window.electronAPI) return;
 
     window.electronAPI.setAutoDownload(autoDownloadUpdates);
+    window.electronAPI.setCheckInterval(updateCheckInterval);
 
     const unsubChecking = window.electronAPI.onCheckingForUpdate(() => {
       setUpdateStatus("checking");
@@ -169,7 +175,7 @@ function App() {
       unsubDownloaded();
       unsubError();
     };
-  }, [autoDownloadUpdates]);
+  }, [autoDownloadUpdates, updateCheckInterval]);
 
   /** 抽選条件＋結果から共有トークンURLを得る。同じペイロードは1回の生成に抑える */
   const createShareUrl = useCallback((): Promise<string> => {
@@ -1685,6 +1691,37 @@ function App() {
                     window.electronAPI?.setAutoDownload(checked);
                   }}
                 />
+              </div>
+
+              {/* 自動確認間隔スライダー */}
+              <div className="rounded-lg bg-slate-800 px-3 py-3">
+                <div className="mb-2 flex items-center justify-between text-sm text-slate-200">
+                  <span>{t("updateCheckInterval")}</span>
+                  <span className="font-number font-bold text-[#FEFD4A]">
+                    {updateCheckInterval === 0
+                      ? t("intervalDisabled")
+                      : t("intervalHours", { count: updateCheckInterval })}
+                  </span>
+                </div>
+                <input
+                  type="range"
+                  min="0"
+                  max="24"
+                  step="1"
+                  value={updateCheckInterval}
+                  onChange={(event) => {
+                    const hours = Number(event.target.value);
+                    setUpdateCheckInterval(hours);
+                    localStorage.setItem("spla3-update-check-interval", String(hours));
+                    window.electronAPI?.setCheckInterval(hours);
+                  }}
+                  className="h-2 w-full cursor-ew-resize appearance-none rounded-full bg-slate-600 accent-[#FEFD4A] [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-slate-900 [&::-webkit-slider-thumb]:bg-[#FEFD4A]"
+                />
+                <div className="mt-1 flex justify-between text-[10px] text-slate-500">
+                  <span>{t("intervalDisabled")}</span>
+                  <span>12h</span>
+                  <span>24h</span>
+                </div>
               </div>
 
               {/* 手動確認ボタンとステータス表示 */}

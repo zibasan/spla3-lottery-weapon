@@ -118,6 +118,9 @@
   "updateDownloaded": "Restart to update",
   "updateNotAvailable": "App is up to date",
   "autoDownloadUpdates": "Automatically download updates",
+  "updateCheckInterval": "Automatic check interval",
+  "intervalHours": "Every {{count}} hours",
+  "intervalDisabled": "Disabled (manual only)",
   "updateError": "Update error"
 }
 

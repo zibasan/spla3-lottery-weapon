@@ -197,16 +197,39 @@ ipcMain.handle("set-auto-download", (_event, enabled: boolean) => {
 });
 
 // ----------------------------------------------------
+// 定期アップデート確認タイマー
+// ----------------------------------------------------
+let updateIntervalTimer: NodeJS.Timeout | null = null;
+
+function scheduleUpdateCheck(hours: number) {
+  if (updateIntervalTimer) {
+    clearInterval(updateIntervalTimer);
+    updateIntervalTimer = null;
+  }
+  if (hours > 0 && !isDev) {
+    updateIntervalTimer = setInterval(() => {
+      autoUpdater.checkForUpdates().catch(() => {});
+    }, hours * 60 * 60 * 1000);
+  }
+}
+
+ipcMain.handle("set-check-interval", (_event, hours: number) => {
+  scheduleUpdateCheck(hours);
+});
+
+// ----------------------------------------------------
 // アプリライフサイクル
 // ----------------------------------------------------
 app.whenReady().then(() => {
   createWindow();
 
-  // 起動時に自動で更新を確認（本番環境または dev）
+  // 起動時に自動で更新を確認（本番環境）
   if (!isDev) {
     setTimeout(() => {
       autoUpdater.checkForUpdates().catch(() => {});
     }, 3000);
+    // デフォルト: 4時間ごとに定期確認
+    scheduleUpdateCheck(4);
   }
 
   app.on("activate", () => {

@@ -17,6 +17,7 @@ export interface ElectronAPI {
   startDownload: () => Promise<void>;
   quitAndInstall: () => Promise<void>;
   setAutoDownload: (enabled: boolean) => Promise<void>;
+  setCheckInterval: (hours: number) => Promise<void>;
   simulateUpdate?: () => Promise<void>;
   onCheckingForUpdate: (callback: () => void) => () => void;
   onUpdateAvailable: (callback: (info: UpdateInfo) => void) => () => void;
