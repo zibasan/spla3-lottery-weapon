@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.15.2](https://github.com/zibasan/spla3-lottery-weapon/compare/v0.15.1...v0.15.2) (2026-10-01)
+
+
+### Bug Fixes
+
+* Workflowのコードを修正 ([c9ddfe2](https://github.com/zibasan/spla3-lottery-weapon/commit/c9ddfe2ae865fe1d0c139dea6f7af778bcb5f4ad))
+
 ## [0.15.1](https://github.com/zibasan/spla3-lottery-weapon/compare/v0.15.0...v0.15.1) (2026-09-29)
 
 
