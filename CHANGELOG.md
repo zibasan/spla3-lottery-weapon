@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.15.4](https://github.com/zibasan/spla3-lottery-weapon/compare/v0.15.3...v0.15.4) (2026-10-01)
+
+
+### Bug Fixes
+
+* ビルドされたインストーラーがReleasesに添付されるように修正 ([8b0f080](https://github.com/zibasan/spla3-lottery-weapon/commit/8b0f0800ef328539b1fe3604645f7a639c08c15c))
+
 ## [0.15.3](https://github.com/zibasan/spla3-lottery-weapon/compare/v0.15.2...v0.15.3) (2026-10-01)
 
 
