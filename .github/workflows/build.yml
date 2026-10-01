@@ -1,6 +1,9 @@
 name: Build and Release
 
 on:
+  push:
+    tags:
+      - 'v*'
   release:
     types: [published]
   pull_request:
@@ -41,7 +44,7 @@ jobs:
         run: bun run build
 
       - name: Build & Publish Electron App
-        if: github.event_name == 'release'
+        if: github.event_name == 'push' || github.event_name == 'release' || github.event_name == 'workflow_dispatch'
         run: bun run electron:build
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
