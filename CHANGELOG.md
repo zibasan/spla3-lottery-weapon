@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.15.3](https://github.com/zibasan/spla3-lottery-weapon/compare/v0.15.2...v0.15.3) (2026-10-01)
+
+
+### Bug Fixes
+
+* スクリプトの環境変数を渡すように修正 ([fb89046](https://github.com/zibasan/spla3-lottery-weapon/commit/fb890462a0063bb6d12edd5b68527ea772195e6f))
+
 ## [0.15.2](https://github.com/zibasan/spla3-lottery-weapon/compare/v0.15.1...v0.15.2) (2026-10-01)
 
 
