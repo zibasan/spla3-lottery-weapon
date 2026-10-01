@@ -35,7 +35,8 @@
     "publish": {
       "provider": "github",
       "owner": "zibasan",
-      "repo": "spla3-lottery-weapon"
+      "repo": "spla3-lottery-weapon",
+      "releaseType": "release"
     },
     "win": {
       "icon": "public/icon.ico",
