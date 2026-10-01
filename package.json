@@ -15,7 +15,7 @@
     "check@fix": "bun biome check ./src --write",
     "preview": "vite preview",
     "electron:dev": "cross-env ELECTRON=true vite",
-    "electron:build": "tsc -b && vite build && electron-builder",
+    "electron:build": "cross-env ELECTRON=true bun run build && electron-builder",
     "dist": "bun run electron:build",
     "dist:win": "bun run build && electron-builder --win --x64 --arm64",
     "dist:mac": "bun run build && electron-builder --mac --x64 --arm64",
