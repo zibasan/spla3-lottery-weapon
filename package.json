@@ -39,7 +39,7 @@
       "releaseType": "release"
     },
     "win": {
-      "icon": "public/icon.ico",
+      "icon": "build/favicon.ico",
       "target": [
         {
           "target": "nsis",
@@ -51,7 +51,7 @@
       ]
     },
     "mac": {
-      "icon": "public/icon.icns",
+      "icon": "build/favicon.icns",
       "target": [
         {
           "target": "default",
@@ -63,7 +63,7 @@
       ]
     },
     "linux": {
-      "icon": "public/icon.png",
+      "icon": "build/favicon.png",
       "target": [
         {
           "target": "AppImage",
