@@ -23,7 +23,7 @@
   },
   "build": {
     "appId": "com.zibasan.weaponlottery",
-    "productName": "Weapon_Loterry",
+    "productName": "Weapon Loterry",
     "artifactName": "${productName}-Setup-${version}-${arch}.${ext}",
     "directories": {
       "output": "release/${version}"
@@ -49,6 +49,13 @@
           ]
         }
       ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "ブキみくじ / Weapon Loterry"
     },
     "mac": {
       "icon": "build/favicon.icns",
