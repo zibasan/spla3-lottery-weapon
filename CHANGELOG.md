@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.16.0](https://github.com/zibasan/spla3-lottery-weapon/compare/v0.15.4...v0.16.0) (2026-10-03)
+
+
+### Features
+
+* インストーラーに規約を追加、アプリ名などを反映 ([c6e3f8f](https://github.com/zibasan/spla3-lottery-weapon/commit/c6e3f8ffac8d2b0bdab2fa072dab08a278f6554e))
+* インストーラーをウィザード化 ([ddd68fb](https://github.com/zibasan/spla3-lottery-weapon/commit/ddd68fbc970ce1b4389e7e79d549fc7453995e88))
+* ポータブル版(インストール不要)のビルドを追加 ([be2ac72](https://github.com/zibasan/spla3-lottery-weapon/commit/be2ac720de3ff520cee8505bbf8278f75da24b86))
+
+
+### Bug Fixes
+
+* アプリアイコンのパス指定の修正 ([999f72f](https://github.com/zibasan/spla3-lottery-weapon/commit/999f72fc52ba3cb0510815c3d74c3fbd9fb1483d))
+* ヘッダーのアップデートボタンの見た目を調整 ([b4a1d0f](https://github.com/zibasan/spla3-lottery-weapon/commit/b4a1d0fdab640b87cd4be6d64aae903eaae05a4a))
+
 ## [0.15.4](https://github.com/zibasan/spla3-lottery-weapon/compare/v0.15.3...v0.15.4) (2026-10-01)
 
 
