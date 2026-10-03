@@ -110,22 +110,34 @@ function App() {
   const shareUrlCacheRef = useRef(new Map<string, Promise<string>>());
 
   // Electron環境検出
-  const isElectron = typeof window !== "undefined" && (navigator.userAgent.includes("Electron") || !!window.electronAPI);
+  const isElectron =
+    typeof window !== "undefined" &&
+    (navigator.userAgent.includes("Electron") || !!window.electronAPI);
+  const isPortable = window.electron.isPortable ?? false;
   // macOS判定（ウィンドウコントロールの位置が左か右かの判断に使用）
-  const isMac = typeof window !== "undefined" && navigator.userAgent.includes("Macintosh");
+  const isMac =
+    typeof window !== "undefined" && navigator.userAgent.includes("Macintosh");
 
   // アップデート関連State
   const [updateStatus, setUpdateStatus] = useState<
-    "idle" | "checking" | "available" | "downloading" | "downloaded" | "not-available" | "error"
+    | "idle"
+    | "checking"
+    | "available"
+    | "downloading"
+    | "downloaded"
+    | "not-available"
+    | "error"
   >("idle");
   const [updateVersion, setUpdateVersion] = useState<string | null>(null);
   const [downloadProgress, setDownloadProgress] = useState<number>(0);
   const [updateErrorMsg, setUpdateErrorMsg] = useState<string | null>(null);
-  const [autoDownloadUpdates, setAutoDownloadUpdates] = useState<boolean>(() => {
-    if (typeof localStorage === "undefined") return true;
-    const saved = localStorage.getItem("spla3-auto-download-updates");
-    return saved !== null ? saved === "true" : true;
-  });
+  const [autoDownloadUpdates, setAutoDownloadUpdates] = useState<boolean>(
+    () => {
+      if (typeof localStorage === "undefined") return true;
+      const saved = localStorage.getItem("spla3-auto-download-updates");
+      return saved !== null ? saved === "true" : true;
+    },
+  );
   const [updateCheckInterval, setUpdateCheckInterval] = useState<number>(() => {
     if (typeof localStorage === "undefined") return 4;
     const saved = localStorage.getItem("spla3-update-check-interval");
@@ -1399,14 +1411,19 @@ function App() {
           ["players", t("playerLists")],
           ["templates", t("playerTemplates")],
           ["animation", t("lotteryAnimation")],
-          ...(isElectron ? [["updates", t("appUpdates")]] : []),
+          ...(isElectron && !isPortable ? [["updates", t("appUpdates")]] : []),
         ].map(([value, label]) => (
           <button
             key={value}
             type="button"
             onClick={() =>
               setDetailSection(
-                value as "excluded" | "players" | "templates" | "animation" | "updates",
+                value as
+                  | "excluded"
+                  | "players"
+                  | "templates"
+                  | "animation"
+                  | "updates",
               )
             }
             className={`mb-1 w-full rounded-xl px-3 py-2 text-left text-sm font-bold cursor-pointer transition ${detailSection === value ? "bg-[#6A46FE] text-white" : "text-slate-400 hover:bg-slate-800 hover:text-white"}`}
@@ -1687,7 +1704,10 @@ function App() {
                   checked={autoDownloadUpdates}
                   onChange={(checked) => {
                     setAutoDownloadUpdates(checked);
-                    localStorage.setItem("spla3-auto-download-updates", String(checked));
+                    localStorage.setItem(
+                      "spla3-auto-download-updates",
+                      String(checked),
+                    );
                     window.electronAPI?.setAutoDownload(checked);
                   }}
                 />
@@ -1712,7 +1732,10 @@ function App() {
                   onChange={(event) => {
                     const hours = Number(event.target.value);
                     setUpdateCheckInterval(hours);
-                    localStorage.setItem("spla3-update-check-interval", String(hours));
+                    localStorage.setItem(
+                      "spla3-update-check-interval",
+                      String(hours),
+                    );
                     window.electronAPI?.setCheckInterval(hours);
                   }}
                   className="h-2 w-full cursor-ew-resize appearance-none rounded-full bg-slate-600 accent-[#FEFD4A] [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-slate-900 [&::-webkit-slider-thumb]:bg-[#FEFD4A]"
@@ -1727,20 +1750,29 @@ function App() {
               {/* 手動確認ボタンとステータス表示 */}
               <div className="flex items-center justify-between rounded-lg bg-slate-800 px-3 py-3 text-sm text-slate-200">
                 <div className="flex flex-col">
-                  <span className="font-bold text-white">{t("checkForUpdates")}</span>
+                  <span className="font-bold text-white">
+                    {t("checkForUpdates")}
+                  </span>
                   <span className="text-xs text-slate-400 mt-0.5">
                     {updateStatus === "checking" && t("checkingForUpdates")}
-                    {updateStatus === "available" && t("updateAvailable", { version: updateVersion ?? "" })}
-                    {updateStatus === "downloading" && t("downloadingUpdate", { percent: downloadProgress })}
+                    {updateStatus === "available" &&
+                      t("updateAvailable", { version: updateVersion ?? "" })}
+                    {updateStatus === "downloading" &&
+                      t("downloadingUpdate", { percent: downloadProgress })}
                     {updateStatus === "downloaded" && t("updateDownloaded")}
-                    {updateStatus === "not-available" && t("updateNotAvailable")}
-                    {updateStatus === "error" && (updateErrorMsg || t("updateError"))}
+                    {updateStatus === "not-available" &&
+                      t("updateNotAvailable")}
+                    {updateStatus === "error" &&
+                      (updateErrorMsg || t("updateError"))}
                     {updateStatus === "idle" && `v${packageJson.version}`}
                   </span>
                 </div>
                 <button
                   type="button"
-                  disabled={updateStatus === "checking" || updateStatus === "downloading"}
+                  disabled={
+                    updateStatus === "checking" ||
+                    updateStatus === "downloading"
+                  }
                   onClick={() => {
                     setUpdateStatus("checking");
                     window.electronAPI?.checkForUpdates();
@@ -1767,7 +1799,9 @@ function App() {
                     onClick={() => window.electronAPI?.startDownload()}
                     className="rounded-lg bg-[#FEFD4A] px-3 py-1.5 text-xs font-black text-slate-900 shadow-md transition hover:bg-yellow-300 cursor-pointer"
                   >
-                    {t("updateReadyToDownload", { version: updateVersion ?? "" })}
+                    {t("updateReadyToDownload", {
+                      version: updateVersion ?? "",
+                    })}
                   </button>
                 </div>
               )}
@@ -1792,8 +1826,12 @@ function App() {
               {import.meta.env.DEV && (
                 <div className="mt-4 pt-3 border-t border-slate-700/60 flex items-center justify-between">
                   <div className="flex flex-col">
-                    <span className="text-xs font-bold text-amber-400">🧪 アップデート動作テスト（Dev用）</span>
-                    <span className="text-[11px] text-slate-400">更新検知→ダウンロード→再起動のUIフローをシミュレーション</span>
+                    <span className="text-xs font-bold text-amber-400">
+                      🧪 アップデート動作テスト（Dev用）
+                    </span>
+                    <span className="text-[11px] text-slate-400">
+                      更新検知→ダウンロード→再起動のUIフローをシミュレーション
+                    </span>
                   </div>
                   <button
                     type="button"
@@ -1823,11 +1861,19 @@ function App() {
       {/* ヘッダー */}
       <header
         className="sticky top-0 z-40 flex h-14 shrink-0 items-center justify-between border-b border-slate-800 bg-slate-900/95 px-4 backdrop-blur"
-        style={isElectron ? { WebkitAppRegion: "drag" } as React.CSSProperties : undefined}
+        style={
+          isElectron
+            ? ({ WebkitAppRegion: "drag" } as React.CSSProperties)
+            : undefined
+        }
       >
         <div
           className="flex items-center gap-3"
-          style={isElectron ? { WebkitAppRegion: "no-drag" } as React.CSSProperties : undefined}
+          style={
+            isElectron
+              ? ({ WebkitAppRegion: "no-drag" } as React.CSSProperties)
+              : undefined
+          }
         >
           {/* macOSのウィンドウコントロール（左側）のスペーサー */}
           {isElectron && isMac && (
@@ -1861,14 +1907,20 @@ function App() {
         </div>
         <div
           className="flex items-center gap-2"
-          style={isElectron ? { WebkitAppRegion: "no-drag" } as React.CSSProperties : undefined}
+          style={
+            isElectron
+              ? ({ WebkitAppRegion: "no-drag" } as React.CSSProperties)
+              : undefined
+          }
         >
           {/* Electron アップデートボタン (1. ダウンロード可能時) */}
           {isElectron && updateStatus === "available" && (
             <button
               type="button"
               onClick={() => window.electronAPI?.startDownload()}
-              title={t("updateReadyToDownload", { version: updateVersion ?? "" })}
+              title={t("updateReadyToDownload", {
+                version: updateVersion ?? "",
+              })}
               className="flex items-center gap-1.5 rounded-xl border border-[#FEFD4A] bg-[#FEFD4A]/20 px-2.5 py-1.5 text-xs font-bold text-[#FEFD4A] transition hover:bg-[#FEFD4A] hover:text-slate-900 cursor-pointer shadow-sm animate-pulse"
             >
               <lucideReact.Download className="h-4 w-4" />

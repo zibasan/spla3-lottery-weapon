@@ -48,6 +48,13 @@
             "x64",
             "arm64"
           ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
         }
       ]
     },
@@ -58,6 +65,9 @@
       "createStartMenuShortcut": true,
       "license": "build/welcome.txt",
       "shortcutName": "ブキみくじ - Weapon Loterry"
+    },
+    "portable": {
+      "artifactName": "${productName}-${version}-${arch}.${ext}"
     },
     "mac": {
       "icon": "build/favicon.icns",
@@ -100,7 +110,7 @@
     "@biomejs/biome": "2.5.14",
     "@rolldown/plugin-babel": "^0.2.3",
     "@types/babel__core": "^7.20.5",
-    "@types/node": "^24.13.3",
+    "@types/node": "^26.6.4",
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.7",
     "@vitejs/plugin-react": "^6.1.1",

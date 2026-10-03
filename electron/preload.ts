@@ -68,3 +68,8 @@ const electronAPI: ElectronAPI = {
 };
 
 contextBridge.exposeInMainWorld("electronAPI", electronAPI);
+
+const isPortable = Boolean(process.env.PORTABLE_EXECUTABLE_FILE);
+contextBridge.exposeInMainWorld("electron", {
+  isPortable,
+})
