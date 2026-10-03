@@ -1,7 +1,7 @@
 {
   "name": "ブキみくじ",
   "short_name": "ブキみくじ",
-  "description": "スプラトゥーン３のブキをランダムに抽選するアプリ",
+  "description": "スプラトゥーン3のブキをランダムに抽選するアプリ / An app that randomly selects weapons for Splatoon 3.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#6a46fe",

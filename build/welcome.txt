@@ -1,0 +1,41 @@
+====== ブキみくじ / Weapon Lottery ======
+
+The English version is below the Japanese version.
+
+[Japanese]
+
+ブキみくじのインストールありがとうございます。
+このアプリは、スプラトゥーン3のブキをランダムに抽選するアプリです。
+
+インストールを続けるには、右下の [同意する] を押してください。
+
+◯ 主な機能
+
+- 複数人のブキを抽選
+- 抽選するブキのフィルター機能
+etc.
+
+◯ 免責事項
+
+本アプリは、「スプラトゥーン3」のブキを抽選するファンメイドアプリです。
+任天堂株式会社およびその関連会社によって公式に承認されたものではありません。
+
+------
+
+[English]
+
+Thank you for installing Weapon Lottery.
+This app randomly selects weapons from Splatoon 3.
+
+To proceed with the installation, please click [Agree] at the bottom right.
+
+- Key Features
+
+  - Randomly select weapons for multiple players
+  - Filter function for weapons to be selected via lottery
+  etc.
+
+- Disclaimer
+
+This is a fan-made app that randomly selects weapons from "Splatoon 3."
+It is not officially endorsed by Nintendo Co., Ltd. or its affiliates.

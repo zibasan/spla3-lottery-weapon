@@ -1,6 +1,7 @@
 {
   "name": "spla3-lottery-weapon",
   "private": true,
+  "description": "スプラトゥーン3のブキをランダムに抽選するアプリ / An app that randomly selects weapons for Splatoon 3.",
   "version": "0.15.4",
   "type": "module",
   "license": "MIT",
@@ -55,7 +56,8 @@
       "allowToChangeInstallationDirectory": true,
       "createDesktopShortcut": true,
       "createStartMenuShortcut": true,
-      "shortcutName": "ブキみくじ / Weapon Loterry"
+      "license": "build/welcome.txt",
+      "shortcutName": "ブキみくじ - Weapon Loterry"
     },
     "mac": {
       "icon": "build/favicon.icns",
