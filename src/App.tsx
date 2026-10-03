@@ -1914,7 +1914,7 @@ function App() {
           }
         >
           {/* Electron アップデートボタン (1. ダウンロード可能時) */}
-          {isElectron && updateStatus === "available" && (
+          {isElectron && updateStatus === "available" && !isPortable && (
             <button
               type="button"
               onClick={() => window.electronAPI?.startDownload()}
@@ -1931,7 +1931,7 @@ function App() {
           )}
 
           {/* Electron アップデートボタン (2. ダウンロード中: リロードアイコンぐるぐる) */}
-          {isElectron && updateStatus === "downloading" && (
+          {isElectron && updateStatus === "downloading" && !isPortable && (
             <div
               title={t("downloadingUpdate", { percent: downloadProgress })}
               className="flex items-center gap-1.5 rounded-xl border border-slate-700 bg-slate-800 px-2.5 py-1.5 text-xs font-bold text-slate-200 shadow-sm"
@@ -1944,12 +1944,12 @@ function App() {
           )}
 
           {/* Electron アップデートボタン (3. 再起動すれば適用可能時) */}
-          {isElectron && updateStatus === "downloaded" && (
+          {isElectron && updateStatus === "downloaded" && !isPortable && (
             <button
               type="button"
               onClick={() => window.electronAPI?.quitAndInstall()}
               title={t("updateDownloaded")}
-              className="flex items-center gap-1.5 rounded-xl border border-emerald-500 bg-emerald-500/20 px-2.5 py-1.5 text-xs font-bold text-emerald-400 transition hover:bg-emerald-500 hover:text-slate-950 cursor-pointer shadow-sm animate-bounce"
+              className="flex items-center gap-1.5 rounded-xl border border-emerald-500 bg-emerald-500/20 px-2.5 py-1.5 text-xs font-bold text-emerald-400 transition hover:bg-emerald-500 hover:text-slate-950 cursor-pointer shadow-sm"
             >
               <lucideReact.Sparkles className="h-4 w-4 text-emerald-300" />
               <span>{t("updateDownloaded")}</span>
