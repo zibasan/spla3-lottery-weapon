@@ -33,7 +33,7 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/React-v19-blue?style=flat-square&logo=react&labelColor=23272e" alt="react"/>
-  <img src="https://img.shields.io/badge/TypeScript-6.0.2-6495ed?style=flat-square&logo=typescript&labelColor=23272e" alt="typescript" />
+  <img src="https://img.shields.io/badge/TypeScript-7.0.2-6495ed?style=flat-square&logo=typescript&labelColor=23272e" alt="typescript" />
   <a href="https://github.com/zibasan/spla3-lottery-weapon/commits/main/"><img src="https://img.shields.io/github/last-commit/zibasan/spla3-lottery-weapon?style=flat-square&labelColor=23272e&color=da70d6" alt="last commit" /></a>
 </p>
 
