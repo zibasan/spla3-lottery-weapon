@@ -113,7 +113,9 @@ function App() {
   const isElectron =
     typeof window !== "undefined" &&
     (navigator.userAgent.includes("Electron") || !!window.electronAPI);
-  const isPortable = window.electron.isPortable ?? false;
+
+  const isPortable = Boolean(window.electron?.isPortable);
+
   // macOS判定（ウィンドウコントロールの位置が左か右かの判断に使用）
   const isMac =
     typeof window !== "undefined" && navigator.userAgent.includes("Macintosh");
