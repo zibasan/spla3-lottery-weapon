@@ -46,7 +46,7 @@
 | macOS   | Apple Silicon / Intel (`.dmg`) | `Weapon-Loterry-Setup-[version]-x64.dmg`<br>`Weapon-Loterry-Setup-[version]-arm64.dmg` | **[ダウンロード](https://github.com/zibasan/spla3-lottery-weapon/releases/latest)** |
 | Linux   | AppImage                       | `Weapon-Loterry-Setup-[version]-x86_64.AppImage`                                       | **[ダウンロード](https://github.com/zibasan/spla3-lottery-weapon/releases/latest)** |
 
-> [!INFO]
+> [!NOTE]
 >
 > - 過去のバージョンや全てのファイルは [Releases](https://github.com/zibasan/spla3-lottery-weapon/releases/) にあります。
 > - `.blockmap`, `.yml`は、アプリの自動更新などに必要なファイルです。ダウンロードする必要はありません。
