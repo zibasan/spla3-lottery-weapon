@@ -39,14 +39,15 @@
 
 ## Download
 
-| OS | Format | File name | Link |
-|----|----|----|----|
-| Windows | Installer (`.exe`) | `Weapon-Loterry-Setup-[version]-x64.exe` | **[Download](https://github.com/zibasan/spla3-lottery-weapon/releases/latest)** |
-| | Portable (no installation required) | `Weapon-Loterry-[version]-x64.exe` | **[Download](https://github.com/zibasan/spla3-lottery-weapon/releases/latest)** |
-| macOS | Apple Silicon / Intel (`.dmg`) | `Weapon-Loterry-Setup-[version]-x64.dmg`<br>`Weapon-Loterry-Setup-[version]-arm64.dmg` | **[Download](https://github.com/zibasan/spla3-lottery-weapon/releases/latest)** |
-| Linux | AppImage | `Weapon-Loterry-Setup-[version]-x86_64.AppImage` | **[Download](https://github.com/zibasan/spla3-lottery-weapon/releases/latest)** |
+| OS      | Format                              | File name                                                                              | Link                                                                            |
+| ------- | ----------------------------------- | -------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
+| Windows | Installer (`.exe`)                  | `Weapon-Loterry-Setup-[version]-x64.exe`                                               | **[Download](https://github.com/zibasan/spla3-lottery-weapon/releases/latest)** |
+|         | Portable (no installation required) | `Weapon-Loterry-[version]-x64.exe`                                                     | **[Download](https://github.com/zibasan/spla3-lottery-weapon/releases/latest)** |
+| macOS   | Apple Silicon / Intel (`.dmg`)      | `Weapon-Loterry-Setup-[version]-x64.dmg`<br>`Weapon-Loterry-Setup-[version]-arm64.dmg` | **[Download](https://github.com/zibasan/spla3-lottery-weapon/releases/latest)** |
+| Linux   | AppImage                            | `Weapon-Loterry-Setup-[version]-x86_64.AppImage`                                       | **[Download](https://github.com/zibasan/spla3-lottery-weapon/releases/latest)** |
 
 > [!INFO]
+>
 > - Previous versions and all available files can be found in [Releases](https://github.com/zibasan/spla3-lottery-weapon/releases/).
 > - `.blockmap` and `.yml` files are required for features such as automatic updates. You do not need to download them.
 
@@ -56,10 +57,9 @@
 > If this happens, click `More info`, then click **`Run anyway`**.\
 > <span style="border-bottom: solid 2px">※ If you do not trust the application, click `Don't run` instead.</span>
 >
-> <img src=".github/readme/smartscreen_en.png" alt="smartscreen_ja" />
+> <img src=".github/readme/smartscreen_en.png" alt="smartscreen_en" height="300" />
 >
-> You may also be prevented from launching the application by **Smart App Control** or your antivirus software.
->
+> You may also be prevented from launching the application by **Smart App Control** or your antivirus software.\
 > In such cases, please take appropriate measures, such as **adding this application to your exclusions**.
 
 ---
@@ -115,6 +115,7 @@
 
 > [!NOTE]
 > The layout changes depending on whether you access the app from a PC or a smartphone.
+>
 > <h3 align="center">PC Ver.</h3>
 > <img src=".github/readme/overview_en.png" alt="PC Layout"/>
 > <h3 align="center">Smartphone Ver.</h3>
@@ -137,6 +138,7 @@
 
 > [!NOTE]
 > Press the button (↓) on the right side of a result to redraw the weapon for an individual player.
+>
 > <figure>
 >    <img src=".github/readme/redraw_button.png" alt="redraw button"/>
 >    <figcaption align="left"><em>Redraw button</em></figcaption>
@@ -174,6 +176,7 @@ From the share area above the drawing results, you can:
 
 > [!NOTE]
 > On the smartphone version, you can save the results as an image using the button (↓) at the top.
+>
 > <figure>
 >    <img src=".github/readme/download_image_btn.png" alt="smartphone download button"/>
 >    <figcaption align="left"><em>Download button on smartphone</em></figcaption>
@@ -181,6 +184,7 @@ From the share area above the drawing results, you can:
 
 > [!TIP]
 > Copying the results as Markdown makes them easier to read when pasted into Discord or similar services.
+>
 > <figure>
 >    <img src=".github/readme/discord_markdown_img.png" alt="discord markdown image"/>
 >    <figcaption align="left"><em>Example of Markdown results pasted into Discord</em></figcaption>
@@ -219,9 +223,9 @@ Press the settings button (↓) at the top to open the advanced settings.
 
 #### Player List
 
-| Setting | Description |
-|----|----|
-|Save player list in browser|When enabled, the players from the most recent draw are saved in the browser and automatically shown the next time you open the app.|
+| Setting                     | Description                                                                                                                          |
+| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| Save player list in browser | When enabled, the players from the most recent draw are saved in the browser and automatically shown the next time you open the app. |
 
 #### Player Templates
 
@@ -231,12 +235,12 @@ Press the settings button (↓) at the top to open the advanced settings.
 
 #### Drawing Animation
 
-| Setting | Description |
-|----|----|
-|Enable drawing animation|When enabled, an animation is played when drawing weapons.|
-|Play drawing animation sound|When enabled, sound is played during the animation.|
-|Volume|Adjusts the volume of the drawing animation sound.<br>This setting is shown when `Play drawing animation sound` is enabled.|
-|Animation length|Adjusts the length of the animation.|
+| Setting                      | Description                                                                                                                 |
+| ---------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| Enable drawing animation     | When enabled, an animation is played when drawing weapons.                                                                  |
+| Play drawing animation sound | When enabled, sound is played during the animation.                                                                         |
+| Volume                       | Adjusts the volume of the drawing animation sound.<br>This setting is shown when `Play drawing animation sound` is enabled. |
+| Animation length             | Adjusts the length of the animation.                                                                                        |
 
 ## Supported Environments
 
@@ -244,14 +248,17 @@ Press the settings button (↓) at the top to open the advanced settings.
 ※ All software was updated to the latest version at the time of testing.
 
 ### PC (Windows 11 26H2 (26300.9550))
+
 - [x] Google Chrome
 
 - [x] Microsoft Edge
 
 ### Smartphone (Android 17)
+
 - [x] Google Chrome
 
 ### PC / Smartphone
+
 - PWA (Progressive Web App)
 
 > [!NOTE]

@@ -39,14 +39,15 @@
 
 ## ダウンロード
 
-| OS | 形式 | ファイル名 | リンク |
-|----|----|----|----|
-|Windows|インストーラー(`.exe`)|`Weapon-Loterry-Setup-[version]-x64.exe`|**[ダウンロード](https://github.com/zibasan/spla3-lottery-weapon/releases/latest)**|
-||ポータブル版(インストール不要)|`Weapon-Loterry-[version]-x64.exe`|**[ダウンロード](https://github.com/zibasan/spla3-lottery-weapon/releases/latest)**|
-|macOS|Apple Silicon / Intel (`.dmg`)|`Weapon-Loterry-Setup-[version]-x64.dmg`<br>`Weapon-Loterry-Setup-[version]-arm64.dmg`|**[ダウンロード](https://github.com/zibasan/spla3-lottery-weapon/releases/latest)**|
-|Linux|AppImage|`Weapon-Loterry-Setup-[version]-x86_64.AppImage`|**[ダウンロード](https://github.com/zibasan/spla3-lottery-weapon/releases/latest)**|
+| OS      | 形式                           | ファイル名                                                                             | リンク                                                                              |
+| ------- | ------------------------------ | -------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| Windows | インストーラー(`.exe`)         | `Weapon-Loterry-Setup-[version]-x64.exe`                                               | **[ダウンロード](https://github.com/zibasan/spla3-lottery-weapon/releases/latest)** |
+|         | ポータブル版(インストール不要) | `Weapon-Loterry-[version]-x64.exe`                                                     | **[ダウンロード](https://github.com/zibasan/spla3-lottery-weapon/releases/latest)** |
+| macOS   | Apple Silicon / Intel (`.dmg`) | `Weapon-Loterry-Setup-[version]-x64.dmg`<br>`Weapon-Loterry-Setup-[version]-arm64.dmg` | **[ダウンロード](https://github.com/zibasan/spla3-lottery-weapon/releases/latest)** |
+| Linux   | AppImage                       | `Weapon-Loterry-Setup-[version]-x86_64.AppImage`                                       | **[ダウンロード](https://github.com/zibasan/spla3-lottery-weapon/releases/latest)** |
 
 > [!INFO]
+>
 > - 過去のバージョンや全てのファイルは [Releases](https://github.com/zibasan/spla3-lottery-weapon/releases/) にあります。
 > - `.blockmap`, `.yml`は、アプリの自動更新などに必要なファイルです。ダウンロードする必要はありません。
 
@@ -56,9 +57,9 @@
 > この場合は、`詳細情報`をクリックしてから、 **`実行`** をクリックしてください。\
 > <span style="border-bottom: solid 2px">※使用を控える場合は、`実行しない`をクリックしてください。</span>
 >
-> <img src=".github/readme/smartscreen.png" alt="smartscreen" />
-> 他にも、「スマートアプリコントロール」やお使いのウイルス対策ソフトによって起動がブロックされることもあります。
+> <img src=".github/readme/smartscreen.png" alt="smartscreen" height="300" />
 >
+> 他にも、「スマートアプリコントロール」やお使いのウイルス対策ソフトによって起動がブロックされることもあります。\
 > その場合は、**このアプリを除外設定する** などの対策をお願いします。
 
 ---
@@ -114,6 +115,7 @@
 
 > [!NOTE]
 > PCからアクセスしたときとスマホからアクセスしたときでレイアウトが変わります。
+>
 > <h3 align="center">PC版</h3>
 > <img src=".github/readme/overview.png" alt="PC Layout"/>
 > <h3 align="center">スマホ版</h3>
@@ -122,7 +124,7 @@
 1. **[アプリ](https://spla3-lottery-weapon.pages.dev/)** にアクセスします。
 
 2. **PC版**: 左側のメニューから抽選条件を決めてください。\
-  **スマホ版**: 表示された画面から抽選条件を決めてください。
+   **スマホ版**: 表示された画面から抽選条件を決めてください。
 
 3. `◯人のブキを抽選する！` / `抽選する！`を押すとブキを抽選します。
 
@@ -132,10 +134,11 @@
 4. 再度 `◯人のブキを抽選する！` / `抽選する！` を押すと再抽選できます。
 
 5. **PC版**: 左側のメニューから抽選条件を変えることで、条件を変えて再抽選できます。\
-  **スマホ版**: 左下の `設定` を押すと抽選条件を変えるメニューが開き、ここから条件を変えて再抽選できます。
+   **スマホ版**: 左下の `設定` を押すと抽選条件を変えるメニューが開き、ここから条件を変えて再抽選できます。
 
 > [!NOTE]
 > 結果の右側にあるボタン(↓)を押すと、プレイヤー別に再抽選できます。
+>
 > <figure>
 >    <img src=".github/readme/redraw_button.png" alt="redraw button"/>
 >    <figcaption align="left"><em>再抽選ボタン</em></figcaption>
@@ -175,6 +178,7 @@
 
 > [!NOTE]
 > スマホ版は、上側にあるボタン(↓)から画像として保存できます。
+>
 > <figure>
 >    <img src=".github/readme/download_image_btn.png" alt="smartphone download button"/>
 >    <figcaption align="left"><em>スマホ版のダウンロードボタン</em></figcaption>
@@ -182,6 +186,7 @@
 
 > [!TIP]
 > Markdownとして結果をコピーすると、Discordなどに貼り付けるときに見やすくなります。
+>
 > <figure>
 >    <img src=".github/readme/discord_markdown_img.png" alt="discord markdown image"/>
 >    <figcaption align="left"><em>DiscordにMarkdown形式で貼り付けしたときのイメージ</em></figcaption>
@@ -220,9 +225,9 @@
 
 #### プレイヤーリスト
 
-| 項目名 | 説明 |
-|----|----|
-|プレイヤーリストをブラウザに保存|オンにすると、最後に抽選したプレイヤーをブラウザに保存して、次にアプリを開いたときにそのプレイヤーが最初から表示されます。|
+| 項目名                           | 説明                                                                                                                       |
+| -------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| プレイヤーリストをブラウザに保存 | オンにすると、最後に抽選したプレイヤーをブラウザに保存して、次にアプリを開いたときにそのプレイヤーが最初から表示されます。 |
 
 #### プレイヤーテンプレート
 
@@ -232,12 +237,12 @@
 
 #### 抽選演出
 
-| 項目名 | 説明 |
-|----|----|
-|抽選演出を有効にする|オンにすると、抽選時にアニメーションを再生します|
-|抽選演出の音を鳴らす|オンにすると、演出中に音を鳴らします|
-|音量|抽選演出の音の音量を調節します。<br>この項目は`音を鳴らす`がオンの時に表示されます|
-|演出の長さ|抽選演出の長さを調節します|
+| 項目名               | 説明                                                                               |
+| -------------------- | ---------------------------------------------------------------------------------- |
+| 抽選演出を有効にする | オンにすると、抽選時にアニメーションを再生します                                   |
+| 抽選演出の音を鳴らす | オンにすると、演出中に音を鳴らします                                               |
+| 音量                 | 抽選演出の音の音量を調節します。<br>この項目は`音を鳴らす`がオンの時に表示されます |
+| 演出の長さ           | 抽選演出の長さを調節します                                                         |
 
 ## 動作環境
 
@@ -245,14 +250,17 @@
 ※ソフトはすべて最新版を使用しています。
 
 ### PC (Windows 11 26H2(26300.9550))
+
 - [x] Google Chrome
 
 - [x] Microsoft Edge
 
 ### スマホ (Android 17)
+
 - [x] Google Chrome
 
 ### PC/スマホ
+
 - PWA(Progressive Web Apps, サイトをアプリ化したようなもの)
 
 > [!NOTE]
