@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.16.3](https://github.com/zibasan/spla3-lottery-weapon/compare/v0.16.2...v0.16.3) (2026-10-04)
+
+
+### Bug Fixes
+
+* Release PleaseのPRをmerge後にbuildが走るようにした ([4033eb9](https://github.com/zibasan/spla3-lottery-weapon/commit/4033eb9eafeca2fbdbc7e63ff2f259b100252065))
+* Release Pleaseのエラーを修正 ([b8e15ab](https://github.com/zibasan/spla3-lottery-weapon/commit/b8e15ab9ffa2122505e3775b006e715a723e85be))
+* リリースPRをmergeするたびにapprovalが求められるのを修正 ([e7ad8af](https://github.com/zibasan/spla3-lottery-weapon/commit/e7ad8af15e8d1a7fb4604ae1e3fd92e4805ee18d))
+
 ## [0.16.2](https://github.com/zibasan/spla3-lottery-weapon/compare/v0.16.1...v0.16.2) (2026-10-04)
 
 
