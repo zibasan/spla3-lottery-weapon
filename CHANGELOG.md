@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.16.4](https://github.com/zibasan/spla3-lottery-weapon/compare/v0.16.3...v0.16.4) (2026-10-04)
+
+
+### Bug Fixes
+
+* インストーラー版のwelcome.txtが文字化けする問題を修正 ([829d301](https://github.com/zibasan/spla3-lottery-weapon/commit/829d301612c45b65d958f3d50619305f3a7e97df))
+
 ## [0.16.3](https://github.com/zibasan/spla3-lottery-weapon/compare/v0.16.2...v0.16.3) (2026-10-04)
 
 
