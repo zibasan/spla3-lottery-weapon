@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.16.2](https://github.com/zibasan/spla3-lottery-weapon/compare/v0.16.1...v0.16.2) (2026-10-04)
+
+
+### Bug Fixes
+
+* Electronビルド版で効果音が鳴らない問題を修正 ([4ce4782](https://github.com/zibasan/spla3-lottery-weapon/commit/4ce4782d7ec18ddf2f7c335ad5d0984dc064cd19))
+
 ## [0.16.1](https://github.com/zibasan/spla3-lottery-weapon/compare/v0.16.0...v0.16.1) (2026-10-04)
 
 
