@@ -10,6 +10,11 @@ on:
     branches:
       - main
   workflow_dispatch:
+  workflow_call:
+    inputs:
+      tag_name:
+        type: string
+        required: false
 
 jobs:
   build:
