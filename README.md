@@ -1,5 +1,5 @@
 <p align="center">
-  <img src=".github/readme/header.png">
+  <img src=".github/readme/header.png" height="320">
 </p>
 
 <h1 align="center">ブキみくじ<br>Weapon Lottery</h1>
