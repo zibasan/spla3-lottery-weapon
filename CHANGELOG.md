@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.16.1](https://github.com/zibasan/spla3-lottery-weapon/compare/v0.16.0...v0.16.1) (2026-10-04)
+
+
+### Bug Fixes
+
+* Web版が白紙になる問題を修正 ([3a10501](https://github.com/zibasan/spla3-lottery-weapon/commit/3a10501684d11c6610f8e5c9f8525c1b464e5d96))
+
 ## [0.16.0](https://github.com/zibasan/spla3-lottery-weapon/compare/v0.15.4...v0.16.0) (2026-10-03)
 
 
