@@ -37,6 +37,31 @@
   <a href="https://github.com/zibasan/spla3-lottery-weapon/commits/main/"><img src="https://img.shields.io/github/last-commit/zibasan/spla3-lottery-weapon?style=flat-square&labelColor=23272e&color=da70d6" alt="last commit" /></a>
 </p>
 
+## Download
+
+| OS | Format | File name | Link |
+|----|----|----|----|
+| Windows | Installer (`.exe`) | `Weapon-Loterry-Setup-[version]-x64.exe` | **[Download](https://github.com/zibasan/spla3-lottery-weapon/releases/latest)** |
+| | Portable (no installation required) | `Weapon-Loterry-[version]-x64.exe` | **[Download](https://github.com/zibasan/spla3-lottery-weapon/releases/latest)** |
+| macOS | Apple Silicon / Intel (`.dmg`) | `Weapon-Loterry-Setup-[version]-x64.dmg`<br>`Weapon-Loterry-Setup-[version]-arm64.dmg` | **[Download](https://github.com/zibasan/spla3-lottery-weapon/releases/latest)** |
+| Linux | AppImage | `Weapon-Loterry-Setup-[version]-x86_64.AppImage` | **[Download](https://github.com/zibasan/spla3-lottery-weapon/releases/latest)** |
+
+> [!INFO]
+> - Previous versions and all available files can be found in [Releases](https://github.com/zibasan/spla3-lottery-weapon/releases/).
+> - `.blockmap` and `.yml` files are required for features such as automatic updates. You do not need to download them.
+
+> [!CAUTION]
+> When launching the Windows installer or portable version, you may see a message saying "**`Windows protected your PC`**".
+>
+> If this happens, click `More info`, then click **`Run anyway`**.\
+> <span style="border-bottom: solid 2px">※ If you do not trust the application, click `Don't run` instead.</span>
+>
+> <img src=".github/readme/smartscreen_en.png" alt="smartscreen_ja" />
+>
+> You may also be prevented from launching the application by **Smart App Control** or your antivirus software.
+>
+> In such cases, please take appropriate measures, such as **adding this application to your exclusions**.
+
 ---
 
 ## Demo

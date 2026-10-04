@@ -37,6 +37,30 @@
   <a href="https://github.com/zibasan/spla3-lottery-weapon/commits/main/"><img src="https://img.shields.io/github/last-commit/zibasan/spla3-lottery-weapon?style=flat-square&labelColor=23272e&color=da70d6" alt="last commit" /></a>
 </p>
 
+## ダウンロード
+
+| OS | 形式 | ファイル名 | リンク |
+|----|----|----|----|
+|Windows|インストーラー(`.exe`)|`Weapon-Loterry-Setup-[version]-x64.exe`|**[ダウンロード](https://github.com/zibasan/spla3-lottery-weapon/releases/latest)**|
+||ポータブル版(インストール不要)|`Weapon-Loterry-[version]-x64.exe`|**[ダウンロード](https://github.com/zibasan/spla3-lottery-weapon/releases/latest)**|
+|macOS|Apple Silicon / Intel (`.dmg`)|`Weapon-Loterry-Setup-[version]-x64.dmg`<br>`Weapon-Loterry-Setup-[version]-arm64.dmg`|**[ダウンロード](https://github.com/zibasan/spla3-lottery-weapon/releases/latest)**|
+|Linux|AppImage|`Weapon-Loterry-Setup-[version]-x86_64.AppImage`|**[ダウンロード](https://github.com/zibasan/spla3-lottery-weapon/releases/latest)**|
+
+> [!INFO]
+> - 過去のバージョンや全てのファイルは [Releases](https://github.com/zibasan/spla3-lottery-weapon/releases/) にあります。
+> - `.blockmap`, `.yml`は、アプリの自動更新などに必要なファイルです。ダウンロードする必要はありません。
+
+> [!CAUTION]
+> Windows版のインストーラー版とポータブル版では、起動しようとすると、画像のように「`WindowsによってPCが保護されました`」と表示されることがあります。
+>
+> この場合は、`詳細情報`をクリックしてから、 **`実行`** をクリックしてください。\
+> <span style="border-bottom: solid 2px">※使用を控える場合は、`実行しない`をクリックしてください。</span>
+>
+> <img src=".github/readme/smartscreen.png" alt="smartscreen" />
+> 他にも、「スマートアプリコントロール」やお使いのウイルス対策ソフトによって起動がブロックされることもあります。
+>
+> その場合は、**このアプリを除外設定する** などの対策をお願いします。
+
 ---
 
 ## デモ
