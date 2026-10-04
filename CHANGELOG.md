@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.17.0](https://github.com/zibasan/spla3-lottery-weapon/compare/v0.16.4...v0.17.0) (2026-10-04)
+
+
+### Features
+
+* TypeScriptのバージョンをv7.0.2にアップデート ([#25](https://github.com/zibasan/spla3-lottery-weapon/issues/25)) ([f629856](https://github.com/zibasan/spla3-lottery-weapon/commit/f629856e3beb83e2caa8793e06def082a638b4c2))
+
 ## [0.16.4](https://github.com/zibasan/spla3-lottery-weapon/compare/v0.16.3...v0.16.4) (2026-10-04)
 
 
