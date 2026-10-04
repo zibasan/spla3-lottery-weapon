@@ -16,7 +16,11 @@ createRoot(rootElement).render(
   </StrictMode>,
 );
 
-if ("serviceWorker" in navigator && import.meta.env.PROD) {
+if (
+  "serviceWorker" in navigator &&
+  import.meta.env.PROD &&
+  window.location.protocol !== "file:"
+) {
   let reloadedForServiceWorker = false;
   navigator.serviceWorker.addEventListener("controllerchange", () => {
     if (reloadedForServiceWorker) return;

@@ -310,8 +310,8 @@ function App() {
   }, []);
 
   useEffect(() => {
-    const rollAudio = new Audio("/audio/lottery_roll.mp3");
-    const resultAudio = new Audio("/audio/lottery_result.mp3");
+    const rollAudio = new Audio("./audio/lottery_roll.mp3");
+    const resultAudio = new Audio("./audio/lottery_result.mp3");
     rollAudio.preload = "auto";
     resultAudio.preload = "auto";
     rollAudioRef.current = rollAudio;
